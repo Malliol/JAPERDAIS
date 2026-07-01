@@ -605,19 +605,23 @@ document.getElementById('d-download').addEventListener('click',()=>{
 });
 
 // ── save to github ──
-document.getElementById('d-save').addEventListener('click',()=>{closeDrawer();openSaveModal();});
+document.getElementById('d-save').addEventListener('click',()=>{
+  closeDrawer();
+  if(localStorage.getItem('gh_token')) saveToGithub();
+  else openSaveModal();
+});
 function openSaveModal(){
   document.getElementById('token-input').value=localStorage.getItem('gh_token')||'';
   document.getElementById('save-status').textContent='';
   document.getElementById('save-modal').classList.add('open');
 }
-document.getElementById('save-cancel').addEventListener('click',()=>document.getElementById('save-modal').classList.remove('open'));
-document.getElementById('save-confirm').addEventListener('click',async()=>{
-  const token=document.getElementById('token-input').value.trim();
+async function saveToGithub(token){
+  token=token||localStorage.getItem('gh_token')||'';
   const status=document.getElementById('save-status');
-  if(!token){status.className='modal-status err';status.textContent='Введи токен';return;}
-  localStorage.setItem('gh_token',token);
-  status.className='modal-status';status.textContent='Загружаю...';
+  const modal=document.getElementById('save-modal');
+  if(!token){ openSaveModal(); return; }
+  modal.classList.add('open');
+  status.className='modal-status'; status.textContent='Сохраняю...';
   const owner='malliol',repo='JAPERDAIS',path='docs/data.json';
   const headers={'Authorization':'token '+token,'Content-Type':'application/json'};
   try{
@@ -626,14 +630,24 @@ document.getElementById('save-confirm').addEventListener('click',async()=>{
     const sha=(await g.json()).sha;
     const payload={nodes:NODES,links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))};
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
-    status.textContent='Сохраняю...';
     const p=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{
       method:'PUT',headers,
       body:JSON.stringify({message:'Update relationship data',content,sha})
     });
     if(!p.ok){const e=await p.json();throw new Error(e.message);}
-    status.className='modal-status ok';status.textContent='✓ Сохранено! Обновится через ~30 сек.';
-  }catch(e){status.className='modal-status err';status.textContent='Ошибка: '+e.message;}
+    status.className='modal-status ok'; status.textContent='✓ Сохранено! Обновится через ~30 сек.';
+    setTimeout(()=>modal.classList.remove('open'),2000);
+  }catch(e){
+    status.className='modal-status err'; status.textContent='Ошибка: '+e.message;
+  }
+}
+document.getElementById('save-cancel').addEventListener('click',()=>document.getElementById('save-modal').classList.remove('open'));
+document.getElementById('save-confirm').addEventListener('click',()=>{
+  const token=document.getElementById('token-input').value.trim();
+  const status=document.getElementById('save-status');
+  if(!token){status.className='modal-status err';status.textContent='Введи токен';return;}
+  localStorage.setItem('gh_token',token);
+  saveToGithub(token);
 });
 
 // ── new link modal ──
