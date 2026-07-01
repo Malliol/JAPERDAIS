@@ -767,7 +767,10 @@ doverlay.addEventListener('click',closeDrawer);
 // ── download ──
 document.getElementById('d-download').addEventListener('click',()=>{
   closeDrawer();
-  const payload={nodes:NODES,links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))};
+  const payload={
+    nodes:NODES.map(n=>({id:n.id,name:n.name,role:n.role,spectrum:n.spectrum,stats:n.stats||{}})),
+    links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))
+  };
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='data.json'; a.click();
   URL.revokeObjectURL(a.href);
@@ -797,7 +800,10 @@ async function saveToGithub(token){
     const g=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{headers});
     if(!g.ok)throw new Error(g.status+' '+g.statusText);
     const sha=(await g.json()).sha;
-    const payload={nodes:NODES,links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))};
+    const payload={
+      nodes:NODES.map(n=>({id:n.id,name:n.name,role:n.role,spectrum:n.spectrum,stats:n.stats||{}})),
+      links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))
+    };
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
     const p=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{
       method:'PUT',headers,body:JSON.stringify({message:'Update relationship data',content,sha})
