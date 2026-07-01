@@ -212,6 +212,24 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 .style-opt input { display:none; }
 
 #loading { position:fixed; inset:0; background:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; letter-spacing:4px; color:#999; z-index:999; }
+
+/* ── link popup editor ── */
+#link-popup {
+  position:fixed; z-index:200; background:#fff; border:2px solid #111;
+  padding:14px 16px; width:260px; display:none; flex-direction:column; gap:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.12);
+}
+#link-popup.open { display:flex; }
+#link-popup-title { font-size:9px; letter-spacing:3px; color:#999; margin-bottom:2px; }
+#link-popup select, #link-popup input {
+  font-family:'Courier New',monospace; font-size:11px;
+  border:1px solid #ddd; padding:7px 8px; background:#fff; width:100%;
+}
+#link-popup select:focus, #link-popup input:focus { outline:2px solid #111; border-color:transparent; }
+#link-popup-btns { display:flex; gap:6px; margin-top:2px; }
+#link-popup-save { flex:1; background:#111; color:#fff; border:none; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:7px; cursor:pointer; }
+#link-popup-del  { background:#fff; color:#cc1133; border:1px solid #cc1133; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:7px 10px; cursor:pointer; }
+#link-popup-cancel { background:#fff; color:#666; border:1px solid #ddd; font-family:'Courier New',monospace; font-size:9px; padding:7px 10px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -318,6 +336,18 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 </div>
 
 <div id="tip"></div>
+
+<!-- link popup editor -->
+<div id="link-popup">
+  <div id="link-popup-title">СТРЕЛКА</div>
+  <select id="lp-type"></select>
+  <input id="lp-label" type="text" placeholder="описание отношения">
+  <div id="link-popup-btns">
+    <button id="link-popup-save">✓ СОХРАНИТЬ</button>
+    <button id="link-popup-del">✕</button>
+    <button id="link-popup-cancel">—</button>
+  </div>
+</div>
 
 <!-- new link modal -->
 <div id="link-modal" class="modal-overlay">
@@ -586,7 +616,7 @@ function getBidi(){
   LINKS.forEach(a=>LINKS.forEach(b=>{if(a.from===b.to&&a.to===b.from)s.add(a.from+'->'+a.to);}));
   return s;
 }
-function drawArrow(x1,y1,x2,y2,t,alpha,isBi,r1,r2){
+function drawArrow(x1,y1,x2,y2,t,alpha,isBi,r1,r2,extraWidth=0){
   const color=t.color;
   const dx=x2-x1,dy=y2-y1,dist=Math.sqrt(dx*dx+dy*dy);
   if(dist<2)return;
@@ -595,7 +625,7 @@ function drawArrow(x1,y1,x2,y2,t,alpha,isBi,r1,r2){
   const mx=(sx+ex)/2,my=(sy+ey)/2,bend=isBi?dist*.22:dist*.08;
   const cpx=mx+(-uy)*bend,cpy=my+ux*bend;
   ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle=color;
-  ctx.lineWidth=t.dash!=='solid'?1.5:2.2;
+  ctx.lineWidth=(t.dash!=='solid'?1.5:2.2)+extraWidth;
   if(t.dash==='dashed'){ctx.setLineDash([5,5]);ctx.lineDashOffset=-dashOffset;}
   else if(t.dash==='long-dash'){ctx.setLineDash([10,5]);ctx.lineDashOffset=-dashOffset;}
   else ctx.setLineDash([]);
@@ -649,10 +679,13 @@ function draw(){
     :LINKS;
 
   sortedLinks.forEach(link=>{
-    const alpha=edgeAlpha(link); if(!alpha)return;
+    let alpha=edgeAlpha(link); if(!alpha)return;
     const f=nodeMap[link.from],t2=nodeMap[link.to]; if(!f||!t2)return;
     const r1=mode3D?34*f.pscale:34, r2d=mode3D?34*t2.pscale:34;
-    drawArrow(f.x,f.y,t2.x,t2.y,typeById(link.type),alpha,bidi.has(link.from+'->'+link.to),r1,r2d);
+    const isHov=(link===hoveredLink||link===selectedLink);
+    if(isHov){ ctx.save(); ctx.shadowColor='rgba(0,0,0,0.18)'; ctx.shadowBlur=8; }
+    drawArrow(f.x,f.y,t2.x,t2.y,typeById(link.type),isHov?1:alpha,bidi.has(link.from+'->'+link.to),r1,r2d,isHov?3.5:0);
+    if(isHov) ctx.restore();
   });
 
   // nodes sorted front-to-back in 3D
@@ -710,6 +743,7 @@ canvas.addEventListener('mousemove',e=>{
     return;
   }
   hoveredNode=getNodeAt(mx,my);
+  hoveredLink=hoveredNode?null:getLinkAt(mx,my);
   const tip=document.getElementById('tip');
   if(hoveredNode){
     canvas.style.cursor='pointer';
@@ -717,6 +751,13 @@ canvas.addEventListener('mousemove',e=>{
     tip.style.left=(e.clientX+14)+'px';
     tip.style.top=(e.clientY-10)+'px';
     tip.textContent=hoveredNode.spectrum;
+  } else if(hoveredLink){
+    canvas.style.cursor='pointer';
+    tip.style.display='block';
+    tip.style.left=(e.clientX+14)+'px';
+    tip.style.top=(e.clientY-10)+'px';
+    const f=nodeMap[hoveredLink.from],t=nodeMap[hoveredLink.to];
+    tip.textContent=`${f?.name||'?'} → ${t?.name||'?'}: ${hoveredLink.label||'—'}`;
   } else {
     canvas.style.cursor=mode3D?'grab':'default';
     tip.style.display='none';
@@ -736,9 +777,17 @@ canvas.addEventListener('mouseup',e=>{
 canvas.addEventListener('click',e=>{
   if(mode3D)return;
   const r=canvas.getBoundingClientRect();
-  const node=getNodeAt(e.clientX-r.left,e.clientY-r.top);
-  if(node){focusedId=focusedId===node.id?null:node.id; if(focusedId)openSidebar(node); else closeSidebar();}
-  else{focusedId=null; closeSidebar();}
+  const mx=e.clientX-r.left, my=e.clientY-r.top;
+  const node=getNodeAt(mx,my);
+  if(node){
+    closeLinkPopup();
+    focusedId=focusedId===node.id?null:node.id;
+    if(focusedId)openSidebar(node); else closeSidebar();
+  } else {
+    const link=getLinkAt(mx,my);
+    if(link){ openLinkPopup(link,e.clientX,e.clientY); }
+    else{ focusedId=null; closeSidebar(); closeLinkPopup(); }
+  }
 });
 canvas.addEventListener('mouseleave',()=>{
   isDragging=false; hoveredNode=null;
@@ -984,6 +1033,75 @@ document.getElementById('nt-add').addEventListener('click',()=>{
   status.textContent='';
   renderTypesList(); renderLegend();
 });
+
+// ── link hit test ──
+let hoveredLink=null, selectedLink=null;
+
+function getLinkControlPoint(link){
+  const f=nodeMap[link.from], t=nodeMap[link.to]; if(!f||!t)return null;
+  const bidi=getBidi();
+  const dx=t.x-f.x,dy=t.y-f.y,dist=Math.sqrt(dx*dx+dy*dy); if(dist<1)return null;
+  const ux=dx/dist,uy=dy/dist,R=34;
+  const sx=f.x+ux*R,sy=f.y+uy*R,ex=t.x-ux*R,ey=t.y-uy*R;
+  const mx=(sx+ex)/2,my=(sy+ey)/2;
+  const isBi=bidi.has(link.from+'->'+link.to);
+  const bend=isBi?dist*.22:dist*.08;
+  return{sx,sy,ex,ey,cpx:mx+(-uy)*bend,cpy:my+ux*bend};
+}
+function getLinkAt(mx,my){
+  const THRESH=10;
+  // check in reverse so top-drawn links are hit first
+  for(let i=LINKS.length-1;i>=0;i--){
+    const link=LINKS[i];
+    if(hiddenTypes.has(link.type))continue;
+    const cp=getLinkControlPoint(link); if(!cp)continue;
+    const {sx,sy,ex,ey,cpx,cpy}=cp;
+    // sample 30 points along quadratic bezier
+    for(let t2=0;t2<=1;t2+=1/30){
+      const bx=(1-t2)**2*sx+2*(1-t2)*t2*cpx+t2*t2*ex;
+      const by=(1-t2)**2*sy+2*(1-t2)*t2*cpy+t2*t2*ey;
+      if((mx-bx)**2+(my-by)**2<THRESH*THRESH)return link;
+    }
+  }
+  return null;
+}
+
+// ── link popup ──
+const linkPopup=document.getElementById('link-popup');
+function openLinkPopup(link, px, py){
+  selectedLink=link;
+  // fill type select
+  const sel=document.getElementById('lp-type');
+  sel.innerHTML=allTypes().map(t=>`<option value="${t.id}"${t.id===link.type?' selected':''}>${t.label}</option>`).join('');
+  document.getElementById('lp-label').value=link.label||'';
+  // position near click, keep within viewport
+  const pw=260, ph=160;
+  let lx=px+12, ly=py-20;
+  if(lx+pw>window.innerWidth-10) lx=px-pw-12;
+  if(ly+ph>window.innerHeight-10) ly=window.innerHeight-ph-10;
+  linkPopup.style.left=lx+'px'; linkPopup.style.top=ly+'px';
+  linkPopup.classList.add('open');
+}
+function closeLinkPopup(){ linkPopup.classList.remove('open'); selectedLink=null; }
+
+document.getElementById('link-popup-save').addEventListener('click',()=>{
+  if(!selectedLink)return;
+  selectedLink.type=document.getElementById('lp-type').value;
+  selectedLink.label=document.getElementById('lp-label').value.trim();
+  buildIndexes();
+  if(focusedId&&nodeMap[focusedId]) openSidebar(nodeMap[focusedId]);
+  closeLinkPopup();
+});
+document.getElementById('link-popup-del').addEventListener('click',()=>{
+  if(!selectedLink)return;
+  if(!confirm('Удалить эту стрелку?'))return;
+  const idx=LINKS.indexOf(selectedLink);
+  if(idx>=0) LINKS.splice(idx,1);
+  buildIndexes();
+  if(focusedId&&nodeMap[focusedId]) openSidebar(nodeMap[focusedId]);
+  closeLinkPopup();
+});
+document.getElementById('link-popup-cancel').addEventListener('click',closeLinkPopup);
 
 // ── stats view ──
 const STAT_KEYS=['Сила','Здоровье','Скорость','Стамина'];
