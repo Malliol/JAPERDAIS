@@ -8,10 +8,10 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  background: #080808;
+  background: #f0efe9;
   font-family: 'Courier New', monospace;
   overflow: hidden;
-  color: #ccc;
+  color: #222;
 }
 
 #canvas { display: block; }
@@ -21,8 +21,8 @@ body {
   position: fixed;
   top: 0; right: 0;
   width: 300px; height: 100vh;
-  background: rgba(8,8,8,0.97);
-  border-left: 1px solid #1a1a1a;
+  background: rgba(240,239,233,0.98);
+  border-left: 1px solid #ddd;
   padding: 28px 24px;
   transform: translateX(100%);
   transition: transform .35s cubic-bezier(.4,0,.2,1);
@@ -33,29 +33,29 @@ body {
 
 #sb-name {
   font-size: 20px;
-  color: #fff;
+  color: #111;
   letter-spacing: 2px;
   margin-bottom: 4px;
 }
 #sb-role {
   font-size: 10px;
-  color: #444;
+  color: #999;
   letter-spacing: 3px;
   text-transform: uppercase;
   margin-bottom: 6px;
 }
 #sb-spectrum {
   font-size: 10px;
-  color: #ffd700;
+  color: #b07d00;
   margin-bottom: 24px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid #ddd;
 }
 
 #sb-relations h3 {
   font-size: 9px;
   letter-spacing: 3px;
-  color: #333;
+  color: #bbb;
   text-transform: uppercase;
   margin-bottom: 12px;
 }
@@ -74,21 +74,21 @@ body {
   flex-shrink: 0;
   margin-top: 4px;
 }
-.rel-dot.pos  { background: #7fff7f; }
-.rel-dot.neg  { background: #ff6b6b; }
-.rel-dot.neu  { background: #555; }
-.rel-dot.envy { background: #ffd700; }
-.rel-name { color: #fff; font-size: 10px; }
-.rel-desc { color: #555; font-size: 10px; }
+.rel-dot.pos  { background: #00aa55; }
+.rel-dot.neg  { background: #dd2244; }
+.rel-dot.neu  { background: #aaa; }
+.rel-dot.envy { background: #cc9900; }
+.rel-name { color: #111; font-size: 10px; }
+.rel-desc { color: #999; font-size: 10px; }
 
 #sb-close {
   position: absolute;
   top: 20px; right: 20px;
   background: none; border: none;
-  color: #333; font-size: 18px;
+  color: #bbb; font-size: 18px;
   cursor: pointer; line-height: 1;
 }
-#sb-close:hover { color: #fff; }
+#sb-close:hover { color: #000; }
 
 /* ── header ── */
 #hdr {
@@ -101,7 +101,7 @@ body {
 #hdr h1 {
   font-size: 11px;
   letter-spacing: 5px;
-  color: #222;
+  color: #bbb;
   font-weight: normal;
 }
 
@@ -114,23 +114,23 @@ body {
   flex-direction: column;
   gap: 8px;
 }
-.leg { display:flex; align-items:center; gap:8px; font-size:9px; color:#333; letter-spacing:2px; cursor:pointer; transition: color .2s; }
-.leg:hover { color: #888; }
+.leg { display:flex; align-items:center; gap:8px; font-size:9px; color:#aaa; letter-spacing:2px; cursor:pointer; transition: color .2s; }
+.leg:hover { color: #333; }
 .leg.off { opacity: .2; }
 .leg-line { width: 24px; height: 1.5px; }
-.leg-line.pos  { background: #7fff7f; }
-.leg-line.neg  { background: #ff6b6b; }
-.leg-line.neu  { background: #444; }
-.leg-line.envy { background: #ffd700; border-top: 1px dashed #ffd700; height:0; }
+.leg-line.pos  { background: #00aa55; }
+.leg-line.neg  { background: #dd2244; }
+.leg-line.neu  { background: #aaa; }
+.leg-line.envy { background: #cc9900; border-top: 1px dashed #cc9900; height:0; }
 
 /* ── tooltip ── */
 #tip {
   position: fixed;
-  background: #0e0e0e;
-  border: 1px solid #222;
+  background: #fff;
+  border: 1px solid #ddd;
   padding: 8px 12px;
   font-size: 10px;
-  color: #888;
+  color: #666;
   pointer-events: none;
   display: none;
   z-index: 100;
@@ -244,10 +244,10 @@ const LINKS = [
 ];
 
 const COLORS = {
-  pos:  '#00ff88',
-  neg:  '#ff3355',
-  neu:  '#4a4a5a',
-  envy: '#ffcc00',
+  pos:  '#00aa55',
+  neg:  '#dd2244',
+  neu:  '#bbb',
+  envy: '#cc9900',
 };
 
 // index nodes
@@ -312,8 +312,8 @@ function drawArrow(x1, y1, x2, y2, color, alpha, dashed, link) {
   ctx.globalAlpha = alpha;
   ctx.strokeStyle = color;
   ctx.lineWidth = link && link.type === 'neu' ? 1.2 : 2;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = link && link.type !== 'neu' ? 6 : 0;
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
   if (dashed) ctx.setLineDash([5, 4]);
   else ctx.setLineDash([]);
 
@@ -348,8 +348,8 @@ function draw() {
 
   // background gradient
   const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W,H)*0.7);
-  bg.addColorStop(0, '#0d0d18');
-  bg.addColorStop(1, '#050508');
+  bg.addColorStop(0, '#f5f4ee');
+  bg.addColorStop(1, '#e8e6de');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
@@ -372,29 +372,29 @@ function draw() {
 
     // outer glow ring
     if (focused || hovered) {
-      ctx.shadowColor = focused ? '#ffffff' : '#aaaaaa';
-      ctx.shadowBlur = focused ? 30 : 20;
+      ctx.shadowColor = focused ? '#00000033' : '#00000022';
+      ctx.shadowBlur = focused ? 20 : 12;
     }
 
     // circle bg
     ctx.beginPath();
     ctx.arc(n.x, n.y, 32, 0, Math.PI * 2);
-    ctx.fillStyle = focused ? '#1e1e2a' : '#141420';
+    ctx.fillStyle = focused ? '#fff' : '#fafaf7';
     ctx.fill();
-    ctx.strokeStyle = focused ? '#aaaacc' : (hovered ? '#667788' : '#334455');
+    ctx.strokeStyle = focused ? '#333' : (hovered ? '#666' : '#ccc');
     ctx.lineWidth = focused ? 2 : 1.5;
     ctx.stroke();
     ctx.shadowBlur = 0;
 
     // name
-    ctx.fillStyle = a > 0.5 ? '#ffffff' : '#444';
+    ctx.fillStyle = a > 0.5 ? '#111' : '#bbb';
     ctx.font = `${focused ? 'bold ' : ''}12px "Courier New"`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(n.name, n.x, n.y - 6);
 
     // role
-    ctx.fillStyle = a > 0.5 ? '#556677' : '#222';
+    ctx.fillStyle = a > 0.5 ? '#aaa' : '#ddd';
     ctx.font = '8px "Courier New"';
     ctx.fillText(n.role, n.x, n.y + 9);
 
