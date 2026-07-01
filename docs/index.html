@@ -9,7 +9,6 @@
 body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; color:#111; }
 #canvas { display:block; }
 
-/* ── hamburger btn ── */
 #menu-btn {
   position:fixed; top:14px; left:20px; z-index:120;
   background:none; border:none; cursor:pointer; padding:4px;
@@ -18,7 +17,6 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 #menu-btn span { display:block; width:22px; height:2px; background:#333; transition:.2s; }
 #menu-btn:hover span { background:#000; }
 
-/* ── left drawer ── */
 #drawer {
   position:fixed; top:0; left:0; width:280px; height:100vh; z-index:110;
   background:#fff; border-right:2px solid #111;
@@ -46,18 +44,15 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 .drawer-item-text { font-size:10px; letter-spacing:1px; color:#333; }
 .drawer-item-badge { margin-left:auto; font-size:8px; letter-spacing:1px; padding:2px 6px; background:#eee; color:#888; }
 
-/* ── overlay ── */
 #drawer-overlay {
   position:fixed; inset:0; z-index:109; background:rgba(0,0,0,0.3);
   display:none; opacity:0; transition:opacity .3s;
 }
 #drawer-overlay.open { display:block; opacity:1; }
 
-/* ── header ── */
 #hdr { position:fixed; top:0; left:0; padding:18px 24px 18px 60px; z-index:40; pointer-events:none; }
 #hdr h1 { font-size:11px; letter-spacing:5px; color:#111; font-weight:normal; }
 
-/* ── legend ── */
 #legend { position:fixed; bottom:24px; left:24px; z-index:40; display:flex; flex-direction:column; gap:10px; }
 .leg { display:flex; align-items:center; gap:10px; font-size:10px; color:#333; letter-spacing:2px; cursor:pointer; transition:color .2s; font-weight:bold; }
 .leg:hover { color:#000; }
@@ -65,10 +60,20 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 .leg-line { width:28px; height:12px; flex-shrink:0; display:flex; align-items:center; }
 .leg-line svg { width:28px; height:12px; }
 
-/* ── tooltip ── */
+/* ── mode toggle ── */
+#mode-toggle {
+  position:fixed; bottom:24px; right:24px; z-index:40;
+  display:flex; border:2px solid #111; overflow:hidden;
+}
+.mode-btn {
+  font-family:'Courier New',monospace; font-size:10px; letter-spacing:2px;
+  padding:9px 18px; border:none; cursor:pointer;
+  background:#fff; color:#999; font-weight:bold; transition:background .15s, color .15s;
+}
+.mode-btn.active { background:#111; color:#fff; }
+
 #tip { position:fixed; background:#111; padding:8px 14px; font-size:11px; color:#fff; pointer-events:none; display:none; z-index:100; letter-spacing:1px; }
 
-/* ── character sidebar ── */
 #sidebar {
   position:fixed; top:0; right:0; width:320px; height:100vh;
   background:#fff; border-left:2px solid #111;
@@ -115,16 +120,12 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 .rel-save { background:#111; color:#fff; border:none; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:5px 10px; cursor:pointer; }
 .rel-cancel { background:none; border:1px solid #ddd; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:5px 10px; cursor:pointer; color:#666; }
 
-/* ── shared modal base ── */
 .modal-overlay { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; }
 .modal-overlay.open { display:flex; }
 .modal-box { background:#fff; border:2px solid #111; padding:32px; width:460px; max-width:90vw; max-height:90vh; overflow-y:auto; }
 .modal-box h3 { font-size:12px; letter-spacing:3px; margin-bottom:20px; font-weight:bold; }
 .modal-label { font-size:8px; letter-spacing:2px; color:#999; margin-bottom:5px; }
-.modal-input {
-  width:100%; font-family:'Courier New',monospace; font-size:11px;
-  border:2px solid #111; padding:10px; background:#f8f8f8;
-}
+.modal-input { width:100%; font-family:'Courier New',monospace; font-size:11px; border:2px solid #111; padding:10px; background:#f8f8f8; }
 .modal-input:focus { outline:none; background:#fff; }
 .modal-status { font-size:10px; min-height:18px; margin-bottom:14px; letter-spacing:1px; }
 .modal-status.ok { color:#1a9950; }
@@ -136,7 +137,6 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 .mbtn-cancel { background:#eee; color:#111; }
 .mbtn-cancel:hover { background:#ddd; }
 
-/* ── type selector rows (in modals) ── */
 .nl-type-row {
   display:flex; align-items:center; gap:12px; padding:8px 10px; cursor:pointer;
   border:1px solid #eee; transition:border-color .15s, background .15s; user-select:none;
@@ -146,11 +146,7 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 .nl-type-row input:checked ~ span { color:#000; }
 .nl-type-row:has(input:checked) { border-color:#111; background:#f5f5f5; }
 
-/* ── type manager ── */
-.type-row {
-  display:flex; align-items:center; gap:10px; padding:10px 12px;
-  border:1px solid #eee; margin-bottom:6px;
-}
+.type-row { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid #eee; margin-bottom:6px; }
 .type-row-swatch { width:28px; height:12px; flex-shrink:0; }
 .type-row-label { flex:1; font-size:10px; letter-spacing:2px; font-weight:bold; color:#111; }
 .type-row-del { background:none; border:none; color:#ccc; cursor:pointer; font-size:14px; padding:0 4px; transition:color .15s; }
@@ -164,7 +160,6 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 .style-opt:has(input:checked) { border-color:#111; background:#f5f5f5; }
 .style-opt input { display:none; }
 
-/* ── loading ── */
 #loading { position:fixed; inset:0; background:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; letter-spacing:4px; color:#999; z-index:999; }
 </style>
 </head>
@@ -176,7 +171,6 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 <button id="menu-btn" title="Меню"><span></span><span></span><span></span></button>
 <div id="drawer-overlay"></div>
 
-<!-- left drawer -->
 <div id="drawer">
   <div id="drawer-header">
     <h2>ИНСТРУМЕНТЫ</h2>
@@ -232,7 +226,11 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 <div id="hdr"><h1>JAPERDAIS · ДИАГРАММА ОТНОШЕНИЙ</h1></div>
 <div id="legend"></div>
 
-<!-- character sidebar -->
+<div id="mode-toggle">
+  <button class="mode-btn active" id="btn-2d">2D</button>
+  <button class="mode-btn" id="btn-3d">3D</button>
+</div>
+
 <div id="sidebar">
   <div id="sb-top">
     <button id="sb-close">×</button>
@@ -322,7 +320,7 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
   </div>
 </div>
 
-<!-- save to repo modal -->
+<!-- save modal -->
 <div id="save-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>СОХРАНИТЬ В РЕПО</h3>
@@ -342,49 +340,55 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 </div>
 
 <script>
-// ── built-in types ──
-const BUILTIN = [
-  { id:'pos',  label:'ПОЛОЖИТЕЛЬНО', color:'#1a9950', dash:'solid' },
-  { id:'neg',  label:'НЕГАТИВНО',    color:'#cc1133', dash:'solid' },
-  { id:'neu',  label:'НЕЙТРАЛЬНО',   color:'#888888', dash:'dashed' },
-  { id:'envy', label:'ЗАВИСТЬ',      color:'#c47800', dash:'long-dash' },
+// ── types system ──
+const BUILTIN=[
+  {id:'pos',  label:'ПОЛОЖИТЕЛЬНО',color:'#1a9950',dash:'solid'},
+  {id:'neg',  label:'НЕГАТИВНО',   color:'#cc1133',dash:'solid'},
+  {id:'neu',  label:'НЕЙТРАЛЬНО',  color:'#888888',dash:'dashed'},
+  {id:'envy', label:'ЗАВИСТЬ',     color:'#c47800',dash:'long-dash'},
 ];
+function loadCustomTypes(){try{return JSON.parse(localStorage.getItem('custom_types')||'[]');}catch{return[];}}
+function saveCustomTypes(a){localStorage.setItem('custom_types',JSON.stringify(a));}
+function allTypes(){return[...BUILTIN,...loadCustomTypes()];}
+function typeById(id){return allTypes().find(t=>t.id===id)||{id,label:id,color:'#888',dash:'solid'};}
 
-function loadCustomTypes(){
-  try { return JSON.parse(localStorage.getItem('custom_types')||'[]'); } catch{ return []; }
-}
-function saveCustomTypes(arr){ localStorage.setItem('custom_types', JSON.stringify(arr)); }
-function allTypes(){ return [...BUILTIN, ...loadCustomTypes()]; }
-function typeById(id){ return allTypes().find(t=>t.id===id)||{id,label:id,color:'#888',dash:'solid'}; }
+// ── state ──
+let NODES=[],LINKS=[];
+let nodeMap={},outgoing={},incoming={};
+let hiddenTypes=new Set(),focusedId=null,hoveredNode=null;
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+let W,H,cx,cy,DPR;
 
-// ── canvas state ──
-let NODES=[], LINKS=[];
-let nodeMap={}, outgoing={}, incoming={};
-let hiddenTypes=new Set(), focusedId=null, hoveredNode=null;
-const canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d');
-let W,H,cx,cy,radius,DPR;
+// ── mode ──
+let mode3D=false;
+let animT=0,dashOffset=0,rafId=null;
+
+// 3D state
+let rot={x:0.25,y:0};
+let isDragging=false,lastMX=0,lastMY=0;
+let autoRotSpeed=0.003;
+let sphere3D=[]; // unit sphere positions per node
+let sphRadius;
 
 // ── data ──
 async function loadData(){
   const r=await fetch('data.json?v='+Date.now());
   const j=await r.json();
   NODES=j.nodes; LINKS=j.links;
-  buildIndexes();
-  renderLegend();
+  buildIndexes(); renderLegend();
   document.getElementById('loading').style.display='none';
   resize();
 }
 function buildIndexes(){
   nodeMap={}; outgoing={}; incoming={};
   NODES.forEach(n=>{nodeMap[n.id]=n; outgoing[n.id]=[]; incoming[n.id]=[];});
-  LINKS.forEach((l,i)=>{l._i=i; outgoing[l.from].push(l); incoming[l.to].push(l);});
+  LINKS.forEach(l=>{outgoing[l.from].push(l); incoming[l.to].push(l);});
 }
 
-// ── legend (dynamic) ──
+// ── legend ──
 function typeSvg(t){
-  const dash = t.dash==='dashed' ? 'stroke-dasharray="4 4"'
-             : t.dash==='long-dash' ? 'stroke-dasharray="8 4"' : '';
-  return `<svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="28" y2="6" stroke="${t.color}" stroke-width="2.5" ${dash}/></svg>`;
+  const d=t.dash==='dashed'?'stroke-dasharray="4 4"':t.dash==='long-dash'?'stroke-dasharray="8 4"':'';
+  return `<svg width="28" height="12" viewBox="0 0 28 12"><line x1="0" y1="6" x2="28" y2="6" stroke="${t.color}" stroke-width="2.5" ${d}/></svg>`;
 }
 function renderLegend(){
   const leg=document.getElementById('legend');
@@ -396,192 +400,284 @@ function renderLegend(){
     el.innerHTML=`<div class="leg-line">${typeSvg(t)}</div>${t.label}`;
     el.addEventListener('click',()=>{
       hiddenTypes.has(t.id)?hiddenTypes.delete(t.id):hiddenTypes.add(t.id);
-      el.classList.toggle('off'); draw();
+      el.classList.toggle('off');
     });
     leg.appendChild(el);
   });
 }
 
-// ── canvas ──
+// ── resize ──
 function resize(){
   DPR=window.devicePixelRatio||1; W=window.innerWidth; H=window.innerHeight;
   canvas.width=W*DPR; canvas.height=H*DPR;
   canvas.style.width=W+'px'; canvas.style.height=H+'px';
   ctx.setTransform(DPR,0,0,DPR,0,0);
-  cx=W/2; cy=H/2; radius=Math.min(W,H)*0.34;
-  positionNodes(); draw();
+  cx=W/2; cy=H/2;
+  sphRadius=Math.min(W,H)*0.3;
+  positionNodes2D();
+  buildSphere3D();
+  startAnim();
 }
-function positionNodes(){
+
+// ── 2D positions ──
+function positionNodes2D(){
+  const r2=Math.min(W,H)*0.34;
   NODES.forEach((n,i)=>{
     const a=(i/NODES.length)*2*Math.PI-Math.PI/2;
-    n.x=cx+radius*Math.cos(a); n.y=cy+radius*Math.sin(a);
+    n.bx=cx+r2*Math.cos(a); n.by=cy+r2*Math.sin(a);
+    n.x=n.bx; n.y=n.by;
   });
+}
+
+// ── 3D sphere ──
+function buildSphere3D(){
+  sphere3D=[];
+  const golden=Math.PI*(3-Math.sqrt(5));
+  const n=NODES.length;
+  for(let i=0;i<n;i++){
+    const y=1-(i/(n-1))*2;
+    const r=Math.sqrt(1-y*y);
+    const theta=golden*i;
+    sphere3D.push({x:Math.cos(theta)*r, y, z:Math.sin(theta)*r});
+  }
+}
+function rotateVec(v,rx,ry){
+  // Y axis
+  let x=v.x*Math.cos(ry)+v.z*Math.sin(ry);
+  let y=v.y;
+  let z=-v.x*Math.sin(ry)+v.z*Math.cos(ry);
+  // X axis
+  const y2=y*Math.cos(rx)-z*Math.sin(rx);
+  const z2=y*Math.sin(rx)+z*Math.cos(rx);
+  return{x,y:y2,z:z2};
+}
+function project3D(p){
+  const fov=800, dist=2.5;
+  const scale=fov/(dist+p.z);
+  return{x:cx+p.x*scale*(sphRadius/fov), y:cy+p.y*scale*(sphRadius/fov), z:p.z, scale};
+}
+function updateNodes3D(){
+  NODES.forEach((n,i)=>{
+    const r=rotateVec(sphere3D[i],rot.x,rot.y);
+    const p=project3D(r);
+    // perspective scale for node radius
+    const fov=800,dist=2.5,s=fov/(dist+r.z);
+    n.x=cx+r.x*s*(sphRadius/fov);
+    n.y=cy+r.y*s*(sphRadius/fov);
+    n.z=r.z;
+    n.pscale=(fov/(dist+r.z))/(fov/(dist+1));
+  });
+}
+
+// ── animation loop ──
+function startAnim(){
+  if(rafId) cancelAnimationFrame(rafId);
+  loop();
+}
+function loop(){
+  rafId=requestAnimationFrame(loop);
+  animT+=0.016;
+  dashOffset=(dashOffset+0.3)%20;
+
+  if(mode3D){
+    if(!isDragging) rot.y+=autoRotSpeed;
+    updateNodes3D();
+  } else {
+    // gentle 2D bob
+    NODES.forEach((n,i)=>{
+      const phase=(i/NODES.length)*Math.PI*2;
+      n.x=n.bx+Math.sin(animT*0.7+phase)*3;
+      n.y=n.by+Math.cos(animT*0.5+phase)*2;
+    });
+  }
+  draw();
+}
+
+// ── draw helpers ──
+function edgeAlpha(l){
+  if(hiddenTypes.has(l.type))return 0;
+  if(focusedId&&l.from!==focusedId&&l.to!==focusedId)return mode3D?0.03:0.05;
+  const t=typeById(l.type);
+  return t.dash!=='solid'?0.65:0.95;
+}
+function nodeBaseAlpha(n){
+  if(!focusedId)return 1;
+  if(n.id===focusedId)return 1;
+  return LINKS.some(l=>(l.from===focusedId&&l.to===n.id)||(l.to===focusedId&&l.from===n.id))?0.9:0.15;
 }
 function getBidi(){
   const s=new Set();
   LINKS.forEach(a=>LINKS.forEach(b=>{if(a.from===b.to&&a.to===b.from)s.add(a.from+'->'+a.to);}));
   return s;
 }
-function edgeAlpha(l){
-  if(hiddenTypes.has(l.type))return 0;
-  if(focusedId&&l.from!==focusedId&&l.to!==focusedId)return 0.05;
-  const t=typeById(l.type);
-  return t.dash!=='solid'?0.7:1.0;
-}
-function nodeAlpha(n){
-  if(!focusedId)return 1;
-  if(n.id===focusedId)return 1;
-  return LINKS.some(l=>(l.from===focusedId&&l.to===n.id)||(l.to===focusedId&&l.from===n.id))?0.9:0.15;
-}
-function drawArrow(x1,y1,x2,y2,t,alpha,isBi){
+function drawArrow(x1,y1,x2,y2,t,alpha,isBi,r1,r2){
   const color=t.color;
   const dx=x2-x1,dy=y2-y1,dist=Math.sqrt(dx*dx+dy*dy);
-  if(dist<1)return;
-  const ux=dx/dist,uy=dy/dist,R=34;
-  const sx=x1+ux*R,sy=y1+uy*R,ex=x2-ux*R,ey=y2-uy*R;
+  if(dist<2)return;
+  const ux=dx/dist,uy=dy/dist;
+  const sx=x1+ux*r1,sy=y1+uy*r1,ex=x2-ux*r2,ey=y2-uy*r2;
   const mx=(sx+ex)/2,my=(sy+ey)/2,bend=isBi?dist*.22:dist*.08;
   const cpx=mx+(-uy)*bend,cpy=my+ux*bend;
   ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle=color;
-  ctx.lineWidth=t.dash!=='solid'?1.3:2; ctx.shadowBlur=0;
-  if(t.dash==='dashed') ctx.setLineDash([4,4]);
-  else if(t.dash==='long-dash') ctx.setLineDash([8,4]);
+  ctx.lineWidth=t.dash!=='solid'?1.5:2.2;
+  if(t.dash==='dashed'){ctx.setLineDash([5,5]);ctx.lineDashOffset=-dashOffset;}
+  else if(t.dash==='long-dash'){ctx.setLineDash([10,5]);ctx.lineDashOffset=-dashOffset;}
   else ctx.setLineDash([]);
   ctx.beginPath(); ctx.moveTo(sx,sy); ctx.quadraticCurveTo(cpx,cpy,ex,ey); ctx.stroke();
-  const tp=.9;
+  ctx.setLineDash([]); ctx.lineDashOffset=0;
+  const tp=.88;
   const ax=(1-tp)**2*sx+2*(1-tp)*tp*cpx+tp*tp*ex;
   const ay=(1-tp)**2*sy+2*(1-tp)*tp*cpy+tp*tp*ey;
   const tlen=Math.sqrt((ex-ax)**2+(ey-ay)**2)||1;
-  const tx2=(ex-ax)/tlen,ty2=(ey-ay)/tlen,arr=8;
-  ctx.setLineDash([]);
+  const tx=(ex-ax)/tlen,ty=(ey-ay)/tlen,arr=8*(r2/34);
   ctx.beginPath(); ctx.moveTo(ex,ey);
-  ctx.lineTo(ex-arr*tx2+arr*.4*(-ty2),ey-arr*ty2+arr*.4*tx2);
-  ctx.lineTo(ex-arr*tx2-arr*.4*(-ty2),ey-arr*ty2-arr*.4*tx2);
+  ctx.lineTo(ex-arr*tx+arr*.4*(-ty),ey-arr*ty+arr*.4*tx);
+  ctx.lineTo(ex-arr*tx-arr*.4*(-ty),ey-arr*ty-arr*.4*tx);
   ctx.closePath(); ctx.fillStyle=color; ctx.fill(); ctx.restore();
 }
+
+// ── draw ──
 function draw(){
   if(!NODES.length)return;
   ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+
+  if(mode3D){
+    // faint sphere wireframe
+    ctx.save(); ctx.globalAlpha=0.04; ctx.strokeStyle='#111';
+    const steps=8;
+    for(let i=0;i<steps;i++){
+      const a=(i/steps)*Math.PI;
+      ctx.beginPath();
+      for(let j=0;j<=60;j++){
+        const b=(j/60)*2*Math.PI;
+        const v={x:Math.sin(a)*Math.cos(b), y:Math.cos(a), z:Math.sin(a)*Math.sin(b)};
+        const r=rotateVec(v,rot.x,rot.y);
+        const fov=800,dist=2.5,s=fov/(dist+r.z);
+        const px=cx+r.x*s*(sphRadius/fov);
+        const py=cy+r.y*s*(sphRadius/fov);
+        j===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   const bidi=getBidi();
-  LINKS.forEach(link=>{
-    const a=edgeAlpha(link); if(!a)return;
-    const f=nodeMap[link.from],t=nodeMap[link.to]; if(!f||!t)return;
-    drawArrow(f.x,f.y,t.x,t.y,typeById(link.type),a,bidi.has(link.from+'->'+link.to));
+  // sort links back-to-front in 3D
+  const sortedLinks=mode3D
+    ?[...LINKS].sort((a,b)=>{
+        const za=(nodeMap[a.from]?.z||0)+(nodeMap[a.to]?.z||0);
+        const zb=(nodeMap[b.from]?.z||0)+(nodeMap[b.to]?.z||0);
+        return za-zb;
+      })
+    :LINKS;
+
+  sortedLinks.forEach(link=>{
+    const alpha=edgeAlpha(link); if(!alpha)return;
+    const f=nodeMap[link.from],t2=nodeMap[link.to]; if(!f||!t2)return;
+    const r1=mode3D?34*f.pscale:34, r2d=mode3D?34*t2.pscale:34;
+    drawArrow(f.x,f.y,t2.x,t2.y,typeById(link.type),alpha,bidi.has(link.from+'->'+link.to),r1,r2d);
   });
-  NODES.forEach(n=>{
-    const a=nodeAlpha(n),focused=n.id===focusedId,hovered=n===hoveredNode;
-    ctx.save(); ctx.globalAlpha=a;
+
+  // nodes sorted front-to-back in 3D
+  const sortedNodes=mode3D?[...NODES].sort((a,b)=>a.z-b.z):NODES;
+  sortedNodes.forEach(n=>{
+    const a=nodeBaseAlpha(n);
+    const focused=n.id===focusedId, hovered=n===hoveredNode;
+    const R=mode3D?Math.max(14,34*n.pscale):34;
+    // depth fade in 3D for back nodes
+    const depthA=mode3D?Math.max(0.25,(n.z+1)/2*0.75+0.25):1;
+    ctx.save(); ctx.globalAlpha=a*depthA;
     ctx.shadowColor='rgba(0,0,0,0.15)'; ctx.shadowBlur=focused?16:6; ctx.shadowOffsetY=focused?4:2;
-    ctx.beginPath(); ctx.arc(n.x,n.y,34,0,Math.PI*2);
+    ctx.beginPath(); ctx.arc(n.x,n.y,R,0,Math.PI*2);
     ctx.fillStyle=focused?'#111':'#fff'; ctx.fill();
     ctx.shadowBlur=0; ctx.shadowOffsetY=0;
     ctx.strokeStyle=focused?'#111':(hovered?'#111':'#222');
     ctx.lineWidth=focused?3:(hovered?2.5:1.5); ctx.stroke();
-    ctx.fillStyle=focused?'#fff':(a>.5?'#000':'#ddd');
-    ctx.font='bold 12px "Courier New"'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(n.name,n.x,n.y-6);
-    ctx.fillStyle=focused?'#aaa':(a>.5?'#555':'#ddd');
-    ctx.font='8px "Courier New"'; ctx.fillText(n.role,n.x,n.y+9);
+    if(R>18){
+      ctx.fillStyle=focused?'#fff':(a>.5?'#000':'#ddd');
+      ctx.font=`bold ${Math.round(12*Math.min(1,R/34))}px "Courier New"`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(n.name,n.x,n.y-(R>25?6:0));
+      if(R>25){
+        ctx.fillStyle=focused?'#aaa':(a>.5?'#555':'#ddd');
+        ctx.font=`${Math.round(8*Math.min(1,R/34))}px "Courier New"`;
+        ctx.fillText(n.role,n.x,n.y+9*(R/34));
+      }
+    }
     ctx.restore();
   });
 }
 
-// ── interaction ──
-function getNodeAt(mx,my){return NODES.find(n=>(mx-n.x)**2+(my-n.y)**2<36*36);}
+// ── hit test ──
+function getNodeAt(mx,my){
+  // in 3D check front nodes first
+  const ordered=mode3D?[...NODES].sort((a,b)=>b.z-a.z):NODES;
+  return ordered.find(n=>{
+    const R=mode3D?Math.max(14,34*n.pscale):34;
+    return(mx-n.x)**2+(my-n.y)**2<R*R;
+  });
+}
+
+// ── mouse ──
+canvas.addEventListener('mousedown',e=>{
+  if(mode3D){isDragging=true; lastMX=e.clientX; lastMY=e.clientY; canvas.style.cursor='grabbing';}
+});
 canvas.addEventListener('mousemove',e=>{
   const r=canvas.getBoundingClientRect();
-  hoveredNode=getNodeAt(e.clientX-r.left,e.clientY-r.top);
+  const mx=e.clientX-r.left, my=e.clientY-r.top;
+  if(mode3D && isDragging){
+    rot.y+=(e.clientX-lastMX)*0.006;
+    rot.x+=(e.clientY-lastMY)*0.006;
+    rot.x=Math.max(-Math.PI/2,Math.min(Math.PI/2,rot.x));
+    lastMX=e.clientX; lastMY=e.clientY;
+    return;
+  }
+  hoveredNode=getNodeAt(mx,my);
   const tip=document.getElementById('tip');
-  if(hoveredNode){canvas.style.cursor='pointer';tip.style.display='block';tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-10)+'px';tip.textContent=hoveredNode.spectrum;}
-  else{canvas.style.cursor='default';tip.style.display='none';}
-  draw();
+  if(hoveredNode){
+    canvas.style.cursor='pointer';
+    tip.style.display='block';
+    tip.style.left=(e.clientX+14)+'px';
+    tip.style.top=(e.clientY-10)+'px';
+    tip.textContent=hoveredNode.spectrum;
+  } else {
+    canvas.style.cursor=mode3D?'grab':'default';
+    tip.style.display='none';
+  }
+});
+canvas.addEventListener('mouseup',e=>{
+  if(mode3D && isDragging){
+    isDragging=false;
+    canvas.style.cursor='grab';
+    // detect click (little movement)
+    const r=canvas.getBoundingClientRect();
+    const node=getNodeAt(e.clientX-r.left,e.clientY-r.top);
+    if(node){focusedId=focusedId===node.id?null:node.id; if(focusedId)openSidebar(node); else closeSidebar();}
+    return;
+  }
 });
 canvas.addEventListener('click',e=>{
-  const r=canvas.getBoundingClientRect(),node=getNodeAt(e.clientX-r.left,e.clientY-r.top);
+  if(mode3D)return;
+  const r=canvas.getBoundingClientRect();
+  const node=getNodeAt(e.clientX-r.left,e.clientY-r.top);
   if(node){focusedId=focusedId===node.id?null:node.id; if(focusedId)openSidebar(node); else closeSidebar();}
-  else{focusedId=null;closeSidebar();}
-  draw();
+  else{focusedId=null; closeSidebar();}
 });
-canvas.addEventListener('mouseleave',()=>{hoveredNode=null;document.getElementById('tip').style.display='none';draw();});
+canvas.addEventListener('mouseleave',()=>{
+  isDragging=false; hoveredNode=null;
+  document.getElementById('tip').style.display='none';
+  canvas.style.cursor=mode3D?'grab':'default';
+});
 window.addEventListener('resize',resize);
 
-// ── sidebar ──
-function typeSelectHtml(val){
-  return `<select class="rel-type-sel">${allTypes().map(t=>`<option value="${t.id}"${t.id===val?' selected':''}>${t.label}</option>`).join('')}</select>`;
-}
-function renderRelRow(link, isOutgoing, currentNodeId){
-  const peerId=isOutgoing?link.to:link.from;
-  const peer=nodeMap[peerId];
-  const idx=LINKS.indexOf(link);
-  const t=typeById(link.type);
-  return `
-  <div class="rel-row" data-idx="${idx}">
-    <div class="rel-dot" style="background:${t.color}"></div>
-    <div class="rel-text">
-      <div class="rel-name">${peer?.name||peerId}</div>
-      <div class="rel-desc">${link.label||'—'}</div>
-    </div>
-    <div class="rel-btns">
-      <button class="rel-icon-btn" data-action="edit" title="Изменить">✏</button>
-      <button class="rel-icon-btn" data-action="del"  title="Удалить">✕</button>
-    </div>
-    <div class="rel-edit-form">
-      ${isOutgoing ? '' : `<select class="rel-from-sel">${NODES.filter(n=>n.id!==currentNodeId).map(n=>`<option value="${n.id}"${n.id===link.from?' selected':''}>${n.name}</option>`).join('')}</select>`}
-      ${typeSelectHtml(link.type)}
-      <input class="rel-label-inp" value="${link.label||''}">
-      <div class="rel-edit-actions">
-        <button class="rel-save">✓ СОХРАНИТЬ</button>
-        <button class="rel-cancel">ОТМЕНА</button>
-      </div>
-    </div>
-  </div>`;
-}
-function openSidebar(node){
-  document.getElementById('sb-name').textContent=node.name;
-  document.getElementById('sb-role').textContent=node.role;
-  document.getElementById('sb-spectrum').textContent=node.spectrum;
-  const out=outgoing[node.id]||[], inc=incoming[node.id]||[];
-  let html='';
-  html+=`<div class="rel-section-title">КАК ОТНОСИТСЯ К ДРУГИМ <button class="rel-add-btn" data-dir="out">+ ДОБАВИТЬ</button></div>`;
-  out.forEach(l=>{ html+=renderRelRow(l,true,node.id); });
-  html+=`<div class="rel-section-title" style="margin-top:20px">КАК ДРУГИЕ ОТНОСЯТСЯ <button class="rel-add-btn" data-dir="in">+ ДОБАВИТЬ</button></div>`;
-  inc.forEach(l=>{ html+=renderRelRow(l,false,node.id); });
-  const body=document.getElementById('sb-body');
-  body.innerHTML=html;
-  body.querySelectorAll('[data-action="edit"]').forEach(btn=>btn.addEventListener('click',e=>{
-    e.target.closest('.rel-row').querySelector('.rel-edit-form').classList.add('active');
-  }));
-  body.querySelectorAll('[data-action="del"]').forEach(btn=>btn.addEventListener('click',e=>{
-    if(!confirm('Удалить отношение?'))return;
-    const idx=+e.target.closest('.rel-row').dataset.idx;
-    LINKS.splice(idx,1); buildIndexes(); draw(); openSidebar(node);
-  }));
-  body.querySelectorAll('.rel-save').forEach(btn=>btn.addEventListener('click',e=>{
-    const row=e.target.closest('.rel-row');
-    const idx=+row.dataset.idx;
-    const typeSel=row.querySelector('.rel-type-sel');
-    const labelInp=row.querySelector('.rel-label-inp');
-    const fromSel=row.querySelector('.rel-from-sel');
-    if(typeSel) LINKS[idx].type=typeSel.value;
-    if(labelInp) LINKS[idx].label=labelInp.value;
-    if(fromSel) LINKS[idx].from=fromSel.value;
-    buildIndexes(); draw(); openSidebar(node);
-  }));
-  body.querySelectorAll('.rel-cancel').forEach(btn=>btn.addEventListener('click',e=>{
-    e.target.closest('.rel-edit-form').classList.remove('active');
-  }));
-  body.querySelectorAll('.rel-add-btn').forEach(btn=>btn.addEventListener('click',e=>{
-    const dir=e.target.dataset.dir;
-    const firstOther=NODES.find(n=>n.id!==node.id);
-    if(!firstOther)return;
-    if(dir==='out') LINKS.push({from:node.id,to:firstOther.id,type:'neu',label:''});
-    else LINKS.push({from:firstOther.id,to:node.id,type:'neu',label:''});
-    buildIndexes(); draw(); openSidebar(node);
-    setTimeout(()=>body.lastElementChild?.scrollIntoView({behavior:'smooth'}),50);
-  }));
-  document.getElementById('sidebar').classList.add('open');
-}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');}
-document.getElementById('sb-close').addEventListener('click',()=>{focusedId=null;closeSidebar();draw();});
+// ── mode toggle ──
+document.getElementById('btn-2d').addEventListener('click',()=>{
+  if(mode3D){ mode3D=false; document.getElementById('btn-2d').classList.add('active'); document.getElementById('btn-3d').classList.remove('active'); canvas.style.cursor='default'; }
+});
+document.getElementById('btn-3d').addEventListener('click',()=>{
+  if(!mode3D){ mode3D=true; document.getElementById('btn-3d').classList.add('active'); document.getElementById('btn-2d').classList.remove('active'); canvas.style.cursor='grab'; }
+});
 
 // ── drawer ──
 const drawer=document.getElementById('drawer');
@@ -592,15 +688,12 @@ document.getElementById('menu-btn').addEventListener('click',openDrawer);
 document.getElementById('drawer-close').addEventListener('click',closeDrawer);
 doverlay.addEventListener('click',closeDrawer);
 
-// ── download JSON ──
+// ── download ──
 document.getElementById('d-download').addEventListener('click',()=>{
   closeDrawer();
   const payload={nodes:NODES,links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='data.json';
-  a.click();
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='data.json'; a.click();
   URL.revokeObjectURL(a.href);
 });
 
@@ -619,7 +712,7 @@ async function saveToGithub(token){
   token=token||localStorage.getItem('gh_token')||'';
   const status=document.getElementById('save-status');
   const modal=document.getElementById('save-modal');
-  if(!token){ openSaveModal(); return; }
+  if(!token){openSaveModal();return;}
   modal.classList.add('open');
   status.className='modal-status'; status.textContent='Сохраняю...';
   const owner='malliol',repo='JAPERDAIS',path='docs/data.json';
@@ -631,15 +724,12 @@ async function saveToGithub(token){
     const payload={nodes:NODES,links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))};
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
     const p=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{
-      method:'PUT',headers,
-      body:JSON.stringify({message:'Update relationship data',content,sha})
+      method:'PUT',headers,body:JSON.stringify({message:'Update relationship data',content,sha})
     });
     if(!p.ok){const e=await p.json();throw new Error(e.message);}
-    status.className='modal-status ok'; status.textContent='✓ Сохранено! Обновится через ~30 сек.';
-    setTimeout(()=>modal.classList.remove('open'),2000);
-  }catch(e){
-    status.className='modal-status err'; status.textContent='Ошибка: '+e.message;
-  }
+    status.className='modal-status ok'; status.textContent='✓ Сохранено!';
+    setTimeout(()=>modal.classList.remove('open'),1800);
+  }catch(e){status.className='modal-status err'; status.textContent='Ошибка: '+e.message;}
 }
 document.getElementById('save-cancel').addEventListener('click',()=>document.getElementById('save-modal').classList.remove('open'));
 document.getElementById('save-confirm').addEventListener('click',()=>{
@@ -650,8 +740,87 @@ document.getElementById('save-confirm').addEventListener('click',()=>{
   saveToGithub(token);
 });
 
+// ── sidebar ──
+function typeSelectHtml(val){
+  return`<select class="rel-type-sel">${allTypes().map(t=>`<option value="${t.id}"${t.id===val?' selected':''}>${t.label}</option>`).join('')}</select>`;
+}
+function renderRelRow(link,isOutgoing,currentNodeId){
+  const peerId=isOutgoing?link.to:link.from;
+  const peer=nodeMap[peerId];
+  const idx=LINKS.indexOf(link);
+  const t=typeById(link.type);
+  return`
+  <div class="rel-row" data-idx="${idx}">
+    <div class="rel-dot" style="background:${t.color}"></div>
+    <div class="rel-text">
+      <div class="rel-name">${peer?.name||peerId}</div>
+      <div class="rel-desc">${link.label||'—'}</div>
+    </div>
+    <div class="rel-btns">
+      <button class="rel-icon-btn" data-action="edit" title="Изменить">✏</button>
+      <button class="rel-icon-btn" data-action="del" title="Удалить">✕</button>
+    </div>
+    <div class="rel-edit-form">
+      ${isOutgoing?'':
+        `<select class="rel-from-sel">${NODES.filter(n=>n.id!==currentNodeId).map(n=>`<option value="${n.id}"${n.id===link.from?' selected':''}>${n.name}</option>`).join('')}</select>`}
+      ${typeSelectHtml(link.type)}
+      <input class="rel-label-inp" value="${link.label||''}">
+      <div class="rel-edit-actions">
+        <button class="rel-save">✓ СОХРАНИТЬ</button>
+        <button class="rel-cancel">ОТМЕНА</button>
+      </div>
+    </div>
+  </div>`;
+}
+function openSidebar(node){
+  document.getElementById('sb-name').textContent=node.name;
+  document.getElementById('sb-role').textContent=node.role;
+  document.getElementById('sb-spectrum').textContent=node.spectrum;
+  const out=outgoing[node.id]||[],inc=incoming[node.id]||[];
+  let html='';
+  html+=`<div class="rel-section-title">КАК ОТНОСИТСЯ К ДРУГИМ <button class="rel-add-btn" data-dir="out">+ ДОБАВИТЬ</button></div>`;
+  out.forEach(l=>{html+=renderRelRow(l,true,node.id);});
+  html+=`<div class="rel-section-title" style="margin-top:20px">КАК ДРУГИЕ ОТНОСЯТСЯ <button class="rel-add-btn" data-dir="in">+ ДОБАВИТЬ</button></div>`;
+  inc.forEach(l=>{html+=renderRelRow(l,false,node.id);});
+  const body=document.getElementById('sb-body');
+  body.innerHTML=html;
+  body.querySelectorAll('[data-action="edit"]').forEach(btn=>btn.addEventListener('click',e=>{
+    e.target.closest('.rel-row').querySelector('.rel-edit-form').classList.add('active');
+  }));
+  body.querySelectorAll('[data-action="del"]').forEach(btn=>btn.addEventListener('click',e=>{
+    if(!confirm('Удалить отношение?'))return;
+    const idx=+e.target.closest('.rel-row').dataset.idx;
+    LINKS.splice(idx,1); buildIndexes(); openSidebar(node);
+  }));
+  body.querySelectorAll('.rel-save').forEach(btn=>btn.addEventListener('click',e=>{
+    const row=e.target.closest('.rel-row');
+    const idx=+row.dataset.idx;
+    const ts=row.querySelector('.rel-type-sel');
+    const li=row.querySelector('.rel-label-inp');
+    const fs=row.querySelector('.rel-from-sel');
+    if(ts)LINKS[idx].type=ts.value;
+    if(li)LINKS[idx].label=li.value;
+    if(fs)LINKS[idx].from=fs.value;
+    buildIndexes(); openSidebar(node);
+  }));
+  body.querySelectorAll('.rel-cancel').forEach(btn=>btn.addEventListener('click',e=>{
+    e.target.closest('.rel-edit-form').classList.remove('active');
+  }));
+  body.querySelectorAll('.rel-add-btn').forEach(btn=>btn.addEventListener('click',e=>{
+    const dir=e.target.dataset.dir;
+    const other=NODES.find(n=>n.id!==node.id);
+    if(!other)return;
+    LINKS.push(dir==='out'?{from:node.id,to:other.id,type:'neu',label:''}:{from:other.id,to:node.id,type:'neu',label:''});
+    buildIndexes(); openSidebar(node);
+    setTimeout(()=>body.lastElementChild?.scrollIntoView({behavior:'smooth'}),50);
+  }));
+  document.getElementById('sidebar').classList.add('open');
+}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');}
+document.getElementById('sb-close').addEventListener('click',()=>{focusedId=null;closeSidebar();});
+
 // ── new link modal ──
-function buildTypeRows(groupId, checkedVal){
+function buildTypeRows(groupId,checkedVal){
   const group=document.getElementById(groupId);
   group.innerHTML='';
   allTypes().forEach((t,i)=>{
@@ -665,15 +834,15 @@ function openLinkModal(){
   const opts=NODES.map(n=>`<option value="${n.id}">${n.name}</option>`).join('');
   document.getElementById('nl-from').innerHTML=opts;
   document.getElementById('nl-to').innerHTML=opts;
-  if(NODES.length>1) document.getElementById('nl-to').value=NODES[1].id;
+  if(NODES.length>1)document.getElementById('nl-to').value=NODES[1].id;
   document.getElementById('nl-label').value='';
   document.getElementById('nl-status').textContent='';
   buildTypeRows('nl-type-group','neu');
   document.getElementById('link-modal').classList.add('open');
 }
-function closeLinkModal(){ document.getElementById('link-modal').classList.remove('open'); }
+function closeLinkModal(){document.getElementById('link-modal').classList.remove('open');}
 document.getElementById('nl-cancel').addEventListener('click',closeLinkModal);
-document.getElementById('link-modal').addEventListener('click',e=>{ if(e.target===document.getElementById('link-modal')) closeLinkModal(); });
+document.getElementById('link-modal').addEventListener('click',e=>{if(e.target===document.getElementById('link-modal'))closeLinkModal();});
 document.getElementById('nl-confirm').addEventListener('click',()=>{
   const from=document.getElementById('nl-from').value;
   const to=document.getElementById('nl-to').value;
@@ -684,9 +853,9 @@ document.getElementById('nl-confirm').addEventListener('click',()=>{
   if(from===to){status.textContent='Нельзя выбрать одного персонажа дважды';return;}
   if(!label){status.textContent='Введи описание отношения';return;}
   LINKS.push({from,to,type,label});
-  buildIndexes(); draw(); closeLinkModal();
+  buildIndexes(); closeLinkModal();
   const n=nodeMap[from];
-  if(n){focusedId=from; openSidebar(n); draw();}
+  if(n){focusedId=from;openSidebar(n);}
 });
 document.getElementById('d-new-link').addEventListener('click',()=>{closeDrawer();openLinkModal();});
 
@@ -698,20 +867,14 @@ function renderTypesList(){
     const isBuiltin=BUILTIN.some(b=>b.id===t.id);
     const row=document.createElement('div');
     row.className='type-row'+(isBuiltin?' builtin':'');
-    row.innerHTML=`
-      <div class="type-row-swatch">${typeSvg(t)}</div>
-      <div class="type-row-label">${t.label}</div>
-      <button class="type-row-del" data-id="${t.id}" title="Удалить">✕</button>`;
+    row.innerHTML=`<div class="type-row-swatch">${typeSvg(t)}</div><div class="type-row-label">${t.label}</div><button class="type-row-del" data-id="${t.id}">✕</button>`;
     list.appendChild(row);
   });
   list.querySelectorAll('.type-row-del').forEach(btn=>btn.addEventListener('click',e=>{
     const id=e.target.dataset.id;
     if(BUILTIN.some(b=>b.id===id))return;
-    const custom=loadCustomTypes().filter(t=>t.id!==id);
-    saveCustomTypes(custom);
-    renderTypesList();
-    renderLegend();
-    draw();
+    saveCustomTypes(loadCustomTypes().filter(t=>t.id!==id));
+    renderTypesList(); renderLegend();
   }));
 }
 function openTypesModal(){
@@ -724,21 +887,20 @@ function openTypesModal(){
 }
 document.getElementById('d-types').addEventListener('click',()=>{closeDrawer();openTypesModal();});
 document.getElementById('types-close').addEventListener('click',()=>document.getElementById('types-modal').classList.remove('open'));
-document.getElementById('types-modal').addEventListener('click',e=>{ if(e.target===document.getElementById('types-modal')) document.getElementById('types-modal').classList.remove('open'); });
+document.getElementById('types-modal').addEventListener('click',e=>{if(e.target===document.getElementById('types-modal'))document.getElementById('types-modal').classList.remove('open');});
 document.getElementById('nt-add').addEventListener('click',()=>{
   const label=document.getElementById('nt-label').value.trim().toUpperCase();
   const color=document.getElementById('nt-color').value;
   const dash=document.querySelector('input[name="nt-dash"]:checked')?.value||'solid';
   const status=document.getElementById('nt-status');
   if(!label){status.textContent='Введи название';return;}
-  const id='custom_'+label.toLowerCase().replace(/[^a-zа-я0-9]/gi,'_')+Date.now();
+  const id='custom_'+Date.now();
   const custom=loadCustomTypes();
   custom.push({id,label,color,dash});
   saveCustomTypes(custom);
   document.getElementById('nt-label').value='';
-  document.getElementById('nt-status').textContent='';
-  renderTypesList();
-  renderLegend();
+  status.textContent='';
+  renderTypesList(); renderLegend();
 });
 
 loadData();
