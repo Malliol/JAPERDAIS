@@ -418,6 +418,29 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
 .rel-bad   { color:#cc1133; }
 .rel-neu   { color:var(--sub); }
 .char-art-img { width:100%; margin-top:12px; display:block; border:1px solid var(--dim); }
+
+.char-card-nat { font-size:9px; color:var(--sub); margin-top:6px; }
+.char-modal-spectrum { font-size:10px; color:#c47800; font-weight:bold; margin-bottom:16px; }
+
+/* dossier grid */
+.dossier { display:flex; flex-direction:column; gap:8px; }
+.dossier-row { display:flex; gap:10px; align-items:baseline; }
+.dossier-k { font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); min-width:130px; flex-shrink:0; }
+.dossier-v { font-size:12px; color:var(--fg); }
+
+/* stat bars in modal */
+.cm-stat { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.cm-stat-k { font-size:9px; letter-spacing:1px; color:var(--sub); min-width:80px; text-transform:uppercase; }
+.cm-stat-bar { flex:1; height:6px; background:var(--dim); }
+.cm-stat-fill { display:block; height:100%; background:var(--fg); }
+.cm-stat-v { font-size:11px; font-weight:bold; color:var(--fg); width:36px; text-align:right; }
+
+.char-modal-facts { margin:0; padding-left:18px; }
+.char-modal-facts li { font-size:12px; color:var(--sub); line-height:1.6; margin-bottom:6px; }
+
+.char-gallery { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.char-gallery-img { width:100%; border:1px solid var(--dim); display:block; cursor:pointer; transition:transform .15s; }
+.char-gallery-img:hover { transform:scale(1.02); }
 </style>
 </head>
 <body>
@@ -1424,76 +1447,95 @@ async function loadCharacters(){
   }catch(e){ console.warn('characters.json not found', e); }
 }
 
-function statusLabel(s){
-  if(!s) return '';
-  const dead = /умр/i.test(s);
-  const cls = dead ? 'status-dead' : 'status-alive';
-  const txt = dead ? '✕ УМРЁТ' : '◎ ВЫЖИВЕТ';
-  return `<span class="char-card-status ${cls}">${txt}</span>`;
+function charCover(ch){
+  return (ch.images && ch.images.length) ? ch.images[0] : '';
 }
 
 function renderProfilesGrid(){
   const grid = document.getElementById('profiles-grid');
   grid.innerHTML = '';
-  CHARS.forEach((ch, idx) => {
+  CHARS.forEach((ch) => {
     const card = document.createElement('div');
     card.className = 'char-card';
-    const imgHtml = ch.cover_local
-      ? `<img class="char-card-cover" src="${ch.cover_local}" loading="lazy" alt="${ch.name}">`
+    const cover = charCover(ch);
+    const imgHtml = cover
+      ? `<img class="char-card-cover" src="${cover}" loading="lazy" alt="${ch.name}">`
       : `<div class="char-card-cover-placeholder">◉</div>`;
     card.innerHTML = `
       ${imgHtml}
       <div class="char-card-body">
         <div class="char-card-name">${ch.name}</div>
         <div class="char-card-role">${ch.role || '—'}</div>
-        ${statusLabel(ch.status)}
+        ${ch.nationality ? `<div class="char-card-nat">${ch.nationality}</div>` : ''}
       </div>`;
     card.addEventListener('click', () => openCharModal(ch));
     grid.appendChild(card);
   });
 }
 
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 function openCharModal(ch){
-  const imgWrap = document.getElementById('char-modal-img-wrap');
-  imgWrap.innerHTML = ch.cover_local
-    ? `<img class="char-modal-cover" src="${ch.cover_local}" alt="${ch.name}">`
+  const cover = charCover(ch);
+  document.getElementById('char-modal-img-wrap').innerHTML = cover
+    ? `<img class="char-modal-cover" src="${cover}" alt="${ch.name}">`
     : `<div class="char-modal-cover-placeholder">◉</div>`;
 
-  const dead = /умр/i.test(ch.status||'');
-  const statusCls = dead ? 'status-dead' : 'status-alive';
-  const statusTxt = ch.status || '—';
-
+  // теги
   let tags = '';
-  if(ch.age) tags += `<div class="char-modal-tag">👤 ${ch.age} лет</div>`;
-  if(ch.height) tags += `<div class="char-modal-tag">↕ ${ch.height} см</div>`;
-  if(ch.voice) tags += `<div class="char-modal-tag">🎙 ${ch.voice}</div>`;
-  if(ch.artist) tags += `<div class="char-modal-tag">🎨 ${ch.artist}</div>`;
+  if(ch.age) tags += `<div class="char-modal-tag">👤 ${esc(ch.age)}</div>`;
+  if(ch.height) tags += `<div class="char-modal-tag">↕ ${esc(ch.height)} см</div>`;
+  if(ch.temperament) tags += `<div class="char-modal-tag">🧠 ${esc(ch.temperament)}</div>`;
+  if(ch.zodiac) tags += `<div class="char-modal-tag">♒ ${esc(ch.zodiac)}</div>`;
 
-  const relHtml = (ch.relations?.good?.length || ch.relations?.neutral?.length || ch.relations?.bad?.length) ? `
+  // сетка досье
+  const dossier = [
+    ['Национальность', ch.nationality],
+    ['Мировоззрение', ch.worldview],
+    ['Семейное положение', ch.family],
+    ['Ориентация', ch.orientation],
+  ].filter(x => x[1] && x[1] !== '-')
+   .map(x => `<div class="dossier-row"><span class="dossier-k">${x[0]}</span><span class="dossier-v">${esc(x[1])}</span></div>`)
+   .join('');
+
+  // статы
+  const statHtml = (ch.stats && Object.keys(ch.stats).length) ? `
     <div class="char-modal-section">
-      <div class="char-modal-section-title">Отношения</div>
-      ${ch.relations.good?.length ? `<div class="char-modal-rel-row"><span class="char-modal-rel-label rel-good">Хорошо</span><span class="char-modal-rel-names">${ch.relations.good.join(', ')}</span></div>` : ''}
-      ${ch.relations.neutral?.length ? `<div class="char-modal-rel-row"><span class="char-modal-rel-label rel-neu">Нейтрально</span><span class="char-modal-rel-names">${ch.relations.neutral.join(', ')}</span></div>` : ''}
-      ${ch.relations.bad?.length ? `<div class="char-modal-rel-row"><span class="char-modal-rel-label rel-bad">Плохо</span><span class="char-modal-rel-names">${ch.relations.bad.join(', ')}</span></div>` : ''}
+      <div class="char-modal-section-title">Характеристики</div>
+      ${['Сила','Здоровье','Скорость','Стамина'].map(k => ch.stats[k]!=null ? `
+        <div class="cm-stat"><span class="cm-stat-k">${k}</span>
+        <span class="cm-stat-bar"><span class="cm-stat-fill" style="width:${ch.stats[k]}%"></span></span>
+        <span class="cm-stat-v">${ch.stats[k]}%</span></div>` : '').join('')}
     </div>` : '';
 
-  const artHtml = ch.art_local?.map(p => `<img class="char-art-img" src="${p}" loading="lazy">`).join('') || '';
+  const bioHtml = (ch.bio && ch.bio.length) ? `
+    <div class="char-modal-section"><div class="char-modal-section-title">Биография</div>
+    ${ch.bio.map(b => `<div class="char-modal-text" style="margin-bottom:10px">${esc(b)}</div>`).join('')}</div>` : '';
+
+  const factsHtml = (ch.facts && ch.facts.length) ? `
+    <div class="char-modal-section"><div class="char-modal-section-title">Факты</div>
+    <ul class="char-modal-facts">${ch.facts.map(f => `<li>${esc(f)}</li>`).join('')}</ul></div>` : '';
+
+  const nameMeaning = ch.name_meaning ? `
+    <div class="char-modal-section"><div class="char-modal-section-title">Значение имени</div>
+    <div class="char-modal-text">${esc(ch.name_meaning)}</div></div>` : '';
+
+  // галерея (фото кроме обложки)
+  const gallery = (ch.images && ch.images.length > 1) ? `
+    <div class="char-modal-section"><div class="char-modal-section-title">Галерея</div>
+    <div class="char-gallery">${ch.images.slice(1).map(p => `<img class="char-gallery-img" src="${p}" loading="lazy">`).join('')}</div></div>` : '';
 
   document.getElementById('char-modal-body').innerHTML = `
     <div class="char-modal-name">${ch.name}</div>
     <div class="char-modal-role">${ch.role || '—'}</div>
-    <div class="char-modal-status-row">
-      <span class="char-card-status ${statusCls}">${statusTxt}</span>
-      ${tags}
-    </div>
-    ${ch.facts ? `<div class="char-modal-section"><div class="char-modal-section-title">Факты</div><div class="char-modal-text">${ch.facts}</div></div>` : ''}
-    ${ch.fears ? `<div class="char-modal-section"><div class="char-modal-section-title">Страхи</div><div class="char-modal-text">${ch.fears}</div></div>` : ''}
-    ${ch.habits ? `<div class="char-modal-section"><div class="char-modal-section-title">Привычки</div><div class="char-modal-text">${ch.habits}</div></div>` : ''}
-    ${ch.hobbies ? `<div class="char-modal-section"><div class="char-modal-section-title">Хобби</div><div class="char-modal-text">${ch.hobbies}</div></div>` : ''}
-    ${ch.family ? `<div class="char-modal-section"><div class="char-modal-section-title">Семейное положение</div><div class="char-modal-text">${ch.family}</div></div>` : ''}
-    ${ch.death ? `<div class="char-modal-section"><div class="char-modal-section-title">Как умрёт</div><div class="char-modal-text">${ch.death}</div></div>` : ''}
-    ${relHtml}
-    ${artHtml}
+    ${ch.spectrum ? `<div class="char-modal-spectrum">${esc(ch.spectrum)}</div>` : ''}
+    <div class="char-modal-status-row">${tags}</div>
+    ${dossier ? `<div class="char-modal-section"><div class="char-modal-section-title">Досье</div><div class="dossier">${dossier}</div></div>` : ''}
+    ${statHtml}
+    ${nameMeaning}
+    ${bioHtml}
+    ${factsHtml}
+    ${gallery}
   `;
 
   document.getElementById('char-modal').classList.add('open');
