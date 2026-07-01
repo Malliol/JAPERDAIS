@@ -3,372 +3,506 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAPERDAIS — Диаграмма отношений</title>
-<script src="https://d3js.org/d3.v7.min.js"></script>
+<title>JAPERDAIS — Отношения</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-  body {
-    background: #0a0a0a;
-    color: #eee;
-    font-family: 'Courier New', monospace;
-    overflow: hidden;
-  }
+body {
+  background: #080808;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+  color: #ccc;
+}
 
-  #header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    padding: 12px 20px;
-    background: rgba(10,10,10,0.95);
-    border-bottom: 1px solid #222;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
+#canvas { display: block; }
 
-  #header h1 {
-    font-size: 14px;
-    letter-spacing: 4px;
-    font-weight: normal;
-    color: #fff;
-  }
+/* ── sidebar ── */
+#sidebar {
+  position: fixed;
+  top: 0; right: 0;
+  width: 300px; height: 100vh;
+  background: rgba(8,8,8,0.97);
+  border-left: 1px solid #1a1a1a;
+  padding: 28px 24px;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+  z-index: 50;
+}
+#sidebar.open { transform: translateX(0); }
 
-  .legend {
-    display: flex;
-    gap: 16px;
-    font-size: 11px;
-    color: #666;
-  }
+#sb-name {
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+#sb-role {
+  font-size: 10px;
+  color: #444;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+#sb-spectrum {
+  font-size: 10px;
+  color: #ffd700;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #1a1a1a;
+}
 
-  .legend-item { display: flex; align-items: center; gap: 6px; cursor: pointer; transition: color .2s; }
-  .legend-item:hover { color: #ccc; }
-  .legend-item.muted { opacity: 0.3; }
+#sb-relations h3 {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #333;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
 
-  .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-  }
-  .dot.pos { background: #7fff7f; }
-  .dot.neg { background: #ff6b6b; }
-  .dot.neu { background: #888; }
-  .dot.envy { background: #ffd700; }
+.rel-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.rel-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.rel-dot.pos  { background: #7fff7f; }
+.rel-dot.neg  { background: #ff6b6b; }
+.rel-dot.neu  { background: #555; }
+.rel-dot.envy { background: #ffd700; }
+.rel-name { color: #fff; font-size: 10px; }
+.rel-desc { color: #555; font-size: 10px; }
 
-  #hint {
-    position: fixed;
-    bottom: 16px; left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    color: #333;
-    letter-spacing: 2px;
-    pointer-events: none;
-  }
+#sb-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none; border: none;
+  color: #333; font-size: 18px;
+  cursor: pointer; line-height: 1;
+}
+#sb-close:hover { color: #fff; }
 
-  #tooltip {
-    position: fixed;
-    background: rgba(10,10,10,0.95);
-    border: 1px solid #333;
-    padding: 10px 14px;
-    font-size: 11px;
-    line-height: 1.7;
-    color: #ccc;
-    pointer-events: none;
-    max-width: 260px;
-    display: none;
-    z-index: 200;
-  }
+/* ── header ── */
+#hdr {
+  position: fixed;
+  top: 0; left: 0;
+  padding: 16px 24px;
+  z-index: 40;
+  pointer-events: none;
+}
+#hdr h1 {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #222;
+  font-weight: normal;
+}
 
-  #tooltip .tip-name { color: #fff; font-size: 13px; margin-bottom: 4px; }
-  #tooltip .tip-role { color: #666; font-size: 10px; margin-bottom: 6px; letter-spacing: 1px; }
-  #tooltip .tip-spectrum { color: #ffd700; font-size: 10px; }
+/* ── legend ── */
+#legend {
+  position: fixed;
+  bottom: 24px; left: 24px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.leg { display:flex; align-items:center; gap:8px; font-size:9px; color:#333; letter-spacing:2px; cursor:pointer; transition: color .2s; }
+.leg:hover { color: #888; }
+.leg.off { opacity: .2; }
+.leg-line { width: 24px; height: 1.5px; }
+.leg-line.pos  { background: #7fff7f; }
+.leg-line.neg  { background: #ff6b6b; }
+.leg-line.neu  { background: #444; }
+.leg-line.envy { background: #ffd700; border-top: 1px dashed #ffd700; height:0; }
 
-  svg { display: block; }
-
-  .node circle {
-    cursor: grab;
-    stroke-width: 1.5;
-    transition: r .2s;
-  }
-  .node circle:active { cursor: grabbing; }
-  .node.highlighted circle { stroke-width: 3; }
-
-  .node text.name {
-    font-size: 11px;
-    font-family: 'Courier New', monospace;
-    fill: #fff;
-    pointer-events: none;
-    text-anchor: middle;
-  }
-
-  .node text.role {
-    font-size: 8.5px;
-    font-family: 'Courier New', monospace;
-    fill: #555;
-    pointer-events: none;
-    text-anchor: middle;
-  }
-
-  .link {
-    fill: none;
-    stroke-width: 1.5;
-    opacity: 0.7;
-  }
-  .link.pos { stroke: #7fff7f; }
-  .link.neg { stroke: #ff6b6b; }
-  .link.neu { stroke: #555; }
-  .link.envy { stroke: #ffd700; stroke-dasharray: 5,3; }
-  .link.muted { opacity: 0.05; }
-
-  .link-label {
-    font-size: 8px;
-    font-family: 'Courier New', monospace;
-    fill: #444;
-    pointer-events: none;
-  }
-
-  marker path { }
+/* ── tooltip ── */
+#tip {
+  position: fixed;
+  background: #0e0e0e;
+  border: 1px solid #222;
+  padding: 8px 12px;
+  font-size: 10px;
+  color: #888;
+  pointer-events: none;
+  display: none;
+  z-index: 100;
+  letter-spacing: 1px;
+}
 </style>
 </head>
 <body>
 
-<div id="header">
-  <h1>JAPERDAIS · ОТНОШЕНИЯ</h1>
-  <div class="legend">
-    <div class="legend-item" data-type="pos"><div class="dot pos"></div>положительно</div>
-    <div class="legend-item" data-type="neg"><div class="dot neg"></div>негативно</div>
-    <div class="legend-item" data-type="neu"><div class="dot neu"></div>нейтрально</div>
-    <div class="legend-item" data-type="envy"><div class="dot envy"></div>зависть</div>
-  </div>
+<canvas id="canvas"></canvas>
+
+<div id="hdr"><h1>JAPERDAIS · ДИАГРАММА ОТНОШЕНИЙ</h1></div>
+
+<div id="legend">
+  <div class="leg" data-type="pos"><div class="leg-line pos"></div>ПОЛОЖИТЕЛЬНО</div>
+  <div class="leg" data-type="neg"><div class="leg-line neg"></div>НЕГАТИВНО</div>
+  <div class="leg" data-type="neu"><div class="leg-line neu"></div>НЕЙТРАЛЬНО</div>
+  <div class="leg" data-type="envy"><div class="leg-line envy"></div>ЗАВИСТЬ</div>
 </div>
 
-<div id="tooltip"></div>
-<div id="hint">ПЕРЕТАСКИВАЙ · НАВОДИ · КЛИК ДЛЯ ФОКУСА</div>
+<div id="sidebar">
+  <button id="sb-close">×</button>
+  <div id="sb-name"></div>
+  <div id="sb-role"></div>
+  <div id="sb-spectrum"></div>
+  <div id="sb-relations"></div>
+</div>
 
-<svg id="svg"></svg>
+<div id="tip"></div>
 
 <script>
-const W = window.innerWidth, H = window.innerHeight;
-const svg = d3.select('#svg').attr('width', W).attr('height', H);
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H, cx, cy, radius;
 
-// ── defs: arrow markers ──
-const defs = svg.append('defs');
-[
-  { id: 'arr-pos', color: '#7fff7f' },
-  { id: 'arr-neg', color: '#ff6b6b' },
-  { id: 'arr-neu', color: '#555'    },
-  { id: 'arr-envy',color: '#ffd700' },
-].forEach(m => {
-  defs.append('marker')
-    .attr('id', m.id)
-    .attr('viewBox', '0 -4 10 8')
-    .attr('refX', 28).attr('refY', 0)
-    .attr('markerWidth', 6).attr('markerHeight', 6)
-    .attr('orient', 'auto')
-    .append('path')
-    .attr('d', 'M0,-4L10,0L0,4')
-    .attr('fill', m.color);
-});
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  cx = W / 2;
+  cy = H / 2;
+  radius = Math.min(W, H) * 0.34;
+  draw();
+}
 
 // ── data ──
-const nodes = [
-  { id: 'kreono',   name: 'Креоно',    role: 'Капитан',          spectrum: 'Ответственность — Гиперконтроль' },
-  { id: 'saida',    name: 'Саида',     role: 'Офицер безопасности', spectrum: 'Выдержка — Ярость' },
-  { id: 'erkul',    name: 'Эркюль',    role: 'Аналитик',         spectrum: 'Баланс — Одержимость' },
-  { id: 'evgeny',   name: 'Евгений',   role: 'Геолог',           spectrum: 'Вера — Разочарование' },
-  { id: 'unura',    name: 'Унурцэцэг', role: 'Биолог',           spectrum: 'Самообладание — Истерика' },
-  { id: 'katerina', name: 'Катерина',  role: 'Медик',            spectrum: 'Восстановление — Разрушение' },
-  { id: 'jurgen',   name: 'Юрген',     role: 'Инженер',          spectrum: 'Надежда — Отчаяние' },
-  { id: 'logan',    name: 'Логан',     role: 'Сисадмин',         spectrum: 'Принятие — Отрицание' },
-  { id: 'silvia',   name: 'Сильвия',   role: 'Навигатор',        spectrum: 'Стратегия — Случайность' },
-  { id: 'patricio', name: 'Патрицио',  role: 'Оценщик ресурсов', spectrum: 'Целостность — Растворение' },
-  { id: 'markus',   name: 'Маркус',    role: 'Разведчик',        spectrum: 'Отвага — Паранойя' },
-  { id: 'kan_so',   name: 'Кан Со',    role: 'Разведчик',        spectrum: 'Пассивность — Холод' },
+const NODES = [
+  { id:'kreono',   name:'Креоно',      role:'Капитан',             spectrum:'Ответственность — Гиперконтроль' },
+  { id:'saida',    name:'Саида',       role:'Офицер безопасности', spectrum:'Выдержка — Ярость' },
+  { id:'erkul',    name:'Эркюль',      role:'Аналитик',            spectrum:'Баланс — Одержимость' },
+  { id:'evgeny',   name:'Евгений',     role:'Геолог',              spectrum:'Вера — Разочарование' },
+  { id:'unura',    name:'Унурцэцэг',   role:'Биолог',              spectrum:'Самообладание — Истерика' },
+  { id:'katerina', name:'Катерина',    role:'Медик',               spectrum:'Восстановление — Разрушение' },
+  { id:'jurgen',   name:'Юрген',       role:'Инженер',             spectrum:'Надежда — Отчаяние' },
+  { id:'logan',    name:'Логан',       role:'Сисадмин',            spectrum:'Принятие — Отрицание' },
+  { id:'silvia',   name:'Сильвия',     role:'Навигатор',           spectrum:'Стратегия — Случайность' },
+  { id:'patricio', name:'Патрицио',    role:'Оценщик',             spectrum:'Целостность — Растворение' },
+  { id:'markus',   name:'Маркус',      role:'Разведчик',           spectrum:'Отвага — Паранойя' },
+  { id:'kan_so',   name:'Кан Со',      role:'Разведчик',           spectrum:'Пассивность — Холод' },
 ];
 
-// type: pos / neg / neu / envy
-// label: short text on the arrow
-const links = [
-  // Саида →
-  { source: 'saida',   target: 'kreono',   type: 'neg',  label: 'плохой капитан' },
-  { source: 'saida',   target: 'erkul',    type: 'neg',  label: 'слабак' },
-  { source: 'saida',   target: 'evgeny',   type: 'neu',  label: 'безвольный' },
-  { source: 'saida',   target: 'unura',    type: 'neg',  label: 'истеричка' },
-  { source: 'saida',   target: 'katerina', type: 'neu',  label: 'нестабильная' },
-  { source: 'saida',   target: 'jurgen',   type: 'neu',  label: 'тюфяк' },
-  { source: 'saida',   target: 'logan',    type: 'neg',  label: 'безответственный' },
-  { source: 'saida',   target: 'silvia',   type: 'pos',  label: 'сильный стратег' },
-  { source: 'saida',   target: 'markus',   type: 'neg',  label: 'трус' },
-  { source: 'saida',   target: 'kan_so',   type: 'neu',  label: 'что-то скрывает' },
-  { source: 'saida',   target: 'patricio', type: 'neu',  label: 'что-то не так' },
-
-  // Эркюль →
-  { source: 'erkul',   target: 'kreono',   type: 'neu',  label: 'нейтрально' },
-  { source: 'erkul',   target: 'saida',    type: 'neu',  label: 'уважаю, но резка' },
-  { source: 'erkul',   target: 'evgeny',   type: 'pos',  label: 'добрый, приятный' },
-  { source: 'erkul',   target: 'unura',    type: 'neg',  label: 'верит в лженауку' },
-  { source: 'erkul',   target: 'katerina', type: 'neu',  label: 'непредсказуемая' },
-  { source: 'erkul',   target: 'jurgen',   type: 'neu',  label: 'спокойный' },
-  { source: 'erkul',   target: 'logan',    type: 'neg',  label: 'нигилист' },
-  { source: 'erkul',   target: 'silvia',   type: 'neu',  label: 'конфликт стратегий' },
-  { source: 'erkul',   target: 'patricio', type: 'neu',  label: 'сложно воспринимать' },
-  { source: 'erkul',   target: 'markus',   type: 'neu',  label: 'сложно воспринимать' },
-  { source: 'erkul',   target: 'kan_so',   type: 'pos',  label: 'уважаю спокойствие' },
-
-  // Евгений →
-  { source: 'evgeny',  target: 'kreono',   type: 'pos',  label: 'хороший собутыльник' },
-  { source: 'evgeny',  target: 'saida',    type: 'neu',  label: 'надеюсь откроется' },
-  { source: 'evgeny',  target: 'erkul',    type: 'pos',  label: 'гений во плоти!' },
-  { source: 'evgeny',  target: 'unura',    type: 'pos',  label: 'обаятельная!' },
-  { source: 'evgeny',  target: 'katerina', type: 'pos',  label: 'спасительница наша' },
-  { source: 'evgeny',  target: 'jurgen',   type: 'pos',  label: 'котёночек' },
-  { source: 'evgeny',  target: 'logan',    type: 'neu',  label: 'тяжело, но пытаюсь' },
-  { source: 'evgeny',  target: 'silvia',   type: 'pos',  label: 'умна и красива' },
-  { source: 'evgeny',  target: 'patricio', type: 'neu',  label: 'не понимаю' },
-  { source: 'evgeny',  target: 'markus',   type: 'pos',  label: 'куражный!' },
-  { source: 'evgeny',  target: 'kan_so',   type: 'neu',  label: 'побаиваюсь' },
-
-  // Креоно →
-  { source: 'kreono',  target: 'saida',    type: 'envy', label: 'завидует авторитету' },
-  { source: 'kreono',  target: 'erkul',    type: 'envy', label: 'завидует продуктивности' },
-  { source: 'kreono',  target: 'evgeny',   type: 'pos',  label: 'хороший малый' },
-  { source: 'kreono',  target: 'unura',    type: 'neg',  label: 'пустышка' },
-  { source: 'kreono',  target: 'katerina', type: 'neu',  label: 'двоякое' },
-  { source: 'kreono',  target: 'jurgen',   type: 'neg',  label: 'жуткий тип' },
-  { source: 'kreono',  target: 'logan',    type: 'neg',  label: 'распиздяй' },
-  { source: 'kreono',  target: 'silvia',   type: 'envy', label: 'завидует идеям' },
-  { source: 'kreono',  target: 'patricio', type: 'neu',  label: 'странный, не опасен' },
-  { source: 'kreono',  target: 'markus',   type: 'envy', label: 'завидует харизме' },
-  { source: 'kreono',  target: 'kan_so',   type: 'envy', label: 'завидует спокойствию' },
+// relationships: { from, to, type, label }
+const LINKS = [
+  // Саида
+  { from:'saida', to:'kreono',   type:'neg',  label:'плохой капитан' },
+  { from:'saida', to:'erkul',    type:'neg',  label:'слабак' },
+  { from:'saida', to:'evgeny',   type:'neu',  label:'безвольный' },
+  { from:'saida', to:'unura',    type:'neg',  label:'истеричка' },
+  { from:'saida', to:'katerina', type:'neu',  label:'нестабильная' },
+  { from:'saida', to:'jurgen',   type:'neu',  label:'тюфяк' },
+  { from:'saida', to:'logan',    type:'neg',  label:'безответственный' },
+  { from:'saida', to:'silvia',   type:'pos',  label:'сильный стратег' },
+  { from:'saida', to:'markus',   type:'neg',  label:'трус' },
+  { from:'saida', to:'kan_so',   type:'neu',  label:'что-то скрывает' },
+  { from:'saida', to:'patricio', type:'neu',  label:'что-то не так' },
+  // Эркюль
+  { from:'erkul', to:'kreono',   type:'neu',  label:'нейтрально' },
+  { from:'erkul', to:'saida',    type:'neu',  label:'уважаю, но резка' },
+  { from:'erkul', to:'evgeny',   type:'pos',  label:'добрый, приятный' },
+  { from:'erkul', to:'unura',    type:'neg',  label:'верит в лженауку' },
+  { from:'erkul', to:'katerina', type:'neu',  label:'непредсказуемая' },
+  { from:'erkul', to:'jurgen',   type:'neu',  label:'спокойный' },
+  { from:'erkul', to:'logan',    type:'neg',  label:'нигилист' },
+  { from:'erkul', to:'silvia',   type:'neu',  label:'конфликт стратегий' },
+  { from:'erkul', to:'patricio', type:'neu',  label:'сложно воспринимать' },
+  { from:'erkul', to:'markus',   type:'neu',  label:'сложно воспринимать' },
+  { from:'erkul', to:'kan_so',   type:'pos',  label:'уважаю спокойствие' },
+  // Евгений
+  { from:'evgeny', to:'kreono',   type:'pos',  label:'хороший собутыльник' },
+  { from:'evgeny', to:'saida',    type:'neu',  label:'надеюсь откроется' },
+  { from:'evgeny', to:'erkul',    type:'pos',  label:'гений во плоти!' },
+  { from:'evgeny', to:'unura',    type:'pos',  label:'обаятельная!' },
+  { from:'evgeny', to:'katerina', type:'pos',  label:'спасительница наша' },
+  { from:'evgeny', to:'jurgen',   type:'pos',  label:'котёночек' },
+  { from:'evgeny', to:'logan',    type:'neu',  label:'тяжело, но пытаюсь' },
+  { from:'evgeny', to:'silvia',   type:'pos',  label:'умна и красива' },
+  { from:'evgeny', to:'patricio', type:'neu',  label:'не понимаю' },
+  { from:'evgeny', to:'markus',   type:'pos',  label:'куражный!' },
+  { from:'evgeny', to:'kan_so',   type:'neu',  label:'побаиваюсь' },
+  // Креоно
+  { from:'kreono', to:'saida',    type:'envy', label:'завидует авторитету' },
+  { from:'kreono', to:'erkul',    type:'envy', label:'завидует продуктивности' },
+  { from:'kreono', to:'evgeny',   type:'pos',  label:'хороший малый' },
+  { from:'kreono', to:'unura',    type:'neg',  label:'пустышка' },
+  { from:'kreono', to:'katerina', type:'neu',  label:'двоякое' },
+  { from:'kreono', to:'jurgen',   type:'neg',  label:'жуткий тип' },
+  { from:'kreono', to:'logan',    type:'neg',  label:'распиздяй' },
+  { from:'kreono', to:'silvia',   type:'envy', label:'завидует идеям' },
+  { from:'kreono', to:'patricio', type:'neu',  label:'странный, не опасен' },
+  { from:'kreono', to:'markus',   type:'envy', label:'завидует харизме' },
+  { from:'kreono', to:'kan_so',   type:'envy', label:'завидует спокойствию' },
 ];
 
-// ── layout ──
-const cx = W / 2, cy = H / 2 + 20;
-const r = Math.min(W, H) * 0.36;
-nodes.forEach((n, i) => {
-  const angle = (i / nodes.length) * 2 * Math.PI - Math.PI / 2;
-  n.x = cx + r * Math.cos(angle);
-  n.y = cy + r * Math.sin(angle);
+const COLORS = {
+  pos:  '#7fff7f',
+  neg:  '#ff6b6b',
+  neu:  '#3a3a3a',
+  envy: '#ffd700',
+};
+
+// index nodes
+const nodeMap = {};
+NODES.forEach(n => nodeMap[n.id] = n);
+
+// build outgoing map for sidebar
+const outgoing = {};
+const incoming = {};
+NODES.forEach(n => { outgoing[n.id] = []; incoming[n.id] = []; });
+LINKS.forEach(l => {
+  outgoing[l.from].push(l);
+  incoming[l.to].push(l);
 });
 
-// ── simulation ──
-const sim = d3.forceSimulation(nodes)
-  .force('link', d3.forceLink(links).id(d => d.id).distance(180).strength(0.1))
-  .force('charge', d3.forceManyBody().strength(-400))
-  .force('center', d3.forceCenter(cx, cy))
-  .force('collision', d3.forceCollide(55));
+// positions (set after resize)
+let hiddenTypes = new Set();
+let focusedId = null;
+let hoveredNode = null;
+let hoveredEdge = null;
 
-// ── draw links ──
-const linkGroup = svg.append('g').attr('class', 'links');
-const linkSel = linkGroup.selectAll('path')
-  .data(links)
-  .join('path')
-  .attr('class', d => `link ${d.type}`)
-  .attr('marker-end', d => `url(#arr-${d.type})`);
+function positionNodes() {
+  NODES.forEach((n, i) => {
+    const angle = (i / NODES.length) * 2 * Math.PI - Math.PI / 2;
+    n.x = cx + radius * Math.cos(angle);
+    n.y = cy + radius * Math.sin(angle);
+  });
+}
 
-// link labels
-const linkLabelSel = svg.append('g').selectAll('text')
-  .data(links)
-  .join('text')
-  .attr('class', 'link-label')
-  .text(d => d.label);
+// ── drawing ──
+function edgeAlpha(link) {
+  if (hiddenTypes.has(link.type)) return 0;
+  if (focusedId) {
+    if (link.from !== focusedId && link.to !== focusedId) return 0.04;
+  }
+  return link.type === 'neu' ? 0.35 : 0.75;
+}
 
-// ── draw nodes ──
-const tip = document.getElementById('tooltip');
+function nodeAlpha(node) {
+  if (!focusedId) return 1;
+  if (node.id === focusedId) return 1;
+  const connected = LINKS.some(l => (l.from === focusedId && l.to === node.id) || (l.to === focusedId && l.from === node.id));
+  return connected ? 0.9 : 0.15;
+}
 
-const nodeSel = svg.append('g').selectAll('g')
-  .data(nodes)
-  .join('g')
-  .attr('class', 'node')
-  .call(d3.drag()
-    .on('start', (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
-    .on('drag',  (e, d) => { d.fx = e.x; d.fy = e.y; })
-    .on('end',   (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; })
-  )
-  .on('mouseover', (e, d) => {
+function drawArrow(x1, y1, x2, y2, color, alpha, dashed) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist < 1) return;
+  const ux = dx/dist, uy = dy/dist;
+  const nodeR = 30;
+  const sx = x1 + ux * nodeR, sy = y1 + uy * nodeR;
+  const ex = x2 - ux * nodeR, ey = y2 - uy * nodeR;
+
+  // control point — curve outward
+  const mx = (sx + ex) / 2, my = (sy + ey) / 2;
+  const perp = { x: -uy, y: ux };
+  const bend = dist * 0.15;
+  const cpx = mx + perp.x * bend, cpy = my + perp.y * bend;
+
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.2;
+  if (dashed) ctx.setLineDash([5, 4]);
+  else ctx.setLineDash([]);
+
+  ctx.beginPath();
+  ctx.moveTo(sx, sy);
+  ctx.quadraticCurveTo(cpx, cpy, ex, ey);
+  ctx.stroke();
+
+  // arrowhead
+  const t = 0.9;
+  const ax = (1-t)*(1-t)*sx + 2*(1-t)*t*cpx + t*t*ex;
+  const ay = (1-t)*(1-t)*sy + 2*(1-t)*t*cpy + t*t*ey;
+  const tang = { x: ex - ax, y: ey - ay };
+  const tlen = Math.sqrt(tang.x**2 + tang.y**2);
+  const tx = tang.x/tlen, ty = tang.y/tlen;
+  const arrSize = 7;
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(ex, ey);
+  ctx.lineTo(ex - arrSize*tx + arrSize*0.4*(-ty), ey - arrSize*ty + arrSize*0.4*tx);
+  ctx.lineTo(ex - arrSize*tx - arrSize*0.4*(-ty), ey - arrSize*ty - arrSize*0.4*tx);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.restore();
+}
+
+function draw() {
+  positionNodes();
+  ctx.clearRect(0, 0, W, H);
+
+  // edges
+  LINKS.forEach(link => {
+    const a = edgeAlpha(link);
+    if (a <= 0) return;
+    const from = nodeMap[link.from], to = nodeMap[link.to];
+    drawArrow(from.x, from.y, to.x, to.y, COLORS[link.type], a, link.type === 'envy');
+  });
+
+  // nodes
+  NODES.forEach(n => {
+    const a = nodeAlpha(n);
+    const focused = n.id === focusedId;
+    const hovered = n === hoveredNode;
+
+    ctx.save();
+    ctx.globalAlpha = a;
+
+    // glow for focused
+    if (focused || hovered) {
+      ctx.shadowColor = '#fff';
+      ctx.shadowBlur = 18;
+    }
+
+    // circle
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 30, 0, Math.PI * 2);
+    ctx.fillStyle = focused ? '#181818' : '#101010';
+    ctx.fill();
+    ctx.strokeStyle = focused ? '#555' : (hovered ? '#444' : '#222');
+    ctx.lineWidth = focused ? 1.5 : 1;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // name
+    ctx.fillStyle = a > 0.5 ? '#fff' : '#333';
+    ctx.font = `${focused ? 'bold ' : ''}11px "Courier New"`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(n.name, n.x, n.y - 5);
+
+    // role
+    ctx.fillStyle = a > 0.5 ? '#3a3a3a' : '#1a1a1a';
+    ctx.font = '8px "Courier New"';
+    ctx.fillText(n.role, n.x, n.y + 9);
+
+    ctx.restore();
+  });
+}
+
+// ── interaction ──
+function getNodeAt(mx, my) {
+  for (const n of NODES) {
+    const dx = mx - n.x, dy = my - n.y;
+    if (dx*dx + dy*dy < 32*32) return n;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const node = getNodeAt(mx, my);
+  hoveredNode = node;
+
+  const tip = document.getElementById('tip');
+  if (node) {
+    canvas.style.cursor = 'pointer';
     tip.style.display = 'block';
-    tip.innerHTML = `<div class="tip-name">${d.name}</div><div class="tip-role">${d.role}</div><div class="tip-spectrum">${d.spectrum}</div>`;
-  })
-  .on('mousemove', e => {
     tip.style.left = (e.clientX + 14) + 'px';
     tip.style.top  = (e.clientY - 10) + 'px';
-  })
-  .on('mouseout', () => { tip.style.display = 'none'; })
-  .on('click', (e, d) => focusNode(d.id));
-
-nodeSel.append('circle')
-  .attr('r', 24)
-  .attr('fill', '#111')
-  .attr('stroke', '#333');
-
-nodeSel.append('text')
-  .attr('class', 'name')
-  .attr('dy', '0.35em')
-  .text(d => d.name);
-
-nodeSel.append('text')
-  .attr('class', 'role')
-  .attr('dy', '1.6em')
-  .text(d => d.role);
-
-// ── tick ──
-function linkArc(d) {
-  const dx = d.target.x - d.source.x;
-  const dy = d.target.y - d.source.y;
-  const dr = Math.sqrt(dx*dx + dy*dy) * 1.4;
-  return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
-}
-
-sim.on('tick', () => {
-  linkSel.attr('d', linkArc);
-
-  linkLabelSel
-    .attr('x', d => (d.source.x + d.target.x) / 2)
-    .attr('y', d => (d.source.y + d.target.y) / 2);
-
-  nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
+    tip.textContent = node.spectrum;
+  } else {
+    canvas.style.cursor = 'default';
+    tip.style.display = 'none';
+  }
+  draw();
 });
 
-// ── focus mode ──
-let focusedId = null;
-function focusNode(id) {
-  if (focusedId === id) {
-    focusedId = null;
-    linkSel.classed('muted', false);
-    nodeSel.classed('highlighted', false);
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const node = getNodeAt(mx, my);
+  if (node) {
+    if (focusedId === node.id) {
+      focusedId = null;
+      closeSidebar();
+    } else {
+      focusedId = node.id;
+      openSidebar(node);
+    }
   } else {
-    focusedId = id;
-    const connected = new Set([id]);
-    links.forEach(l => {
-      const s = typeof l.source === 'object' ? l.source.id : l.source;
-      const t = typeof l.target === 'object' ? l.target.id : l.target;
-      if (s === id || t === id) { connected.add(s); connected.add(t); }
-    });
-    linkSel.classed('muted', d => {
-      const s = typeof d.source === 'object' ? d.source.id : d.source;
-      const t = typeof d.target === 'object' ? d.target.id : d.target;
-      return s !== id && t !== id;
-    });
-    nodeSel.classed('highlighted', d => connected.has(d.id));
+    focusedId = null;
+    closeSidebar();
   }
+  draw();
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoveredNode = null;
+  document.getElementById('tip').style.display = 'none';
+  draw();
+});
+
+// ── sidebar ──
+function openSidebar(node) {
+  document.getElementById('sb-name').textContent = node.name;
+  document.getElementById('sb-role').textContent = node.role;
+  document.getElementById('sb-spectrum').textContent = node.spectrum;
+
+  const out = outgoing[node.id];
+  const inc = incoming[node.id];
+
+  let html = '';
+  if (out.length) {
+    html += `<h3>КАК ОТНОСИТСЯ К ДРУГИМ</h3>`;
+    out.forEach(l => {
+      const target = nodeMap[l.to];
+      html += `<div class="rel-item">
+        <div class="rel-dot ${l.type}"></div>
+        <div><div class="rel-name">${target.name}</div><div class="rel-desc">${l.label}</div></div>
+      </div>`;
+    });
+  }
+  if (inc.length) {
+    html += `<br><h3>КАК ДРУГИЕ ОТНОСЯТСЯ</h3>`;
+    inc.forEach(l => {
+      const src = nodeMap[l.from];
+      html += `<div class="rel-item">
+        <div class="rel-dot ${l.type}"></div>
+        <div><div class="rel-name">${src.name}</div><div class="rel-desc">${l.label}</div></div>
+      </div>`;
+    });
+  }
+
+  document.getElementById('sb-relations').innerHTML = html;
+  document.getElementById('sidebar').classList.add('open');
 }
 
-// ── legend filter ──
-let hidden = new Set();
-document.querySelectorAll('.legend-item').forEach(el => {
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+document.getElementById('sb-close').addEventListener('click', () => {
+  focusedId = null;
+  closeSidebar();
+  draw();
+});
+
+// ── legend toggle ──
+document.querySelectorAll('.leg').forEach(el => {
   el.addEventListener('click', () => {
     const t = el.dataset.type;
-    if (hidden.has(t)) { hidden.delete(t); el.classList.remove('muted'); }
-    else               { hidden.add(t);    el.classList.add('muted'); }
-    linkSel.style('display', d => hidden.has(d.type) ? 'none' : null);
-    linkLabelSel.style('display', d => hidden.has(d.type) ? 'none' : null);
+    if (hiddenTypes.has(t)) { hiddenTypes.delete(t); el.classList.remove('off'); }
+    else { hiddenTypes.add(t); el.classList.add('off'); }
+    draw();
   });
 });
 
-// ── resize ──
-window.addEventListener('resize', () => {
-  const w = window.innerWidth, h = window.innerHeight;
-  svg.attr('width', w).attr('height', h);
-  sim.force('center', d3.forceCenter(w/2, h/2)).alpha(0.3).restart();
-});
+window.addEventListener('resize', resize);
+resize();
 </script>
 </body>
 </html>
