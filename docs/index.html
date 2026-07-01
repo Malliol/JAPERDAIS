@@ -81,37 +81,35 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
   display:none; flex-direction:column; overflow:hidden;
 }
 #stats-view.open { display:flex; }
-#stats-sort-bar {
-  padding:56px 28px 16px; display:flex; align-items:center; gap:8px; flex-shrink:0;
-  border-bottom:2px solid #111;
+#stats-table-wrap {
+  flex:1; overflow:auto; padding:52px 32px 32px;
 }
-#stats-sort-bar span { font-size:9px; letter-spacing:2px; color:#999; margin-right:4px; }
-.sort-btn {
-  font-family:'Courier New',monospace; font-size:9px; letter-spacing:2px;
-  padding:6px 14px; border:1px solid #ddd; background:#fff; color:#666;
-  cursor:pointer; font-weight:bold; transition:all .15s;
+#stats-table {
+  width:100%; border-collapse:collapse; margin-top:0;
 }
-.sort-btn:hover { border-color:#111; color:#111; }
-.sort-btn.active { background:#111; color:#fff; border-color:#111; }
-.sort-btn.active.asc::after  { content:' ↑'; }
-.sort-btn.active.desc::after { content:' ↓'; }
-#stats-grid {
-  flex:1; overflow-y:auto; padding:24px 28px;
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px;
+#stats-table th {
+  font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  padding:14px 16px; text-align:left; border-bottom:2px solid #111;
+  background:#fff; position:sticky; top:0; z-index:2;
+  cursor:pointer; user-select:none; white-space:nowrap; color:#555;
+  transition:color .15s;
 }
-.stat-card {
-  border:1px solid #e8e8e8; padding:20px;
-  transition:border-color .15s, box-shadow .15s;
+#stats-table th:hover { color:#000; }
+#stats-table th.sorted { color:#000; }
+#stats-table th .sort-arrow { margin-left:4px; opacity:.4; }
+#stats-table th.sorted .sort-arrow { opacity:1; }
+#stats-table td {
+  padding:12px 16px; border-bottom:1px solid #f0f0f0; vertical-align:middle;
 }
-.stat-card:hover { border-color:#111; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
-.stat-card-name { font-size:14px; font-weight:bold; color:#000; margin-bottom:2px; }
-.stat-card-role { font-size:8px; letter-spacing:3px; color:#999; text-transform:uppercase; margin-bottom:16px; }
-.stat-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-.stat-row:last-child { margin-bottom:0; }
-.stat-label { font-size:9px; letter-spacing:1px; color:#666; width:68px; flex-shrink:0; }
-.stat-bar-bg { flex:1; height:4px; background:#f0f0f0; }
-.stat-bar-fill { height:100%; background:#111; transition:width .4s cubic-bezier(.4,0,.2,1); }
-.stat-val { font-size:10px; font-weight:bold; color:#111; width:32px; text-align:right; flex-shrink:0; }
+#stats-table tr:last-child td { border-bottom:none; }
+#stats-table tr:hover td { background:#fafafa; }
+.td-name { font-size:13px; font-weight:bold; color:#000; white-space:nowrap; }
+.td-role { font-size:9px; letter-spacing:2px; color:#999; text-transform:uppercase; white-space:nowrap; }
+.td-stat { min-width:120px; }
+.td-stat-inner { display:flex; align-items:center; gap:10px; }
+.bar-bg { flex:1; height:5px; background:#f0f0f0; min-width:60px; }
+.bar-fill { height:100%; background:#111; }
+.bar-val { font-size:10px; font-weight:bold; color:#111; width:30px; text-align:right; flex-shrink:0; }
 
 /* ── mode toggle (2D/3D) ── */
 #mode-toggle {
@@ -287,15 +285,21 @@ body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; co
 
 <!-- stats view -->
 <div id="stats-view">
-  <div id="stats-sort-bar">
-    <span>СОРТИРОВКА:</span>
-    <button class="sort-btn active asc" data-stat="name">ИМЯ</button>
-    <button class="sort-btn" data-stat="Сила">СИЛА</button>
-    <button class="sort-btn" data-stat="Здоровье">ЗДОРОВЬЕ</button>
-    <button class="sort-btn" data-stat="Скорость">СКОРОСТЬ</button>
-    <button class="sort-btn" data-stat="Стамина">СТАМИНА</button>
+  <div id="stats-table-wrap">
+    <table id="stats-table">
+      <thead>
+        <tr>
+          <th data-col="name">ИМЯ <span class="sort-arrow">↕</span></th>
+          <th data-col="role">РОЛЬ <span class="sort-arrow">↕</span></th>
+          <th data-col="Сила">СИЛА <span class="sort-arrow">↕</span></th>
+          <th data-col="Здоровье">ЗДОРОВЬЕ <span class="sort-arrow">↕</span></th>
+          <th data-col="Скорость">СКОРОСТЬ <span class="sort-arrow">↕</span></th>
+          <th data-col="Стамина">СТАМИНА <span class="sort-arrow">↕</span></th>
+        </tr>
+      </thead>
+      <tbody id="stats-tbody"></tbody>
+    </table>
   </div>
-  <div id="stats-grid"></div>
 </div>
 
 <div id="mode-toggle">
@@ -977,46 +981,45 @@ document.getElementById('nt-add').addEventListener('click',()=>{
 
 // ── stats view ──
 const STAT_KEYS=['Сила','Здоровье','Скорость','Стамина'];
-let sortStat='name', sortAsc=true;
+let sortCol='name', sortAsc=true;
 
-function renderStatsGrid(){
-  const grid=document.getElementById('stats-grid');
+function statCell(val){
+  return `<div class="td-stat-inner"><div class="bar-bg"><div class="bar-fill" style="width:${val}%"></div></div><div class="bar-val">${val}%</div></div>`;
+}
+function renderStatsTable(){
+  const tbody=document.getElementById('stats-tbody');
   const nodes=[...NODES];
   nodes.sort((a,b)=>{
-    let av,bv;
-    if(sortStat==='name'){ av=a.name; bv=b.name; return sortAsc?av.localeCompare(bv):bv.localeCompare(av); }
-    av=(a.stats||{})[sortStat]||0; bv=(b.stats||{})[sortStat]||0;
+    if(sortCol==='name') return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);
+    if(sortCol==='role') return sortAsc?a.role.localeCompare(b.role):b.role.localeCompare(a.role);
+    const av=(a.stats||{})[sortCol]||0, bv=(b.stats||{})[sortCol]||0;
     return sortAsc?av-bv:bv-av;
   });
-  grid.innerHTML='';
+  tbody.innerHTML='';
   nodes.forEach(n=>{
-    const stats=n.stats||{};
-    const rows=STAT_KEYS.map(k=>{
-      const v=stats[k]||0;
-      return `<div class="stat-row">
-        <div class="stat-label">${k}</div>
-        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:${v}%"></div></div>
-        <div class="stat-val">${v}%</div>
-      </div>`;
-    }).join('');
-    const card=document.createElement('div');
-    card.className='stat-card';
-    card.innerHTML=`<div class="stat-card-name">${n.name}</div><div class="stat-card-role">${n.role}</div>${rows}`;
-    grid.appendChild(card);
+    const s=n.stats||{};
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><div class="td-name">${n.name}</div></td>
+      <td><div class="td-role">${n.role}</div></td>
+      <td class="td-stat">${statCell(s['Сила']||0)}</td>
+      <td class="td-stat">${statCell(s['Здоровье']||0)}</td>
+      <td class="td-stat">${statCell(s['Скорость']||0)}</td>
+      <td class="td-stat">${statCell(s['Стамина']||0)}</td>`;
+    tbody.appendChild(tr);
   });
-  // animate bars in after paint
-  requestAnimationFrame(()=>{
-    grid.querySelectorAll('.stat-bar-fill').forEach(el=>{ const w=el.style.width; el.style.width='0'; requestAnimationFrame(()=>el.style.width=w); });
+  // update header arrows
+  document.querySelectorAll('#stats-table th').forEach(th=>{
+    const col=th.dataset.col;
+    th.classList.toggle('sorted', col===sortCol);
+    th.querySelector('.sort-arrow').textContent=col===sortCol?(sortAsc?'↑':'↓'):'↕';
   });
 }
-
-document.querySelectorAll('.sort-btn').forEach(btn=>btn.addEventListener('click',()=>{
-  const stat=btn.dataset.stat;
-  if(sortStat===stat) sortAsc=!sortAsc;
-  else{ sortStat=stat; sortAsc=stat==='name'; }
-  document.querySelectorAll('.sort-btn').forEach(b=>{ b.classList.remove('active','asc','desc'); });
-  btn.classList.add('active', sortAsc?'asc':'desc');
-  renderStatsGrid();
+document.querySelectorAll('#stats-table th').forEach(th=>th.addEventListener('click',()=>{
+  const col=th.dataset.col;
+  if(sortCol===col) sortAsc=!sortAsc;
+  else{ sortCol=col; sortAsc=col==='name'||col==='role'; }
+  renderStatsTable();
 }));
 
 // ── view switching ──
@@ -1042,7 +1045,7 @@ document.getElementById('tab-stats').addEventListener('click',()=>{
   document.getElementById('legend').style.display='none';
   document.getElementById('mode-toggle').style.display='none';
   if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
-  renderStatsGrid();
+  renderStatsTable();
 });
 
 loadData();
