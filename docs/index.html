@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>JAPERDAIS — Отношения</title>
 <style>
 :root {
@@ -275,6 +275,56 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
 #link-popup-save { flex:1; background:var(--fg); color:var(--bg); border:none; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:7px; cursor:pointer; }
 #link-popup-del  { background:var(--bg); color:#cc1133; border:1px solid #cc1133; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:7px 10px; cursor:pointer; }
 #link-popup-cancel { background:var(--bg); color:var(--sub); border:1px solid var(--dim); font-family:'Courier New',monospace; font-size:9px; padding:7px 10px; cursor:pointer; }
+
+/* ── responsive ── */
+@media (max-width:768px){
+  #drawer { width:100vw; }
+  #sidebar { width:100vw; }
+
+  #view-tabs { left:0; right:0; transform:none; width:100%; justify-content:stretch; }
+  .view-tab { flex:1; text-align:center; padding:12px 8px; font-size:8px; letter-spacing:2px; }
+
+  #hdr { padding:14px 12px 14px 52px; }
+  #hdr h1 { font-size:9px; letter-spacing:3px; }
+
+  #legend {
+    bottom:auto; top:50px; left:0; right:0;
+    flex-direction:row; flex-wrap:wrap; gap:6px;
+    padding:8px 12px; background:var(--bg);
+    border-bottom:1px solid var(--dim);
+    max-height:80px; overflow-y:auto;
+  }
+  .leg { font-size:8px; letter-spacing:1px; }
+
+  #mode-toggle { bottom:16px; right:12px; }
+  .mode-btn { font-size:9px; letter-spacing:1px; padding:7px 13px; }
+
+  #stats-table-wrap { padding:48px 8px 16px; }
+  #stats-table th, #stats-table td { padding:10px 8px; }
+  .td-stat { min-width:90px; }
+  .bar-bg { min-width:40px; }
+
+  .modal-box { padding:20px 16px; width:100vw; max-width:100vw; max-height:90vh; }
+
+  #link-popup { width:calc(100vw - 24px); left:12px !important; }
+
+  #sb-name { font-size:18px; }
+  #sb-body { padding:12px 16px 20px; }
+
+  .drawer-section h3 { font-size:8px; letter-spacing:2px; }
+  .setting-slider { width:100%; }
+
+  /* stats table horizontal scroll on mobile */
+  #stats-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  #stats-table { min-width:480px; }
+}
+
+@media (max-width:480px){
+  #view-tabs { border-bottom-width:1px; }
+  .view-tab { padding:10px 4px; font-size:7px; letter-spacing:1px; }
+  #legend { flex-direction:column; max-height:60px; }
+  .leg { font-size:7px; }
+}
 </style>
 </head>
 <body>
@@ -864,6 +914,46 @@ canvas.addEventListener('mouseleave',()=>{
   document.getElementById('tip').style.display='none';
   canvas.style.cursor=mode3D?'grab':'default';
 });
+
+// ── touch support ──
+let touchStartX=0,touchStartY=0,touchMoved=false;
+canvas.addEventListener('touchstart',e=>{
+  e.preventDefault();
+  const t=e.touches[0];
+  touchStartX=t.clientX; touchStartY=t.clientY; touchMoved=false;
+  if(mode3D){ isDragging=true; lastMX=t.clientX; lastMY=t.clientY; }
+},{passive:false});
+canvas.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  const t=e.touches[0];
+  const dx=t.clientX-touchStartX, dy=t.clientY-touchStartY;
+  if(Math.abs(dx)>6||Math.abs(dy)>6) touchMoved=true;
+  if(mode3D && isDragging){
+    rot.y+=(t.clientX-lastMX)*0.006;
+    rot.x+=(t.clientY-lastMY)*0.006;
+    rot.x=Math.max(-Math.PI/2,Math.min(Math.PI/2,rot.x));
+    lastMX=t.clientX; lastMY=t.clientY;
+  }
+},{passive:false});
+canvas.addEventListener('touchend',e=>{
+  e.preventDefault();
+  isDragging=false;
+  if(touchMoved) return;
+  // treat as tap/click
+  const r=canvas.getBoundingClientRect();
+  const mx=touchStartX-r.left, my=touchStartY-r.top;
+  const node=getNodeAt(mx,my);
+  if(node){
+    closeLinkPopup();
+    focusedId=focusedId===node.id?null:node.id;
+    if(focusedId) openSidebar(node); else closeSidebar();
+  } else if(!mode3D){
+    const link=getLinkAt(mx,my);
+    if(link){ openLinkPopup(link,touchStartX,touchStartY); }
+    else{ focusedId=null; closeSidebar(); closeLinkPopup(); }
+  }
+},{passive:false});
+
 window.addEventListener('resize',resize);
 
 // ── mode toggle ──
