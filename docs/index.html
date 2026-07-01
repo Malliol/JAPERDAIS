@@ -8,10 +8,10 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  background: #f0efe9;
+  background: #fff;
   font-family: 'Courier New', monospace;
   overflow: hidden;
-  color: #222;
+  color: #111;
 }
 
 #canvas { display: block; }
@@ -21,8 +21,8 @@ body {
   position: fixed;
   top: 0; right: 0;
   width: 300px; height: 100vh;
-  background: rgba(240,239,233,0.98);
-  border-left: 1px solid #ddd;
+  background: #fff;
+  border-left: 2px solid #111;
   padding: 28px 24px;
   transform: translateX(100%);
   transition: transform .35s cubic-bezier(.4,0,.2,1);
@@ -32,32 +32,35 @@ body {
 #sidebar.open { transform: translateX(0); }
 
 #sb-name {
-  font-size: 20px;
-  color: #111;
-  letter-spacing: 2px;
+  font-size: 22px;
+  color: #000;
+  letter-spacing: 1px;
   margin-bottom: 4px;
+  font-weight: bold;
 }
 #sb-role {
   font-size: 10px;
-  color: #999;
+  color: #555;
   letter-spacing: 3px;
   text-transform: uppercase;
   margin-bottom: 6px;
 }
 #sb-spectrum {
-  font-size: 10px;
-  color: #b07d00;
+  font-size: 11px;
+  color: #c47800;
   margin-bottom: 24px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #111;
+  font-weight: bold;
 }
 
 #sb-relations h3 {
   font-size: 9px;
   letter-spacing: 3px;
-  color: #bbb;
+  color: #888;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  margin-top: 6px;
 }
 
 .rel-item {
@@ -65,27 +68,26 @@ body {
   align-items: flex-start;
   gap: 10px;
   margin-bottom: 12px;
-  font-size: 11px;
   line-height: 1.5;
 }
 .rel-dot {
-  width: 6px; height: 6px;
+  width: 8px; height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  margin-top: 4px;
+  margin-top: 3px;
 }
-.rel-dot.pos  { background: #00aa55; }
-.rel-dot.neg  { background: #dd2244; }
-.rel-dot.neu  { background: #aaa; }
-.rel-dot.envy { background: #cc9900; }
-.rel-name { color: #111; font-size: 10px; }
-.rel-desc { color: #999; font-size: 10px; }
+.rel-dot.pos  { background: #1a9950; }
+.rel-dot.neg  { background: #cc1133; }
+.rel-dot.neu  { background: #999; }
+.rel-dot.envy { background: #c47800; }
+.rel-name { color: #000; font-size: 11px; font-weight: bold; }
+.rel-desc { color: #555; font-size: 10px; }
 
 #sb-close {
   position: absolute;
   top: 20px; right: 20px;
   background: none; border: none;
-  color: #bbb; font-size: 18px;
+  color: #999; font-size: 20px;
   cursor: pointer; line-height: 1;
 }
 #sb-close:hover { color: #000; }
@@ -94,14 +96,14 @@ body {
 #hdr {
   position: fixed;
   top: 0; left: 0;
-  padding: 16px 24px;
+  padding: 18px 24px;
   z-index: 40;
   pointer-events: none;
 }
 #hdr h1 {
   font-size: 11px;
   letter-spacing: 5px;
-  color: #bbb;
+  color: #999;
   font-weight: normal;
 }
 
@@ -112,25 +114,25 @@ body {
   z-index: 40;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
-.leg { display:flex; align-items:center; gap:8px; font-size:9px; color:#aaa; letter-spacing:2px; cursor:pointer; transition: color .2s; }
-.leg:hover { color: #333; }
-.leg.off { opacity: .2; }
-.leg-line { width: 24px; height: 1.5px; }
+.leg { display:flex; align-items:center; gap:10px; font-size:10px; color:#333; letter-spacing:2px; cursor:pointer; transition: color .2s; font-weight: bold; }
+.leg:hover { color: #000; }
+.leg.off { opacity: .25; }
+.leg-line { width: 28px; height: 2px; flex-shrink: 0; }
 .leg-line.pos  { background: #1a9950; }
 .leg-line.neg  { background: #cc1133; }
-.leg-line.neu  { background: none; border-top: 2px dashed #888; height:0; }
-.leg-line.envy { background: none; border-top: 2px dashed #c48a00; height:0; }
+.leg-line.neu  { background: none; border-top: 2.5px dashed #777; height:0; }
+.leg-line.envy { background: none; border-top: 2.5px dashed #c47800; height:0; }
 
 /* ── tooltip ── */
 #tip {
   position: fixed;
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 8px 12px;
-  font-size: 10px;
-  color: #666;
+  background: #111;
+  border: none;
+  padding: 8px 14px;
+  font-size: 11px;
+  color: #fff;
   pointer-events: none;
   display: none;
   z-index: 100;
@@ -361,11 +363,8 @@ function draw() {
   positionNodes();
   ctx.clearRect(0, 0, W, H);
 
-  // background
-  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W,H)*0.75);
-  bg.addColorStop(0, '#faf9f4');
-  bg.addColorStop(1, '#e4e0d4');
-  ctx.fillStyle = bg;
+  // background — clean white
+  ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, W, H);
 
   // edges
@@ -385,31 +384,30 @@ function draw() {
     ctx.save();
     ctx.globalAlpha = a;
 
-    // drop shadow always
-    ctx.shadowColor = 'rgba(0,0,0,0.13)';
-    ctx.shadowBlur = focused ? 18 : 8;
-    ctx.shadowOffsetX = 0;
+    // shadow
+    ctx.shadowColor = 'rgba(0,0,0,0.15)';
+    ctx.shadowBlur = focused ? 16 : 6;
     ctx.shadowOffsetY = focused ? 4 : 2;
 
     // circle bg
     ctx.beginPath();
-    ctx.arc(n.x, n.y, 32, 0, Math.PI * 2);
-    ctx.fillStyle = focused ? '#fff' : (hovered ? '#fff' : '#f8f7f2');
+    ctx.arc(n.x, n.y, 34, 0, Math.PI * 2);
+    ctx.fillStyle = focused ? '#111' : '#fff';
     ctx.fill();
     ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-    ctx.strokeStyle = focused ? '#222' : (hovered ? '#555' : '#c8c4b8');
-    ctx.lineWidth = focused ? 2 : 1.5;
+    ctx.strokeStyle = focused ? '#111' : (hovered ? '#111' : '#222');
+    ctx.lineWidth = focused ? 3 : (hovered ? 2.5 : 1.5);
     ctx.stroke();
 
     // name
-    ctx.fillStyle = a > 0.5 ? '#111' : '#ccc';
-    ctx.font = `${focused ? 'bold ' : ''}12px "Courier New"`;
+    ctx.fillStyle = focused ? '#fff' : (a > 0.5 ? '#000' : '#ddd');
+    ctx.font = `bold 12px "Courier New"`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(n.name, n.x, n.y - 6);
 
     // role
-    ctx.fillStyle = a > 0.5 ? '#555' : '#ddd';
+    ctx.fillStyle = focused ? '#aaa' : (a > 0.5 ? '#555' : '#ddd');
     ctx.font = '8px "Courier New"';
     ctx.fillText(n.role, n.x, n.y + 9);
 
