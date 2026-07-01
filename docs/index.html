@@ -6,171 +6,226 @@
 <title>JAPERDAIS — Отношения</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
+body { background:#fff; font-family:'Courier New',monospace; overflow:hidden; color:#111; }
+#canvas { display:block; }
 
-body {
-  background: #fff;
-  font-family: 'Courier New', monospace;
-  overflow: hidden;
-  color: #111;
+/* ── hamburger btn ── */
+#menu-btn {
+  position:fixed; top:14px; left:20px; z-index:120;
+  background:none; border:none; cursor:pointer; padding:4px;
+  display:flex; flex-direction:column; gap:5px;
 }
+#menu-btn span { display:block; width:22px; height:2px; background:#333; transition:.2s; }
+#menu-btn:hover span { background:#000; }
 
-#canvas { display: block; }
-
-/* ── sidebar (character info) ── */
-#sidebar {
-  position: fixed;
-  top: 0; right: 0;
-  width: 300px; height: 100vh;
-  background: #fff;
-  border-left: 2px solid #111;
-  padding: 28px 24px;
-  transform: translateX(100%);
-  transition: transform .35s cubic-bezier(.4,0,.2,1);
-  overflow-y: auto;
-  z-index: 50;
+/* ── left drawer ── */
+#drawer {
+  position:fixed; top:0; left:0; width:280px; height:100vh; z-index:110;
+  background:#fff; border-right:2px solid #111;
+  transform:translateX(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column;
 }
-#sidebar.open { transform: translateX(0); }
-#sb-name { font-size: 22px; color: #000; font-weight: bold; margin-bottom: 4px; }
-#sb-role { font-size: 10px; color: #555; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
-#sb-spectrum { font-size: 11px; color: #c47800; font-weight: bold; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid #111; }
-#sb-relations h3 { font-size: 9px; letter-spacing: 3px; color: #888; text-transform: uppercase; margin-bottom: 14px; margin-top: 6px; }
-.rel-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; line-height: 1.5; }
-.rel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
-.rel-dot.pos  { background: #1a9950; }
-.rel-dot.neg  { background: #cc1133; }
-.rel-dot.neu  { background: #999; }
-.rel-dot.envy { background: #c47800; }
-.rel-name { color: #000; font-size: 11px; font-weight: bold; }
-.rel-desc { color: #555; font-size: 10px; }
-#sb-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #999; font-size: 20px; cursor: pointer; }
-#sb-close:hover { color: #000; }
+#drawer.open { transform:translateX(0); }
+#drawer-header {
+  padding:20px 20px 16px; border-bottom:1px solid #eee;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0;
+}
+#drawer-header h2 { font-size:10px; letter-spacing:4px; color:#999; font-weight:normal; }
+#drawer-close { background:none; border:none; font-size:18px; color:#999; cursor:pointer; }
+#drawer-close:hover { color:#000; }
+#drawer-body { flex:1; overflow-y:auto; padding:20px; }
+.drawer-section { margin-bottom:24px; }
+.drawer-section h3 { font-size:9px; letter-spacing:3px; color:#bbb; text-transform:uppercase; margin-bottom:14px; }
+.drawer-item {
+  display:flex; align-items:center; gap:12px; padding:12px 14px;
+  border:1px solid #eee; margin-bottom:8px; cursor:pointer;
+  transition:border-color .15s, background .15s;
+}
+.drawer-item:hover { border-color:#111; background:#fafafa; }
+.drawer-item-icon { font-size:16px; width:20px; text-align:center; }
+.drawer-item-text { font-size:10px; letter-spacing:1px; color:#333; }
+.drawer-item-badge {
+  margin-left:auto; font-size:8px; letter-spacing:1px; padding:2px 6px;
+  background:#eee; color:#888;
+}
+#drawer-save-btn {
+  margin:0 20px 20px; padding:12px; background:#111; color:#fff; border:none;
+  font-family:'Courier New',monospace; font-size:10px; letter-spacing:3px;
+  cursor:pointer; font-weight:bold; transition:background .15s;
+}
+#drawer-save-btn:hover { background:#333; }
+
+/* ── overlay for drawer ── */
+#drawer-overlay {
+  position:fixed; inset:0; z-index:109; background:rgba(0,0,0,0.3);
+  display:none; opacity:0; transition:opacity .3s;
+}
+#drawer-overlay.open { display:block; opacity:1; }
 
 /* ── header ── */
-#hdr { position: fixed; top: 0; left: 0; padding: 18px 24px; z-index: 40; pointer-events: none; }
-#hdr h1 { font-size: 11px; letter-spacing: 5px; color: #999; font-weight: normal; }
+#hdr { position:fixed; top:0; left:0; padding:18px 24px 18px 60px; z-index:40; pointer-events:none; }
+#hdr h1 { font-size:11px; letter-spacing:5px; color:#bbb; font-weight:normal; }
 
 /* ── legend ── */
-#legend { position: fixed; bottom: 24px; left: 24px; z-index: 40; display: flex; flex-direction: column; gap: 10px; }
-.leg { display:flex; align-items:center; gap:10px; font-size:10px; color:#333; letter-spacing:2px; cursor:pointer; transition: color .2s; font-weight: bold; }
-.leg:hover { color: #000; }
-.leg.off { opacity: .25; }
-.leg-line { width: 28px; height: 2px; flex-shrink: 0; }
-.leg-line.pos  { background: #1a9950; }
-.leg-line.neg  { background: #cc1133; }
-.leg-line.neu  { background: none; border-top: 2.5px dashed #777; height:0; }
-.leg-line.envy { background: none; border-top: 2.5px dashed #c47800; height:0; }
+#legend { position:fixed; bottom:24px; left:24px; z-index:40; display:flex; flex-direction:column; gap:10px; }
+.leg { display:flex; align-items:center; gap:10px; font-size:10px; color:#333; letter-spacing:2px; cursor:pointer; transition:color .2s; font-weight:bold; }
+.leg:hover { color:#000; }
+.leg.off { opacity:.25; }
+.leg-line { width:28px; height:2px; flex-shrink:0; }
+.leg-line.pos  { background:#1a9950; }
+.leg-line.neg  { background:#cc1133; }
+.leg-line.neu  { background:none; border-top:2.5px dashed #777; height:0; }
+.leg-line.envy { background:none; border-top:2.5px dashed #c47800; height:0; }
 
 /* ── tooltip ── */
-#tip { position: fixed; background: #111; padding: 8px 14px; font-size: 11px; color: #fff; pointer-events: none; display: none; z-index: 100; letter-spacing: 1px; }
+#tip { position:fixed; background:#111; padding:8px 14px; font-size:11px; color:#fff; pointer-events:none; display:none; z-index:100; letter-spacing:1px; }
 
-/* ── edit button ── */
-#edit-btn {
-  position: fixed; bottom: 24px; right: 24px; z-index: 60;
-  background: #111; color: #fff; border: none; cursor: pointer;
-  font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 2px;
-  padding: 10px 18px; font-weight: bold;
-  transition: background .2s;
+/* ── character sidebar ── */
+#sidebar {
+  position:fixed; top:0; right:0; width:320px; height:100vh;
+  background:#fff; border-left:2px solid #111;
+  transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto; z-index:50; display:flex; flex-direction:column;
 }
-#edit-btn:hover { background: #333; }
+#sidebar.open { transform:translateX(0); }
 
-/* ── editor overlay ── */
-#editor {
-  position: fixed; inset: 0; z-index: 200;
-  background: #fff;
-  display: none;
-  flex-direction: column;
+#sb-top { padding:24px 22px 16px; border-bottom:2px solid #111; flex-shrink:0; position:relative; }
+#sb-close { position:absolute; top:18px; right:18px; background:none; border:none; color:#999; font-size:20px; cursor:pointer; }
+#sb-close:hover { color:#000; }
+#sb-name { font-size:22px; color:#000; font-weight:bold; margin-bottom:3px; padding-right:24px; }
+#sb-role { font-size:9px; color:#555; letter-spacing:3px; text-transform:uppercase; margin-bottom:6px; }
+#sb-spectrum { font-size:10px; color:#c47800; font-weight:bold; }
+
+#sb-body { flex:1; overflow-y:auto; padding:16px 22px 24px; }
+
+.rel-section-title {
+  font-size:9px; letter-spacing:3px; color:#aaa; text-transform:uppercase;
+  margin:16px 0 10px; display:flex; align-items:center; justify-content:space-between;
 }
-#editor.open { display: flex; }
-
-#editor-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 28px;
-  border-bottom: 2px solid #111;
-  flex-shrink: 0;
+.rel-add-btn {
+  background:none; border:1px solid #ddd; color:#888; cursor:pointer;
+  font-family:'Courier New',monospace; font-size:8px; letter-spacing:1px; padding:2px 7px;
+  transition:all .15s;
 }
-#editor-header h2 { font-size: 13px; letter-spacing: 4px; font-weight: bold; }
-#editor-header-right { display: flex; gap: 12px; align-items: center; }
+.rel-add-btn:hover { border-color:#111; color:#111; }
 
-.btn {
-  font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 2px;
-  padding: 8px 16px; cursor: pointer; border: none; font-weight: bold;
-  transition: background .15s;
+/* relationship row */
+.rel-row {
+  display:flex; align-items:flex-start; gap:8px; padding:8px 0;
+  border-bottom:1px solid #f0f0f0; position:relative;
 }
-.btn-primary { background: #111; color: #fff; }
-.btn-primary:hover { background: #333; }
-.btn-secondary { background: #eee; color: #111; }
-.btn-secondary:hover { background: #ddd; }
-.btn-danger { background: #cc1133; color: #fff; }
-.btn-danger:hover { background: #aa0022; }
-.btn-success { background: #1a9950; color: #fff; }
-.btn-success:hover { background: #157a40; }
+.rel-row:last-child { border-bottom:none; }
+.rel-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+.rel-dot.pos  { background:#1a9950; }
+.rel-dot.neg  { background:#cc1133; }
+.rel-dot.neu  { background:#999; }
+.rel-dot.envy { background:#c47800; }
+.rel-text { flex:1; min-width:0; }
+.rel-name { font-size:11px; font-weight:bold; color:#000; }
+.rel-desc { font-size:10px; color:#666; margin-top:1px; }
+.rel-btns { display:none; gap:4px; flex-shrink:0; }
+.rel-row:hover .rel-btns { display:flex; }
+.rel-icon-btn { background:none; border:none; cursor:pointer; font-size:11px; color:#bbb; padding:1px 4px; transition:color .15s; }
+.rel-icon-btn:hover { color:#111; }
 
-#editor-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
-
-/* table */
-#rel-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-#rel-table th {
-  text-align: left; font-size: 9px; letter-spacing: 3px; color: #888;
-  text-transform: uppercase; padding: 0 8px 12px; border-bottom: 2px solid #111;
+/* edit form inside row */
+.rel-edit-form { display:none; flex-direction:column; gap:6px; width:100%; padding:6px 0; }
+.rel-edit-form.active { display:flex; }
+.rel-edit-form select,
+.rel-edit-form input {
+  font-family:'Courier New',monospace; font-size:10px;
+  border:1px solid #ddd; padding:5px 8px; background:#fff; width:100%;
 }
-#rel-table td { padding: 10px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
-#rel-table tr:hover td { background: #f8f8f8; }
-
-.type-pill {
-  display: inline-block; padding: 2px 8px; font-size: 9px; letter-spacing: 1px;
-  font-weight: bold; border-radius: 2px;
-}
-.type-pill.pos  { background: #e8f8ef; color: #1a9950; }
-.type-pill.neg  { background: #fde8ec; color: #cc1133; }
-.type-pill.neu  { background: #f0f0f0; color: #666; }
-.type-pill.envy { background: #fdf5e0; color: #c47800; }
-
-.edit-inline { font-family: 'Courier New', monospace; font-size: 11px; border: 1px solid #ddd; padding: 4px 8px; width: 100%; background: #fff; }
-.edit-inline:focus { outline: 2px solid #111; border-color: transparent; }
-
-select.edit-inline { cursor: pointer; }
-
-.icon-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 2px 6px; opacity: .5; transition: opacity .15s; }
-.icon-btn:hover { opacity: 1; }
-
-#add-row { margin-top: 16px; }
+.rel-edit-form select:focus,
+.rel-edit-form input:focus { outline:2px solid #111; border-color:transparent; }
+.rel-edit-actions { display:flex; gap:6px; }
+.rel-save { background:#111; color:#fff; border:none; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:5px 10px; cursor:pointer; }
+.rel-cancel { background:none; border:1px solid #ddd; font-family:'Courier New',monospace; font-size:9px; letter-spacing:1px; padding:5px 10px; cursor:pointer; color:#666; }
 
 /* ── save modal ── */
-#save-modal {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(0,0,0,0.5);
-  display: none; align-items: center; justify-content: center;
-}
-#save-modal.open { display: flex; }
-#save-box {
-  background: #fff; border: 2px solid #111;
-  padding: 32px; width: 420px; max-width: 90vw;
-}
-#save-box h3 { font-size: 12px; letter-spacing: 3px; margin-bottom: 20px; }
-#save-box p { font-size: 10px; color: #555; line-height: 1.7; margin-bottom: 16px; }
-#save-box a { color: #111; }
-#token-input {
-  width: 100%; font-family: 'Courier New', monospace; font-size: 11px;
-  border: 2px solid #111; padding: 10px; margin-bottom: 8px; background: #f8f8f8;
-}
-#token-input:focus { outline: none; background: #fff; }
-#save-status { font-size: 10px; min-height: 20px; margin-bottom: 16px; letter-spacing: 1px; }
-#save-status.ok  { color: #1a9950; }
-#save-status.err { color: #cc1133; }
-#save-modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+#save-modal { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; }
+#save-modal.open { display:flex; }
+#save-box { background:#fff; border:2px solid #111; padding:32px; width:420px; max-width:90vw; }
+#save-box h3 { font-size:12px; letter-spacing:3px; margin-bottom:16px; font-weight:bold; }
+#save-box p { font-size:10px; color:#555; line-height:1.8; margin-bottom:14px; }
+#save-box a { color:#111; }
+#token-input { width:100%; font-family:'Courier New',monospace; font-size:11px; border:2px solid #111; padding:10px; margin-bottom:8px; background:#f8f8f8; }
+#token-input:focus { outline:none; background:#fff; }
+#save-status { font-size:10px; min-height:18px; margin-bottom:14px; letter-spacing:1px; }
+#save-status.ok  { color:#1a9950; }
+#save-status.err { color:#cc1133; }
+#save-modal-btns { display:flex; gap:10px; justify-content:flex-end; }
+.mbtn { font-family:'Courier New',monospace; font-size:10px; letter-spacing:2px; padding:9px 18px; cursor:pointer; border:none; font-weight:bold; }
+.mbtn-ok  { background:#111; color:#fff; }
+.mbtn-ok:hover { background:#333; }
+.mbtn-cancel { background:#eee; color:#111; }
+.mbtn-cancel:hover { background:#ddd; }
 
 /* ── loading ── */
-#loading {
-  position: fixed; inset: 0; background: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; letter-spacing: 4px; color: #999; z-index: 999;
-}
+#loading { position:fixed; inset:0; background:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; letter-spacing:4px; color:#999; z-index:999; }
 </style>
 </head>
 <body>
 
 <div id="loading">ЗАГРУЗКА...</div>
 <canvas id="canvas"></canvas>
+
+<!-- hamburger -->
+<button id="menu-btn" title="Меню">
+  <span></span><span></span><span></span>
+</button>
+
+<div id="drawer-overlay"></div>
+
+<!-- left drawer -->
+<div id="drawer">
+  <div id="drawer-header">
+    <h2>ИНСТРУМЕНТЫ</h2>
+    <button id="drawer-close">×</button>
+  </div>
+  <div id="drawer-body">
+    <div class="drawer-section">
+      <h3>ДАННЫЕ</h3>
+      <div class="drawer-item" id="d-save">
+        <span class="drawer-item-icon">↑</span>
+        <span class="drawer-item-text">СОХРАНИТЬ В РЕПО</span>
+      </div>
+      <div class="drawer-item" style="opacity:.4;cursor:default;">
+        <span class="drawer-item-icon">↓</span>
+        <span class="drawer-item-text">ЭКСПОРТ JSON</span>
+        <span class="drawer-item-badge">СКОРО</span>
+      </div>
+    </div>
+    <div class="drawer-section">
+      <h3>ВИД</h3>
+      <div class="drawer-item" style="opacity:.4;cursor:default;">
+        <span class="drawer-item-icon">◎</span>
+        <span class="drawer-item-text">ГРУППИРОВКА</span>
+        <span class="drawer-item-badge">СКОРО</span>
+      </div>
+      <div class="drawer-item" style="opacity:.4;cursor:default;">
+        <span class="drawer-item-icon">◈</span>
+        <span class="drawer-item-text">ВРЕМЕННАЯ ШКАЛА</span>
+        <span class="drawer-item-badge">СКОРО</span>
+      </div>
+      <div class="drawer-item" style="opacity:.4;cursor:default;">
+        <span class="drawer-item-icon">⊞</span>
+        <span class="drawer-item-text">МАТРИЦА ОТНОШЕНИЙ</span>
+        <span class="drawer-item-badge">СКОРО</span>
+      </div>
+    </div>
+    <div class="drawer-section">
+      <h3>ПЕРСОНАЖИ</h3>
+      <div class="drawer-item" style="opacity:.4;cursor:default;">
+        <span class="drawer-item-icon">＋</span>
+        <span class="drawer-item-text">ДОБАВИТЬ ПЕРСОНАЖА</span>
+        <span class="drawer-item-badge">СКОРО</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="hdr"><h1>JAPERDAIS · ДИАГРАММА ОТНОШЕНИЙ</h1></div>
 
 <div id="legend">
@@ -180,355 +235,301 @@ select.edit-inline { cursor: pointer; }
   <div class="leg" data-type="envy"><div class="leg-line envy"></div>ЗАВИСТЬ</div>
 </div>
 
+<!-- character sidebar -->
 <div id="sidebar">
-  <button id="sb-close">×</button>
-  <div id="sb-name"></div>
-  <div id="sb-role"></div>
-  <div id="sb-spectrum"></div>
-  <div id="sb-relations"></div>
+  <div id="sb-top">
+    <button id="sb-close">×</button>
+    <div id="sb-name"></div>
+    <div id="sb-role"></div>
+    <div id="sb-spectrum"></div>
+  </div>
+  <div id="sb-body"></div>
 </div>
 
 <div id="tip"></div>
-<button id="edit-btn">✏ РЕДАКТОР</button>
 
-<!-- ── editor overlay ── -->
-<div id="editor">
-  <div id="editor-header">
-    <h2>РЕДАКТОР ОТНОШЕНИЙ</h2>
-    <div id="editor-header-right">
-      <button class="btn btn-success" id="save-gh-btn">↑ СОХРАНИТЬ В РЕПО</button>
-      <button class="btn btn-secondary" id="editor-close">ЗАКРЫТЬ</button>
-    </div>
-  </div>
-  <div id="editor-body">
-    <table id="rel-table">
-      <thead>
-        <tr>
-          <th>ОТ</th>
-          <th>К</th>
-          <th>ТИП</th>
-          <th style="width:35%">ОПИСАНИЕ</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="rel-tbody"></tbody>
-    </table>
-    <button class="btn btn-secondary" id="add-row" style="margin-top:20px">+ ДОБАВИТЬ ОТНОШЕНИЕ</button>
-  </div>
-</div>
-
-<!-- ── save modal ── -->
+<!-- save modal -->
 <div id="save-modal">
   <div id="save-box">
     <h3>СОХРАНИТЬ В РЕПО</h3>
     <p>Нужен GitHub токен с правом <strong>repo</strong>.<br>
     <a href="https://github.com/settings/tokens/new?scopes=repo&description=JAPERDAIS+editor" target="_blank">Создать токен →</a><br>
-    Токен сохраняется в localStorage браузера.</p>
-    <input type="password" id="token-input" placeholder="ghp_..." autocomplete="off">
+    Токен хранится в localStorage браузера.</p>
+    <input type="password" id="token-input" placeholder="ghp_...">
     <div id="save-status"></div>
     <div id="save-modal-btns">
-      <button class="btn btn-secondary" id="save-cancel">ОТМЕНА</button>
-      <button class="btn btn-success" id="save-confirm">СОХРАНИТЬ</button>
+      <button class="mbtn mbtn-cancel" id="save-cancel">ОТМЕНА</button>
+      <button class="mbtn mbtn-ok" id="save-confirm">СОХРАНИТЬ</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── state ──
-let NODES = [], LINKS = [];
-let nodeMap = {}, outgoing = {}, incoming = {};
-let hiddenTypes = new Set();
-let focusedId = null, hoveredNode = null;
+let NODES=[], LINKS=[];
+let nodeMap={}, outgoing={}, incoming={};
+let hiddenTypes=new Set(), focusedId=null, hoveredNode=null;
+const canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d');
+let W,H,cx,cy,radius,DPR;
+const COLORS={pos:'#1a9950',neg:'#cc1133',neu:'#888',envy:'#c47800'};
+const TYPE_LABELS={pos:'положительно',neg:'негативно',neu:'нейтрально',envy:'зависть'};
+const TYPE_KEYS=['pos','neg','neu','envy'];
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-let W, H, cx, cy, radius, DPR;
-
-const COLORS = { pos:'#1a9950', neg:'#cc1133', neu:'#888', envy:'#c47800' };
-const TYPE_LABELS = { pos:'положительно', neg:'негативно', neu:'нейтрально', envy:'зависть' };
-
-// ── load data ──
-async function loadData() {
-  const res = await fetch('data.json?v=' + Date.now());
-  const json = await res.json();
-  NODES = json.nodes;
-  LINKS = json.links;
+// ── data ──
+async function loadData(){
+  const r=await fetch('data.json?v='+Date.now());
+  const j=await r.json();
+  NODES=j.nodes; LINKS=j.links;
   buildIndexes();
-  document.getElementById('loading').style.display = 'none';
+  document.getElementById('loading').style.display='none';
   resize();
 }
-
-function buildIndexes() {
-  nodeMap = {};
-  outgoing = {};
-  incoming = {};
-  NODES.forEach(n => { nodeMap[n.id] = n; outgoing[n.id] = []; incoming[n.id] = []; });
-  LINKS.forEach(l => { outgoing[l.from].push(l); incoming[l.to].push(l); });
+function buildIndexes(){
+  nodeMap={}; outgoing={}; incoming={};
+  NODES.forEach(n=>{nodeMap[n.id]=n; outgoing[n.id]=[]; incoming[n.id]=[];});
+  LINKS.forEach((l,i)=>{l._i=i; outgoing[l.from].push(l); incoming[l.to].push(l);});
 }
 
-// ── canvas / drawing ──
-function resize() {
-  DPR = window.devicePixelRatio || 1;
-  W = window.innerWidth; H = window.innerHeight;
-  canvas.width = W * DPR; canvas.height = H * DPR;
-  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  cx = W / 2; cy = H / 2;
-  radius = Math.min(W, H) * 0.34;
-  positionNodes();
-  draw();
+// ── canvas ──
+function resize(){
+  DPR=window.devicePixelRatio||1; W=window.innerWidth; H=window.innerHeight;
+  canvas.width=W*DPR; canvas.height=H*DPR;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cx=W/2; cy=H/2; radius=Math.min(W,H)*0.34;
+  positionNodes(); draw();
 }
-
-function positionNodes() {
-  NODES.forEach((n, i) => {
-    const angle = (i / NODES.length) * 2 * Math.PI - Math.PI / 2;
-    n.x = cx + radius * Math.cos(angle);
-    n.y = cy + radius * Math.sin(angle);
+function positionNodes(){
+  NODES.forEach((n,i)=>{
+    const a=(i/NODES.length)*2*Math.PI-Math.PI/2;
+    n.x=cx+radius*Math.cos(a); n.y=cy+radius*Math.sin(a);
   });
 }
-
-// bidirectional detection
-function getBidi() {
-  const s = new Set();
-  LINKS.forEach(a => LINKS.forEach(b => {
-    if (a.from === b.to && a.to === b.from) s.add(a.from + '->' + a.to);
-  }));
+function getBidi(){
+  const s=new Set();
+  LINKS.forEach(a=>LINKS.forEach(b=>{if(a.from===b.to&&a.to===b.from)s.add(a.from+'->'+a.to);}));
   return s;
 }
-
-function edgeAlpha(link) {
-  if (hiddenTypes.has(link.type)) return 0;
-  if (focusedId && link.from !== focusedId && link.to !== focusedId) return 0.05;
-  return link.type === 'neu' ? 0.7 : 1.0;
+function edgeAlpha(l){
+  if(hiddenTypes.has(l.type))return 0;
+  if(focusedId&&l.from!==focusedId&&l.to!==focusedId)return 0.05;
+  return l.type==='neu'?0.7:1.0;
 }
-
-function nodeAlpha(node) {
-  if (!focusedId) return 1;
-  if (node.id === focusedId) return 1;
-  return LINKS.some(l => (l.from === focusedId && l.to === node.id) || (l.to === focusedId && l.from === node.id)) ? 0.9 : 0.15;
+function nodeAlpha(n){
+  if(!focusedId)return 1;
+  if(n.id===focusedId)return 1;
+  return LINKS.some(l=>(l.from===focusedId&&l.to===n.id)||(l.to===focusedId&&l.from===n.id))?0.9:0.15;
 }
-
-function drawArrow(x1, y1, x2, y2, color, alpha, ltype, isBi) {
-  const dx = x2-x1, dy = y2-y1, dist = Math.sqrt(dx*dx+dy*dy);
-  if (dist < 1) return;
-  const ux = dx/dist, uy = dy/dist, R = 34;
-  const sx = x1+ux*R, sy = y1+uy*R, ex = x2-ux*R, ey = y2-uy*R;
-  const mx = (sx+ex)/2, my = (sy+ey)/2;
-  const bend = isBi ? dist*0.22 : dist*0.08;
-  const cpx = mx + (-uy)*bend, cpy = my + ux*bend;
-
-  ctx.save();
-  ctx.globalAlpha = alpha;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = ltype === 'neu' ? 1.3 : 2;
-  ctx.shadowBlur = 0;
-  if (ltype === 'neu')       ctx.setLineDash([4,4]);
-  else if (ltype === 'envy') ctx.setLineDash([6,4]);
-  else                       ctx.setLineDash([]);
-
+function drawArrow(x1,y1,x2,y2,color,alpha,ltype,isBi){
+  const dx=x2-x1,dy=y2-y1,dist=Math.sqrt(dx*dx+dy*dy);
+  if(dist<1)return;
+  const ux=dx/dist,uy=dy/dist,R=34;
+  const sx=x1+ux*R,sy=y1+uy*R,ex=x2-ux*R,ey=y2-uy*R;
+  const mx=(sx+ex)/2,my=(sy+ey)/2,bend=isBi?dist*.22:dist*.08;
+  const cpx=mx+(-uy)*bend,cpy=my+ux*bend;
+  ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle=color;
+  ctx.lineWidth=ltype==='neu'?1.3:2; ctx.shadowBlur=0;
+  if(ltype==='neu')ctx.setLineDash([4,4]);
+  else if(ltype==='envy')ctx.setLineDash([6,4]);
+  else ctx.setLineDash([]);
   ctx.beginPath(); ctx.moveTo(sx,sy); ctx.quadraticCurveTo(cpx,cpy,ex,ey); ctx.stroke();
-
-  // arrowhead
-  const t = 0.9;
-  const ax = (1-t)*(1-t)*sx + 2*(1-t)*t*cpx + t*t*ex;
-  const ay = (1-t)*(1-t)*sy + 2*(1-t)*t*cpy + t*t*ey;
-  const tlen = Math.sqrt((ex-ax)**2+(ey-ay)**2)||1;
-  const tx=(ex-ax)/tlen, ty=(ey-ay)/tlen, arr=8;
+  const t=.9,ax=(1-t)**2*sx+2*(1-t)*t*cpx+t*t*ex,ay=(1-t)**2*sy+2*(1-t)*t*cpy+t*t*ey;
+  const tlen=Math.sqrt((ex-ax)**2+(ey-ay)**2)||1,tx=(ex-ax)/tlen,ty=(ey-ay)/tlen,arr=8;
   ctx.setLineDash([]);
-  ctx.beginPath();
-  ctx.moveTo(ex,ey);
-  ctx.lineTo(ex-arr*tx+arr*0.4*(-ty), ey-arr*ty+arr*0.4*tx);
-  ctx.lineTo(ex-arr*tx-arr*0.4*(-ty), ey-arr*ty-arr*0.4*tx);
-  ctx.closePath(); ctx.fillStyle = color; ctx.fill();
-  ctx.restore();
+  ctx.beginPath(); ctx.moveTo(ex,ey);
+  ctx.lineTo(ex-arr*tx+arr*.4*(-ty),ey-arr*ty+arr*.4*tx);
+  ctx.lineTo(ex-arr*tx-arr*.4*(-ty),ey-arr*ty-arr*.4*tx);
+  ctx.closePath(); ctx.fillStyle=color; ctx.fill(); ctx.restore();
 }
-
-function draw() {
-  if (!NODES.length) return;
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
-  const bidi = getBidi();
-  LINKS.forEach(link => {
-    const a = edgeAlpha(link); if (!a) return;
-    const f = nodeMap[link.from], t = nodeMap[link.to];
-    if (!f || !t) return;
-    drawArrow(f.x,f.y,t.x,t.y, COLORS[link.type], a, link.type, bidi.has(link.from+'->'+link.to));
+function draw(){
+  if(!NODES.length)return;
+  ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  const bidi=getBidi();
+  LINKS.forEach(link=>{
+    const a=edgeAlpha(link); if(!a)return;
+    const f=nodeMap[link.from],t=nodeMap[link.to]; if(!f||!t)return;
+    drawArrow(f.x,f.y,t.x,t.y,COLORS[link.type],a,link.type,bidi.has(link.from+'->'+link.to));
   });
-  NODES.forEach(n => {
-    const a = nodeAlpha(n), focused = n.id===focusedId, hovered = n===hoveredNode;
-    ctx.save();
-    ctx.globalAlpha = a;
-    ctx.shadowColor = 'rgba(0,0,0,0.15)';
-    ctx.shadowBlur = focused ? 16 : 6;
-    ctx.shadowOffsetY = focused ? 4 : 2;
+  NODES.forEach(n=>{
+    const a=nodeAlpha(n),focused=n.id===focusedId,hovered=n===hoveredNode;
+    ctx.save(); ctx.globalAlpha=a;
+    ctx.shadowColor='rgba(0,0,0,0.15)'; ctx.shadowBlur=focused?16:6; ctx.shadowOffsetY=focused?4:2;
     ctx.beginPath(); ctx.arc(n.x,n.y,34,0,Math.PI*2);
-    ctx.fillStyle = focused ? '#111' : '#fff'; ctx.fill();
+    ctx.fillStyle=focused?'#111':'#fff'; ctx.fill();
     ctx.shadowBlur=0; ctx.shadowOffsetY=0;
-    ctx.strokeStyle = focused?'#111':(hovered?'#111':'#222');
-    ctx.lineWidth = focused?3:(hovered?2.5:1.5); ctx.stroke();
-    ctx.fillStyle = focused?'#fff':(a>0.5?'#000':'#ddd');
-    ctx.font = 'bold 12px "Courier New"';
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(n.name, n.x, n.y-6);
-    ctx.fillStyle = focused?'#aaa':(a>0.5?'#555':'#ddd');
-    ctx.font = '8px "Courier New"';
-    ctx.fillText(n.role, n.x, n.y+9);
+    ctx.strokeStyle=focused?'#111':(hovered?'#111':'#222');
+    ctx.lineWidth=focused?3:(hovered?2.5:1.5); ctx.stroke();
+    ctx.fillStyle=focused?'#fff':(a>.5?'#000':'#ddd');
+    ctx.font='bold 12px "Courier New"'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(n.name,n.x,n.y-6);
+    ctx.fillStyle=focused?'#aaa':(a>.5?'#555':'#ddd');
+    ctx.font='8px "Courier New"'; ctx.fillText(n.role,n.x,n.y+9);
     ctx.restore();
   });
 }
 
 // ── interaction ──
-function getNodeAt(mx,my) {
-  return NODES.find(n => (mx-n.x)**2+(my-n.y)**2 < 36*36);
-}
-
-canvas.addEventListener('mousemove', e => {
-  const r=canvas.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
-  hoveredNode = getNodeAt(mx,my);
+function getNodeAt(mx,my){return NODES.find(n=>(mx-n.x)**2+(my-n.y)**2<36*36);}
+canvas.addEventListener('mousemove',e=>{
+  const r=canvas.getBoundingClientRect();
+  hoveredNode=getNodeAt(e.clientX-r.left,e.clientY-r.top);
   const tip=document.getElementById('tip');
-  if (hoveredNode) {
-    canvas.style.cursor='pointer';
-    tip.style.display='block';
-    tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-10)+'px';
-    tip.textContent=hoveredNode.spectrum;
-  } else { canvas.style.cursor='default'; tip.style.display='none'; }
+  if(hoveredNode){canvas.style.cursor='pointer';tip.style.display='block';tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-10)+'px';tip.textContent=hoveredNode.spectrum;}
+  else{canvas.style.cursor='default';tip.style.display='none';}
   draw();
 });
-
-canvas.addEventListener('click', e => {
-  const r=canvas.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
-  const node=getNodeAt(mx,my);
-  if (node) { focusedId = focusedId===node.id ? null : node.id; if(focusedId) openSidebar(node); else closeSidebar(); }
-  else { focusedId=null; closeSidebar(); }
+canvas.addEventListener('click',e=>{
+  const r=canvas.getBoundingClientRect(),node=getNodeAt(e.clientX-r.left,e.clientY-r.top);
+  if(node){focusedId=focusedId===node.id?null:node.id; if(focusedId)openSidebar(node); else closeSidebar();}
+  else{focusedId=null;closeSidebar();}
   draw();
 });
+canvas.addEventListener('mouseleave',()=>{hoveredNode=null;document.getElementById('tip').style.display='none';draw();});
+window.addEventListener('resize',resize);
 
-canvas.addEventListener('mouseleave',()=>{ hoveredNode=null; document.getElementById('tip').style.display='none'; draw(); });
-window.addEventListener('resize', resize);
+// ── legend ──
+document.querySelectorAll('.leg').forEach(el=>el.addEventListener('click',()=>{
+  const t=el.dataset.type;
+  hiddenTypes.has(t)?hiddenTypes.delete(t):hiddenTypes.add(t);
+  el.classList.toggle('off'); draw();
+}));
 
 // ── sidebar ──
-function openSidebar(node) {
+function typeSelect(val){
+  return `<select class="rel-type-sel">${TYPE_KEYS.map(k=>`<option value="${k}"${k===val?' selected':''}>${TYPE_LABELS[k]}</option>`).join('')}</select>`;
+}
+function toOptions(excludeId){
+  return NODES.filter(n=>n.id!==excludeId).map(n=>`<option value="${n.id}">${n.name}</option>`).join('');
+}
+
+function renderRelRow(link, isOutgoing, currentNodeId){
+  const peerId = isOutgoing ? link.to : link.from;
+  const peer = nodeMap[peerId];
+  const idx = LINKS.indexOf(link);
+  return `
+  <div class="rel-row" data-idx="${idx}">
+    <div class="rel-dot ${link.type}"></div>
+    <div class="rel-text">
+      <div class="rel-name">${peer?.name||peerId}</div>
+      <div class="rel-desc">${link.label||'—'}</div>
+    </div>
+    <div class="rel-btns">
+      <button class="rel-icon-btn" data-action="edit" title="Изменить">✏</button>
+      <button class="rel-icon-btn" data-action="del"  title="Удалить">✕</button>
+    </div>
+    <div class="rel-edit-form">
+      ${isOutgoing ? '' : `<select class="rel-from-sel">${NODES.filter(n=>n.id!==currentNodeId).map(n=>`<option value="${n.id}"${n.id===link.from?' selected':''}>${n.name}</option>`).join('')}</select>`}
+      ${typeSelect(link.type)}
+      <input class="rel-label-inp" value="${link.label||''}">
+      <div class="rel-edit-actions">
+        <button class="rel-save">✓ СОХРАНИТЬ</button>
+        <button class="rel-cancel">ОТМЕНА</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function openSidebar(node){
   document.getElementById('sb-name').textContent=node.name;
   document.getElementById('sb-role').textContent=node.role;
   document.getElementById('sb-spectrum').textContent=node.spectrum;
+
+  const out=outgoing[node.id]||[], inc=incoming[node.id]||[];
   let html='';
-  if (outgoing[node.id]?.length) {
-    html+='<h3>КАК ОТНОСИТСЯ К ДРУГИМ</h3>';
-    outgoing[node.id].forEach(l=>{
-      const t=nodeMap[l.to];
-      html+=`<div class="rel-item"><div class="rel-dot ${l.type}"></div><div><div class="rel-name">${t?.name||l.to}</div><div class="rel-desc">${l.label}</div></div></div>`;
-    });
-  }
-  if (incoming[node.id]?.length) {
-    html+='<br><h3>КАК ДРУГИЕ ОТНОСЯТСЯ</h3>';
-    incoming[node.id].forEach(l=>{
-      const s=nodeMap[l.from];
-      html+=`<div class="rel-item"><div class="rel-dot ${l.type}"></div><div><div class="rel-name">${s?.name||l.from}</div><div class="rel-desc">${l.label}</div></div></div>`;
-    });
-  }
-  document.getElementById('sb-relations').innerHTML=html;
+
+  html+=`<div class="rel-section-title">КАК ОТНОСИТСЯ К ДРУГИМ <button class="rel-add-btn" data-dir="out">+ ДОБАВИТЬ</button></div>`;
+  out.forEach(l=>{ html+=renderRelRow(l,true,node.id); });
+
+  html+=`<div class="rel-section-title" style="margin-top:20px">КАК ДРУГИЕ ОТНОСЯТСЯ <button class="rel-add-btn" data-dir="in">+ ДОБАВИТЬ</button></div>`;
+  inc.forEach(l=>{ html+=renderRelRow(l,false,node.id); });
+
+  const body=document.getElementById('sb-body');
+  body.innerHTML=html;
+
+  // edit / delete buttons
+  body.querySelectorAll('[data-action="edit"]').forEach(btn=>btn.addEventListener('click',e=>{
+    const row=e.target.closest('.rel-row');
+    row.querySelector('.rel-edit-form').classList.add('active');
+  }));
+  body.querySelectorAll('[data-action="del"]').forEach(btn=>btn.addEventListener('click',e=>{
+    if(!confirm('Удалить отношение?'))return;
+    const idx=+e.target.closest('.rel-row').dataset.idx;
+    LINKS.splice(idx,1); buildIndexes(); draw(); openSidebar(node);
+  }));
+  body.querySelectorAll('.rel-save').forEach(btn=>btn.addEventListener('click',e=>{
+    const row=e.target.closest('.rel-row');
+    const idx=+row.dataset.idx;
+    const typeSel=row.querySelector('.rel-type-sel');
+    const labelInp=row.querySelector('.rel-label-inp');
+    const fromSel=row.querySelector('.rel-from-sel');
+    if(typeSel) LINKS[idx].type=typeSel.value;
+    if(labelInp) LINKS[idx].label=labelInp.value;
+    if(fromSel) LINKS[idx].from=fromSel.value;
+    buildIndexes(); draw(); openSidebar(node);
+  }));
+  body.querySelectorAll('.rel-cancel').forEach(btn=>btn.addEventListener('click',e=>{
+    e.target.closest('.rel-edit-form').classList.remove('active');
+  }));
+
+  // add buttons
+  body.querySelectorAll('.rel-add-btn').forEach(btn=>btn.addEventListener('click',e=>{
+    const dir=e.target.dataset.dir;
+    if(dir==='out'){
+      const firstOther=NODES.find(n=>n.id!==node.id);
+      if(firstOther) LINKS.push({from:node.id,to:firstOther.id,type:'neu',label:''});
+    } else {
+      const firstOther=NODES.find(n=>n.id!==node.id);
+      if(firstOther) LINKS.push({from:firstOther.id,to:node.id,type:'neu',label:''});
+    }
+    buildIndexes(); draw(); openSidebar(node);
+    setTimeout(()=>body.lastElementChild?.scrollIntoView({behavior:'smooth'}),50);
+  }));
+
   document.getElementById('sidebar').classList.add('open');
 }
-function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); }
-document.getElementById('sb-close').addEventListener('click',()=>{ focusedId=null; closeSidebar(); draw(); });
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');}
+document.getElementById('sb-close').addEventListener('click',()=>{focusedId=null;closeSidebar();draw();});
 
-// ── legend ──
-document.querySelectorAll('.leg').forEach(el=>{
-  el.addEventListener('click',()=>{
-    const t=el.dataset.type;
-    if(hiddenTypes.has(t)){hiddenTypes.delete(t);el.classList.remove('off');}
-    else{hiddenTypes.add(t);el.classList.add('off');}
-    draw();
-  });
-});
-
-// ── editor ──
-function nodeOptions(selected='') {
-  return NODES.map(n=>`<option value="${n.id}"${n.id===selected?' selected':''}>${n.name}</option>`).join('');
-}
-function typeOptions(selected='neu') {
-  return ['pos','neg','neu','envy'].map(t=>`<option value="${t}"${t===selected?' selected':''}>${TYPE_LABELS[t]}</option>`).join('');
-}
-
-function renderEditor() {
-  const tbody=document.getElementById('rel-tbody');
-  tbody.innerHTML=LINKS.map((l,i)=>`
-    <tr data-i="${i}">
-      <td><select class="edit-inline e-from" data-i="${i}">${nodeOptions(l.from)}</select></td>
-      <td><select class="edit-inline e-to"   data-i="${i}">${nodeOptions(l.to)}</select></td>
-      <td><select class="edit-inline e-type" data-i="${i}">${typeOptions(l.type)}</select></td>
-      <td><input  class="edit-inline e-label" data-i="${i}" value="${l.label}"></td>
-      <td><button class="icon-btn del-btn" data-i="${i}" title="Удалить">✕</button></td>
-    </tr>`).join('');
-
-  tbody.querySelectorAll('.e-from').forEach(el=>el.addEventListener('change',e=>{ LINKS[+e.target.dataset.i].from=e.target.value; rebuildAndDraw(); }));
-  tbody.querySelectorAll('.e-to').forEach(el=>el.addEventListener('change',e=>{ LINKS[+e.target.dataset.i].to=e.target.value; rebuildAndDraw(); }));
-  tbody.querySelectorAll('.e-type').forEach(el=>el.addEventListener('change',e=>{ LINKS[+e.target.dataset.i].type=e.target.value; rebuildAndDraw(); }));
-  tbody.querySelectorAll('.e-label').forEach(el=>el.addEventListener('input',e=>{ LINKS[+e.target.dataset.i].label=e.target.value; rebuildAndDraw(); }));
-  tbody.querySelectorAll('.del-btn').forEach(el=>el.addEventListener('click',e=>{
-    if(!confirm('Удалить это отношение?')) return;
-    LINKS.splice(+e.target.dataset.i,1); rebuildAndDraw(); renderEditor();
-  }));
-}
-
-function rebuildAndDraw() { buildIndexes(); draw(); }
-
-document.getElementById('edit-btn').addEventListener('click',()=>{
-  renderEditor();
-  document.getElementById('editor').classList.add('open');
-});
-document.getElementById('editor-close').addEventListener('click',()=>{
-  document.getElementById('editor').classList.remove('open');
-});
-
-document.getElementById('add-row').addEventListener('click',()=>{
-  LINKS.push({ from: NODES[0].id, to: NODES[1].id, type: 'neu', label: '' });
-  rebuildAndDraw(); renderEditor();
-  document.getElementById('rel-tbody').lastElementChild?.scrollIntoView({behavior:'smooth'});
-});
+// ── hamburger / drawer ──
+const drawer=document.getElementById('drawer');
+const doverlay=document.getElementById('drawer-overlay');
+function openDrawer(){drawer.classList.add('open');doverlay.classList.add('open');}
+function closeDrawer(){drawer.classList.remove('open');doverlay.classList.remove('open');}
+document.getElementById('menu-btn').addEventListener('click',openDrawer);
+document.getElementById('drawer-close').addEventListener('click',closeDrawer);
+doverlay.addEventListener('click',closeDrawer);
+document.getElementById('d-save').addEventListener('click',()=>{closeDrawer();openSaveModal();});
 
 // ── save to github ──
-document.getElementById('save-gh-btn').addEventListener('click',()=>{
-  const stored=localStorage.getItem('gh_token')||'';
-  document.getElementById('token-input').value=stored;
+function openSaveModal(){
+  document.getElementById('token-input').value=localStorage.getItem('gh_token')||'';
   document.getElementById('save-status').textContent='';
   document.getElementById('save-modal').classList.add('open');
-});
-document.getElementById('save-cancel').addEventListener('click',()=>{ document.getElementById('save-modal').classList.remove('open'); });
-document.getElementById('save-confirm').addEventListener('click', saveToGitHub);
-
-async function saveToGitHub() {
+}
+document.getElementById('save-cancel').addEventListener('click',()=>document.getElementById('save-modal').classList.remove('open'));
+document.getElementById('save-confirm').addEventListener('click',async()=>{
   const token=document.getElementById('token-input').value.trim();
   const status=document.getElementById('save-status');
-  if(!token){ status.className='save-status err'; status.textContent='Введи токен'; return; }
-  localStorage.setItem('gh_token', token);
-
-  status.className=''; status.textContent='Загружаю текущий файл...';
-  const owner='malliol', repo='JAPERDAIS', path='docs/data.json';
-  const headers={ 'Authorization':'token '+token, 'Content-Type':'application/json' };
-
-  try {
-    const getRes=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{headers});
-    if(!getRes.ok) throw new Error(`GitHub API: ${getRes.status} ${getRes.statusText}`);
-    const getJson=await getRes.json();
-    const sha=getJson.sha;
-
-    const payload={ nodes:NODES, links:LINKS };
-    const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
-
+  if(!token){status.className='err';status.textContent='Введи токен';return;}
+  localStorage.setItem('gh_token',token);
+  status.className='';status.textContent='Загружаю...';
+  const owner='malliol',repo='JAPERDAIS',path='docs/data.json';
+  const headers={'Authorization':'token '+token,'Content-Type':'application/json'};
+  try{
+    const g=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{headers});
+    if(!g.ok)throw new Error(g.status+' '+g.statusText);
+    const sha=(await g.json()).sha;
+    const payload={nodes:NODES,links:LINKS.map(l=>({from:l.from,to:l.to,type:l.type,label:l.label}))};
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
     status.textContent='Сохраняю...';
-    const putRes=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{
-      method:'PUT', headers,
-      body:JSON.stringify({ message:'Update relationship data from diagram editor', content, sha })
+    const p=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{
+      method:'PUT',headers,
+      body:JSON.stringify({message:'Update relationship data',content,sha})
     });
-    if(!putRes.ok){ const e=await putRes.json(); throw new Error(e.message); }
-    status.className='ok'; status.textContent='✓ Сохранено! Страница обновится через ~30 сек.';
-  } catch(e) {
-    status.className='err'; status.textContent='Ошибка: '+e.message;
-  }
-}
+    if(!p.ok){const e=await p.json();throw new Error(e.message);}
+    status.className='ok';status.textContent='✓ Сохранено! Обновится через ~30 сек.';
+  }catch(e){status.className='err';status.textContent='Ошибка: '+e.message;}
+});
 
-// ── init ──
 loadData();
 </script>
 </body>
