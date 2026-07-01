@@ -293,19 +293,32 @@ function nodeAlpha(node) {
   return connected ? 0.9 : 0.15;
 }
 
+// set of pairs that have arrows in both directions
+const BIDIRECTIONAL = new Set();
+LINKS.forEach(a => {
+  LINKS.forEach(b => {
+    if (a.from === b.to && a.to === b.from) {
+      BIDIRECTIONAL.add(`${a.from}->${a.to}`);
+    }
+  });
+});
+
 function drawArrow(x1, y1, x2, y2, color, alpha, dashed, link) {
   const dx = x2 - x1, dy = y2 - y1;
   const dist = Math.sqrt(dx*dx + dy*dy);
   if (dist < 1) return;
   const ux = dx/dist, uy = dy/dist;
-  const nodeR = 30;
+  const nodeR = 32;
   const sx = x1 + ux * nodeR, sy = y1 + uy * nodeR;
   const ex = x2 - ux * nodeR, ey = y2 - uy * nodeR;
 
-  // control point — curve outward
+  // if bidirectional pair: bend away from center; else slight fixed curve
   const mx = (sx + ex) / 2, my = (sy + ey) / 2;
+  const isBi = link && BIDIRECTIONAL.has(`${link.from}->${link.to}`);
+  // perpendicular always points "left" of direction
   const perp = { x: -uy, y: ux };
-  const bend = dist * 0.15;
+  // for bidirectional edges bend more; for single edges bend slightly
+  const bend = isBi ? dist * 0.22 : dist * 0.08;
   const cpx = mx + perp.x * bend, cpy = my + perp.y * bend;
 
   ctx.save();
@@ -387,14 +400,14 @@ function draw() {
     ctx.shadowBlur = 0;
 
     // name
-    ctx.fillStyle = a > 0.5 ? '#111' : '#bbb';
+    ctx.fillStyle = a > 0.5 ? '#111' : '#ccc';
     ctx.font = `${focused ? 'bold ' : ''}12px "Courier New"`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(n.name, n.x, n.y - 6);
 
     // role
-    ctx.fillStyle = a > 0.5 ? '#aaa' : '#ddd';
+    ctx.fillStyle = a > 0.5 ? '#555' : '#ddd';
     ctx.font = '8px "Courier New"';
     ctx.fillText(n.role, n.x, n.y + 9);
 
