@@ -16,7 +16,7 @@ body {
 
 #canvas { display: block; }
 
-/* ── sidebar ── */
+/* ── sidebar (character info) ── */
 #sidebar {
   position: fixed;
   top: 0; right: 0;
@@ -30,92 +30,27 @@ body {
   z-index: 50;
 }
 #sidebar.open { transform: translateX(0); }
-
-#sb-name {
-  font-size: 22px;
-  color: #000;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  font-weight: bold;
-}
-#sb-role {
-  font-size: 10px;
-  color: #555;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-#sb-spectrum {
-  font-size: 11px;
-  color: #c47800;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #111;
-  font-weight: bold;
-}
-
-#sb-relations h3 {
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: #888;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  margin-top: 6px;
-}
-
-.rel-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-.rel-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 3px;
-}
+#sb-name { font-size: 22px; color: #000; font-weight: bold; margin-bottom: 4px; }
+#sb-role { font-size: 10px; color: #555; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
+#sb-spectrum { font-size: 11px; color: #c47800; font-weight: bold; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid #111; }
+#sb-relations h3 { font-size: 9px; letter-spacing: 3px; color: #888; text-transform: uppercase; margin-bottom: 14px; margin-top: 6px; }
+.rel-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; line-height: 1.5; }
+.rel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
 .rel-dot.pos  { background: #1a9950; }
 .rel-dot.neg  { background: #cc1133; }
 .rel-dot.neu  { background: #999; }
 .rel-dot.envy { background: #c47800; }
 .rel-name { color: #000; font-size: 11px; font-weight: bold; }
 .rel-desc { color: #555; font-size: 10px; }
-
-#sb-close {
-  position: absolute;
-  top: 20px; right: 20px;
-  background: none; border: none;
-  color: #999; font-size: 20px;
-  cursor: pointer; line-height: 1;
-}
+#sb-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #999; font-size: 20px; cursor: pointer; }
 #sb-close:hover { color: #000; }
 
 /* ── header ── */
-#hdr {
-  position: fixed;
-  top: 0; left: 0;
-  padding: 18px 24px;
-  z-index: 40;
-  pointer-events: none;
-}
-#hdr h1 {
-  font-size: 11px;
-  letter-spacing: 5px;
-  color: #999;
-  font-weight: normal;
-}
+#hdr { position: fixed; top: 0; left: 0; padding: 18px 24px; z-index: 40; pointer-events: none; }
+#hdr h1 { font-size: 11px; letter-spacing: 5px; color: #999; font-weight: normal; }
 
 /* ── legend ── */
-#legend {
-  position: fixed;
-  bottom: 24px; left: 24px;
-  z-index: 40;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+#legend { position: fixed; bottom: 24px; left: 24px; z-index: 40; display: flex; flex-direction: column; gap: 10px; }
 .leg { display:flex; align-items:center; gap:10px; font-size:10px; color:#333; letter-spacing:2px; cursor:pointer; transition: color .2s; font-weight: bold; }
 .leg:hover { color: #000; }
 .leg.off { opacity: .25; }
@@ -126,24 +61,116 @@ body {
 .leg-line.envy { background: none; border-top: 2.5px dashed #c47800; height:0; }
 
 /* ── tooltip ── */
-#tip {
-  position: fixed;
-  background: #111;
-  border: none;
-  padding: 8px 14px;
-  font-size: 11px;
-  color: #fff;
-  pointer-events: none;
+#tip { position: fixed; background: #111; padding: 8px 14px; font-size: 11px; color: #fff; pointer-events: none; display: none; z-index: 100; letter-spacing: 1px; }
+
+/* ── edit button ── */
+#edit-btn {
+  position: fixed; bottom: 24px; right: 24px; z-index: 60;
+  background: #111; color: #fff; border: none; cursor: pointer;
+  font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 2px;
+  padding: 10px 18px; font-weight: bold;
+  transition: background .2s;
+}
+#edit-btn:hover { background: #333; }
+
+/* ── editor overlay ── */
+#editor {
+  position: fixed; inset: 0; z-index: 200;
+  background: #fff;
   display: none;
-  z-index: 100;
-  letter-spacing: 1px;
+  flex-direction: column;
+}
+#editor.open { display: flex; }
+
+#editor-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 2px solid #111;
+  flex-shrink: 0;
+}
+#editor-header h2 { font-size: 13px; letter-spacing: 4px; font-weight: bold; }
+#editor-header-right { display: flex; gap: 12px; align-items: center; }
+
+.btn {
+  font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 2px;
+  padding: 8px 16px; cursor: pointer; border: none; font-weight: bold;
+  transition: background .15s;
+}
+.btn-primary { background: #111; color: #fff; }
+.btn-primary:hover { background: #333; }
+.btn-secondary { background: #eee; color: #111; }
+.btn-secondary:hover { background: #ddd; }
+.btn-danger { background: #cc1133; color: #fff; }
+.btn-danger:hover { background: #aa0022; }
+.btn-success { background: #1a9950; color: #fff; }
+.btn-success:hover { background: #157a40; }
+
+#editor-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+
+/* table */
+#rel-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+#rel-table th {
+  text-align: left; font-size: 9px; letter-spacing: 3px; color: #888;
+  text-transform: uppercase; padding: 0 8px 12px; border-bottom: 2px solid #111;
+}
+#rel-table td { padding: 10px 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
+#rel-table tr:hover td { background: #f8f8f8; }
+
+.type-pill {
+  display: inline-block; padding: 2px 8px; font-size: 9px; letter-spacing: 1px;
+  font-weight: bold; border-radius: 2px;
+}
+.type-pill.pos  { background: #e8f8ef; color: #1a9950; }
+.type-pill.neg  { background: #fde8ec; color: #cc1133; }
+.type-pill.neu  { background: #f0f0f0; color: #666; }
+.type-pill.envy { background: #fdf5e0; color: #c47800; }
+
+.edit-inline { font-family: 'Courier New', monospace; font-size: 11px; border: 1px solid #ddd; padding: 4px 8px; width: 100%; background: #fff; }
+.edit-inline:focus { outline: 2px solid #111; border-color: transparent; }
+
+select.edit-inline { cursor: pointer; }
+
+.icon-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 2px 6px; opacity: .5; transition: opacity .15s; }
+.icon-btn:hover { opacity: 1; }
+
+#add-row { margin-top: 16px; }
+
+/* ── save modal ── */
+#save-modal {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.5);
+  display: none; align-items: center; justify-content: center;
+}
+#save-modal.open { display: flex; }
+#save-box {
+  background: #fff; border: 2px solid #111;
+  padding: 32px; width: 420px; max-width: 90vw;
+}
+#save-box h3 { font-size: 12px; letter-spacing: 3px; margin-bottom: 20px; }
+#save-box p { font-size: 10px; color: #555; line-height: 1.7; margin-bottom: 16px; }
+#save-box a { color: #111; }
+#token-input {
+  width: 100%; font-family: 'Courier New', monospace; font-size: 11px;
+  border: 2px solid #111; padding: 10px; margin-bottom: 8px; background: #f8f8f8;
+}
+#token-input:focus { outline: none; background: #fff; }
+#save-status { font-size: 10px; min-height: 20px; margin-bottom: 16px; letter-spacing: 1px; }
+#save-status.ok  { color: #1a9950; }
+#save-status.err { color: #cc1133; }
+#save-modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ── loading ── */
+#loading {
+  position: fixed; inset: 0; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; letter-spacing: 4px; color: #999; z-index: 999;
 }
 </style>
 </head>
 <body>
 
+<div id="loading">ЗАГРУЗКА...</div>
 <canvas id="canvas"></canvas>
-
 <div id="hdr"><h1>JAPERDAIS · ДИАГРАММА ОТНОШЕНИЙ</h1></div>
 
 <div id="legend">
@@ -162,120 +189,95 @@ body {
 </div>
 
 <div id="tip"></div>
+<button id="edit-btn">✏ РЕДАКТОР</button>
+
+<!-- ── editor overlay ── -->
+<div id="editor">
+  <div id="editor-header">
+    <h2>РЕДАКТОР ОТНОШЕНИЙ</h2>
+    <div id="editor-header-right">
+      <button class="btn btn-success" id="save-gh-btn">↑ СОХРАНИТЬ В РЕПО</button>
+      <button class="btn btn-secondary" id="editor-close">ЗАКРЫТЬ</button>
+    </div>
+  </div>
+  <div id="editor-body">
+    <table id="rel-table">
+      <thead>
+        <tr>
+          <th>ОТ</th>
+          <th>К</th>
+          <th>ТИП</th>
+          <th style="width:35%">ОПИСАНИЕ</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="rel-tbody"></tbody>
+    </table>
+    <button class="btn btn-secondary" id="add-row" style="margin-top:20px">+ ДОБАВИТЬ ОТНОШЕНИЕ</button>
+  </div>
+</div>
+
+<!-- ── save modal ── -->
+<div id="save-modal">
+  <div id="save-box">
+    <h3>СОХРАНИТЬ В РЕПО</h3>
+    <p>Нужен GitHub токен с правом <strong>repo</strong>.<br>
+    <a href="https://github.com/settings/tokens/new?scopes=repo&description=JAPERDAIS+editor" target="_blank">Создать токен →</a><br>
+    Токен сохраняется в localStorage браузера.</p>
+    <input type="password" id="token-input" placeholder="ghp_..." autocomplete="off">
+    <div id="save-status"></div>
+    <div id="save-modal-btns">
+      <button class="btn btn-secondary" id="save-cancel">ОТМЕНА</button>
+      <button class="btn btn-success" id="save-confirm">СОХРАНИТЬ</button>
+    </div>
+  </div>
+</div>
 
 <script>
+// ── state ──
+let NODES = [], LINKS = [];
+let nodeMap = {}, outgoing = {}, incoming = {};
+let hiddenTypes = new Set();
+let focusedId = null, hoveredNode = null;
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let W, H, cx, cy, radius, DPR;
 
-function resize() {
-  DPR = window.devicePixelRatio || 1;
-  W = window.innerWidth;
-  H = window.innerHeight;
-  canvas.width  = W * DPR;
-  canvas.height = H * DPR;
-  canvas.style.width  = W + 'px';
-  canvas.style.height = H + 'px';
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  cx = W / 2;
-  cy = H / 2;
-  radius = Math.min(W, H) * 0.34;
-  draw();
+const COLORS = { pos:'#1a9950', neg:'#cc1133', neu:'#888', envy:'#c47800' };
+const TYPE_LABELS = { pos:'положительно', neg:'негативно', neu:'нейтрально', envy:'зависть' };
+
+// ── load data ──
+async function loadData() {
+  const res = await fetch('data.json?v=' + Date.now());
+  const json = await res.json();
+  NODES = json.nodes;
+  LINKS = json.links;
+  buildIndexes();
+  document.getElementById('loading').style.display = 'none';
+  resize();
 }
 
-// ── data ──
-const NODES = [
-  { id:'kreono',   name:'Креоно',      role:'Капитан',             spectrum:'Ответственность — Гиперконтроль' },
-  { id:'saida',    name:'Саида',       role:'Офицер безопасности', spectrum:'Выдержка — Ярость' },
-  { id:'erkul',    name:'Эркюль',      role:'Аналитик',            spectrum:'Баланс — Одержимость' },
-  { id:'evgeny',   name:'Евгений',     role:'Геолог',              spectrum:'Вера — Разочарование' },
-  { id:'unura',    name:'Унурцэцэг',   role:'Биолог',              spectrum:'Самообладание — Истерика' },
-  { id:'katerina', name:'Катерина',    role:'Медик',               spectrum:'Восстановление — Разрушение' },
-  { id:'jurgen',   name:'Юрген',       role:'Инженер',             spectrum:'Надежда — Отчаяние' },
-  { id:'logan',    name:'Логан',       role:'Сисадмин',            spectrum:'Принятие — Отрицание' },
-  { id:'silvia',   name:'Сильвия',     role:'Навигатор',           spectrum:'Стратегия — Случайность' },
-  { id:'patricio', name:'Патрицио',    role:'Оценщик',             spectrum:'Целостность — Растворение' },
-  { id:'markus',   name:'Маркус',      role:'Разведчик',           spectrum:'Отвага — Паранойя' },
-  { id:'kan_so',   name:'Кан Со',      role:'Разведчик',           spectrum:'Пассивность — Холод' },
-];
+function buildIndexes() {
+  nodeMap = {};
+  outgoing = {};
+  incoming = {};
+  NODES.forEach(n => { nodeMap[n.id] = n; outgoing[n.id] = []; incoming[n.id] = []; });
+  LINKS.forEach(l => { outgoing[l.from].push(l); incoming[l.to].push(l); });
+}
 
-// relationships: { from, to, type, label }
-const LINKS = [
-  // Саида
-  { from:'saida', to:'kreono',   type:'neg',  label:'плохой капитан' },
-  { from:'saida', to:'erkul',    type:'neg',  label:'слабак' },
-  { from:'saida', to:'evgeny',   type:'neu',  label:'безвольный' },
-  { from:'saida', to:'unura',    type:'neg',  label:'истеричка' },
-  { from:'saida', to:'katerina', type:'neu',  label:'нестабильная' },
-  { from:'saida', to:'jurgen',   type:'neu',  label:'тюфяк' },
-  { from:'saida', to:'logan',    type:'neg',  label:'безответственный' },
-  { from:'saida', to:'silvia',   type:'pos',  label:'сильный стратег' },
-  { from:'saida', to:'markus',   type:'neg',  label:'трус' },
-  { from:'saida', to:'kan_so',   type:'neu',  label:'что-то скрывает' },
-  { from:'saida', to:'patricio', type:'neu',  label:'что-то не так' },
-  // Эркюль
-  { from:'erkul', to:'kreono',   type:'neu',  label:'нейтрально' },
-  { from:'erkul', to:'saida',    type:'neu',  label:'уважаю, но резка' },
-  { from:'erkul', to:'evgeny',   type:'pos',  label:'добрый, приятный' },
-  { from:'erkul', to:'unura',    type:'neg',  label:'верит в лженауку' },
-  { from:'erkul', to:'katerina', type:'neu',  label:'непредсказуемая' },
-  { from:'erkul', to:'jurgen',   type:'neu',  label:'спокойный' },
-  { from:'erkul', to:'logan',    type:'neg',  label:'нигилист' },
-  { from:'erkul', to:'silvia',   type:'neu',  label:'конфликт стратегий' },
-  { from:'erkul', to:'patricio', type:'neu',  label:'сложно воспринимать' },
-  { from:'erkul', to:'markus',   type:'neu',  label:'сложно воспринимать' },
-  { from:'erkul', to:'kan_so',   type:'pos',  label:'уважаю спокойствие' },
-  // Евгений
-  { from:'evgeny', to:'kreono',   type:'pos',  label:'хороший собутыльник' },
-  { from:'evgeny', to:'saida',    type:'neu',  label:'надеюсь откроется' },
-  { from:'evgeny', to:'erkul',    type:'pos',  label:'гений во плоти!' },
-  { from:'evgeny', to:'unura',    type:'pos',  label:'обаятельная!' },
-  { from:'evgeny', to:'katerina', type:'pos',  label:'спасительница наша' },
-  { from:'evgeny', to:'jurgen',   type:'pos',  label:'котёночек' },
-  { from:'evgeny', to:'logan',    type:'neu',  label:'тяжело, но пытаюсь' },
-  { from:'evgeny', to:'silvia',   type:'pos',  label:'умна и красива' },
-  { from:'evgeny', to:'patricio', type:'neu',  label:'не понимаю' },
-  { from:'evgeny', to:'markus',   type:'pos',  label:'куражный!' },
-  { from:'evgeny', to:'kan_so',   type:'neu',  label:'побаиваюсь' },
-  // Креоно
-  { from:'kreono', to:'saida',    type:'envy', label:'завидует авторитету' },
-  { from:'kreono', to:'erkul',    type:'envy', label:'завидует продуктивности' },
-  { from:'kreono', to:'evgeny',   type:'pos',  label:'хороший малый' },
-  { from:'kreono', to:'unura',    type:'neg',  label:'пустышка' },
-  { from:'kreono', to:'katerina', type:'neu',  label:'двоякое' },
-  { from:'kreono', to:'jurgen',   type:'neg',  label:'жуткий тип' },
-  { from:'kreono', to:'logan',    type:'neg',  label:'распиздяй' },
-  { from:'kreono', to:'silvia',   type:'envy', label:'завидует идеям' },
-  { from:'kreono', to:'patricio', type:'neu',  label:'странный, не опасен' },
-  { from:'kreono', to:'markus',   type:'envy', label:'завидует харизме' },
-  { from:'kreono', to:'kan_so',   type:'envy', label:'завидует спокойствию' },
-];
-
-const COLORS = {
-  pos:  '#1a9950',
-  neg:  '#cc1133',
-  neu:  '#888',
-  envy: '#c48a00',
-};
-
-// index nodes
-const nodeMap = {};
-NODES.forEach(n => nodeMap[n.id] = n);
-
-// build outgoing map for sidebar
-const outgoing = {};
-const incoming = {};
-NODES.forEach(n => { outgoing[n.id] = []; incoming[n.id] = []; });
-LINKS.forEach(l => {
-  outgoing[l.from].push(l);
-  incoming[l.to].push(l);
-});
-
-// positions (set after resize)
-let hiddenTypes = new Set();
-let focusedId = null;
-let hoveredNode = null;
-let hoveredEdge = null;
+// ── canvas / drawing ──
+function resize() {
+  DPR = window.devicePixelRatio || 1;
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = W * DPR; canvas.height = H * DPR;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  cx = W / 2; cy = H / 2;
+  radius = Math.min(W, H) * 0.34;
+  positionNodes();
+  draw();
+}
 
 function positionNodes() {
   NODES.forEach((n, i) => {
@@ -285,253 +287,249 @@ function positionNodes() {
   });
 }
 
-// ── drawing ──
+// bidirectional detection
+function getBidi() {
+  const s = new Set();
+  LINKS.forEach(a => LINKS.forEach(b => {
+    if (a.from === b.to && a.to === b.from) s.add(a.from + '->' + a.to);
+  }));
+  return s;
+}
+
 function edgeAlpha(link) {
   if (hiddenTypes.has(link.type)) return 0;
-  if (focusedId) {
-    if (link.from !== focusedId && link.to !== focusedId) return 0.04;
-  }
+  if (focusedId && link.from !== focusedId && link.to !== focusedId) return 0.05;
   return link.type === 'neu' ? 0.7 : 1.0;
 }
 
 function nodeAlpha(node) {
   if (!focusedId) return 1;
   if (node.id === focusedId) return 1;
-  const connected = LINKS.some(l => (l.from === focusedId && l.to === node.id) || (l.to === focusedId && l.from === node.id));
-  return connected ? 0.9 : 0.15;
+  return LINKS.some(l => (l.from === focusedId && l.to === node.id) || (l.to === focusedId && l.from === node.id)) ? 0.9 : 0.15;
 }
 
-// set of pairs that have arrows in both directions
-const BIDIRECTIONAL = new Set();
-LINKS.forEach(a => {
-  LINKS.forEach(b => {
-    if (a.from === b.to && a.to === b.from) {
-      BIDIRECTIONAL.add(`${a.from}->${a.to}`);
-    }
-  });
-});
-
-function drawArrow(x1, y1, x2, y2, color, alpha, dashed, link) {
-  const dx = x2 - x1, dy = y2 - y1;
-  const dist = Math.sqrt(dx*dx + dy*dy);
+function drawArrow(x1, y1, x2, y2, color, alpha, ltype, isBi) {
+  const dx = x2-x1, dy = y2-y1, dist = Math.sqrt(dx*dx+dy*dy);
   if (dist < 1) return;
-  const ux = dx/dist, uy = dy/dist;
-  const nodeR = 32;
-  const sx = x1 + ux * nodeR, sy = y1 + uy * nodeR;
-  const ex = x2 - ux * nodeR, ey = y2 - uy * nodeR;
-
-  // if bidirectional pair: bend away from center; else slight fixed curve
-  const mx = (sx + ex) / 2, my = (sy + ey) / 2;
-  const isBi = link && BIDIRECTIONAL.has(`${link.from}->${link.to}`);
-  // perpendicular always points "left" of direction
-  const perp = { x: -uy, y: ux };
-  // for bidirectional edges bend more; for single edges bend slightly
-  const bend = isBi ? dist * 0.22 : dist * 0.08;
-  const cpx = mx + perp.x * bend, cpy = my + perp.y * bend;
+  const ux = dx/dist, uy = dy/dist, R = 34;
+  const sx = x1+ux*R, sy = y1+uy*R, ex = x2-ux*R, ey = y2-uy*R;
+  const mx = (sx+ex)/2, my = (sy+ey)/2;
+  const bend = isBi ? dist*0.22 : dist*0.08;
+  const cpx = mx + (-uy)*bend, cpy = my + ux*bend;
 
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.strokeStyle = color;
-  const ltype = link ? link.type : '';
   ctx.lineWidth = ltype === 'neu' ? 1.3 : 2;
-  ctx.shadowColor = 'transparent';
   ctx.shadowBlur = 0;
-  if (ltype === 'neu')       ctx.setLineDash([4, 4]);
-  else if (ltype === 'envy') ctx.setLineDash([6, 4]);
+  if (ltype === 'neu')       ctx.setLineDash([4,4]);
+  else if (ltype === 'envy') ctx.setLineDash([6,4]);
   else                       ctx.setLineDash([]);
 
-  ctx.beginPath();
-  ctx.moveTo(sx, sy);
-  ctx.quadraticCurveTo(cpx, cpy, ex, ey);
-  ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sx,sy); ctx.quadraticCurveTo(cpx,cpy,ex,ey); ctx.stroke();
 
   // arrowhead
   const t = 0.9;
   const ax = (1-t)*(1-t)*sx + 2*(1-t)*t*cpx + t*t*ex;
   const ay = (1-t)*(1-t)*sy + 2*(1-t)*t*cpy + t*t*ey;
-  const tang = { x: ex - ax, y: ey - ay };
-  const tlen = Math.sqrt(tang.x**2 + tang.y**2);
-  const tx = tang.x/tlen, ty = tang.y/tlen;
-  const arrSize = 7;
+  const tlen = Math.sqrt((ex-ax)**2+(ey-ay)**2)||1;
+  const tx=(ex-ax)/tlen, ty=(ey-ay)/tlen, arr=8;
   ctx.setLineDash([]);
   ctx.beginPath();
-  ctx.moveTo(ex, ey);
-  ctx.lineTo(ex - arrSize*tx + arrSize*0.4*(-ty), ey - arrSize*ty + arrSize*0.4*tx);
-  ctx.lineTo(ex - arrSize*tx - arrSize*0.4*(-ty), ey - arrSize*ty - arrSize*0.4*tx);
-  ctx.closePath();
-  ctx.fillStyle = color;
-  ctx.fill();
-  ctx.shadowBlur = 0;
+  ctx.moveTo(ex,ey);
+  ctx.lineTo(ex-arr*tx+arr*0.4*(-ty), ey-arr*ty+arr*0.4*tx);
+  ctx.lineTo(ex-arr*tx-arr*0.4*(-ty), ey-arr*ty-arr*0.4*tx);
+  ctx.closePath(); ctx.fillStyle = color; ctx.fill();
   ctx.restore();
 }
 
 function draw() {
-  positionNodes();
-  ctx.clearRect(0, 0, W, H);
-
-  // background — clean white
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, W, H);
-
-  // edges
+  if (!NODES.length) return;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  const bidi = getBidi();
   LINKS.forEach(link => {
-    const a = edgeAlpha(link);
-    if (a <= 0) return;
-    const from = nodeMap[link.from], to = nodeMap[link.to];
-    drawArrow(from.x, from.y, to.x, to.y, COLORS[link.type], a, link.type === 'envy', link);
+    const a = edgeAlpha(link); if (!a) return;
+    const f = nodeMap[link.from], t = nodeMap[link.to];
+    if (!f || !t) return;
+    drawArrow(f.x,f.y,t.x,t.y, COLORS[link.type], a, link.type, bidi.has(link.from+'->'+link.to));
   });
-
-  // nodes
   NODES.forEach(n => {
-    const a = nodeAlpha(n);
-    const focused = n.id === focusedId;
-    const hovered = n === hoveredNode;
-
+    const a = nodeAlpha(n), focused = n.id===focusedId, hovered = n===hoveredNode;
     ctx.save();
     ctx.globalAlpha = a;
-
-    // shadow
     ctx.shadowColor = 'rgba(0,0,0,0.15)';
     ctx.shadowBlur = focused ? 16 : 6;
     ctx.shadowOffsetY = focused ? 4 : 2;
-
-    // circle bg
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, 34, 0, Math.PI * 2);
-    ctx.fillStyle = focused ? '#111' : '#fff';
-    ctx.fill();
-    ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-    ctx.strokeStyle = focused ? '#111' : (hovered ? '#111' : '#222');
-    ctx.lineWidth = focused ? 3 : (hovered ? 2.5 : 1.5);
-    ctx.stroke();
-
-    // name
-    ctx.fillStyle = focused ? '#fff' : (a > 0.5 ? '#000' : '#ddd');
-    ctx.font = `bold 12px "Courier New"`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(n.name, n.x, n.y - 6);
-
-    // role
-    ctx.fillStyle = focused ? '#aaa' : (a > 0.5 ? '#555' : '#ddd');
+    ctx.beginPath(); ctx.arc(n.x,n.y,34,0,Math.PI*2);
+    ctx.fillStyle = focused ? '#111' : '#fff'; ctx.fill();
+    ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+    ctx.strokeStyle = focused?'#111':(hovered?'#111':'#222');
+    ctx.lineWidth = focused?3:(hovered?2.5:1.5); ctx.stroke();
+    ctx.fillStyle = focused?'#fff':(a>0.5?'#000':'#ddd');
+    ctx.font = 'bold 12px "Courier New"';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(n.name, n.x, n.y-6);
+    ctx.fillStyle = focused?'#aaa':(a>0.5?'#555':'#ddd');
     ctx.font = '8px "Courier New"';
-    ctx.fillText(n.role, n.x, n.y + 9);
-
+    ctx.fillText(n.role, n.x, n.y+9);
     ctx.restore();
   });
 }
 
 // ── interaction ──
-function getNodeAt(mx, my) {
-  for (const n of NODES) {
-    const dx = mx - n.x, dy = my - n.y;
-    if (dx*dx + dy*dy < 32*32) return n;
-  }
-  return null;
+function getNodeAt(mx,my) {
+  return NODES.find(n => (mx-n.x)**2+(my-n.y)**2 < 36*36);
 }
 
 canvas.addEventListener('mousemove', e => {
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-  const node = getNodeAt(mx, my);
-  hoveredNode = node;
-
-  const tip = document.getElementById('tip');
-  if (node) {
-    canvas.style.cursor = 'pointer';
-    tip.style.display = 'block';
-    tip.style.left = (e.clientX + 14) + 'px';
-    tip.style.top  = (e.clientY - 10) + 'px';
-    tip.textContent = node.spectrum;
-  } else {
-    canvas.style.cursor = 'default';
-    tip.style.display = 'none';
-  }
+  const r=canvas.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
+  hoveredNode = getNodeAt(mx,my);
+  const tip=document.getElementById('tip');
+  if (hoveredNode) {
+    canvas.style.cursor='pointer';
+    tip.style.display='block';
+    tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-10)+'px';
+    tip.textContent=hoveredNode.spectrum;
+  } else { canvas.style.cursor='default'; tip.style.display='none'; }
   draw();
 });
 
 canvas.addEventListener('click', e => {
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-  const node = getNodeAt(mx, my);
-  if (node) {
-    if (focusedId === node.id) {
-      focusedId = null;
-      closeSidebar();
-    } else {
-      focusedId = node.id;
-      openSidebar(node);
-    }
-  } else {
-    focusedId = null;
-    closeSidebar();
-  }
+  const r=canvas.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
+  const node=getNodeAt(mx,my);
+  if (node) { focusedId = focusedId===node.id ? null : node.id; if(focusedId) openSidebar(node); else closeSidebar(); }
+  else { focusedId=null; closeSidebar(); }
   draw();
 });
 
-canvas.addEventListener('mouseleave', () => {
-  hoveredNode = null;
-  document.getElementById('tip').style.display = 'none';
-  draw();
-});
+canvas.addEventListener('mouseleave',()=>{ hoveredNode=null; document.getElementById('tip').style.display='none'; draw(); });
+window.addEventListener('resize', resize);
 
 // ── sidebar ──
 function openSidebar(node) {
-  document.getElementById('sb-name').textContent = node.name;
-  document.getElementById('sb-role').textContent = node.role;
-  document.getElementById('sb-spectrum').textContent = node.spectrum;
-
-  const out = outgoing[node.id];
-  const inc = incoming[node.id];
-
-  let html = '';
-  if (out.length) {
-    html += `<h3>КАК ОТНОСИТСЯ К ДРУГИМ</h3>`;
-    out.forEach(l => {
-      const target = nodeMap[l.to];
-      html += `<div class="rel-item">
-        <div class="rel-dot ${l.type}"></div>
-        <div><div class="rel-name">${target.name}</div><div class="rel-desc">${l.label}</div></div>
-      </div>`;
+  document.getElementById('sb-name').textContent=node.name;
+  document.getElementById('sb-role').textContent=node.role;
+  document.getElementById('sb-spectrum').textContent=node.spectrum;
+  let html='';
+  if (outgoing[node.id]?.length) {
+    html+='<h3>КАК ОТНОСИТСЯ К ДРУГИМ</h3>';
+    outgoing[node.id].forEach(l=>{
+      const t=nodeMap[l.to];
+      html+=`<div class="rel-item"><div class="rel-dot ${l.type}"></div><div><div class="rel-name">${t?.name||l.to}</div><div class="rel-desc">${l.label}</div></div></div>`;
     });
   }
-  if (inc.length) {
-    html += `<br><h3>КАК ДРУГИЕ ОТНОСЯТСЯ</h3>`;
-    inc.forEach(l => {
-      const src = nodeMap[l.from];
-      html += `<div class="rel-item">
-        <div class="rel-dot ${l.type}"></div>
-        <div><div class="rel-name">${src.name}</div><div class="rel-desc">${l.label}</div></div>
-      </div>`;
+  if (incoming[node.id]?.length) {
+    html+='<br><h3>КАК ДРУГИЕ ОТНОСЯТСЯ</h3>';
+    incoming[node.id].forEach(l=>{
+      const s=nodeMap[l.from];
+      html+=`<div class="rel-item"><div class="rel-dot ${l.type}"></div><div><div class="rel-name">${s?.name||l.from}</div><div class="rel-desc">${l.label}</div></div></div>`;
     });
   }
-
-  document.getElementById('sb-relations').innerHTML = html;
+  document.getElementById('sb-relations').innerHTML=html;
   document.getElementById('sidebar').classList.add('open');
 }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); }
+document.getElementById('sb-close').addEventListener('click',()=>{ focusedId=null; closeSidebar(); draw(); });
 
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-}
-
-document.getElementById('sb-close').addEventListener('click', () => {
-  focusedId = null;
-  closeSidebar();
-  draw();
-});
-
-// ── legend toggle ──
-document.querySelectorAll('.leg').forEach(el => {
-  el.addEventListener('click', () => {
-    const t = el.dataset.type;
-    if (hiddenTypes.has(t)) { hiddenTypes.delete(t); el.classList.remove('off'); }
-    else { hiddenTypes.add(t); el.classList.add('off'); }
+// ── legend ──
+document.querySelectorAll('.leg').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const t=el.dataset.type;
+    if(hiddenTypes.has(t)){hiddenTypes.delete(t);el.classList.remove('off');}
+    else{hiddenTypes.add(t);el.classList.add('off');}
     draw();
   });
 });
 
-window.addEventListener('resize', resize);
-resize();
+// ── editor ──
+function nodeOptions(selected='') {
+  return NODES.map(n=>`<option value="${n.id}"${n.id===selected?' selected':''}>${n.name}</option>`).join('');
+}
+function typeOptions(selected='neu') {
+  return ['pos','neg','neu','envy'].map(t=>`<option value="${t}"${t===selected?' selected':''}>${TYPE_LABELS[t]}</option>`).join('');
+}
+
+function renderEditor() {
+  const tbody=document.getElementById('rel-tbody');
+  tbody.innerHTML=LINKS.map((l,i)=>`
+    <tr data-i="${i}">
+      <td><select class="edit-inline e-from" data-i="${i}">${nodeOptions(l.from)}</select></td>
+      <td><select class="edit-inline e-to"   data-i="${i}">${nodeOptions(l.to)}</select></td>
+      <td><select class="edit-inline e-type" data-i="${i}">${typeOptions(l.type)}</select></td>
+      <td><input  class="edit-inline e-label" data-i="${i}" value="${l.label}"></td>
+      <td><button class="icon-btn del-btn" data-i="${i}" title="Удалить">✕</button></td>
+    </tr>`).join('');
+
+  tbody.querySelectorAll('.e-from').forEach(el=>el.addEventListener('change',e=>{ LINKS[+e.target.dataset.i].from=e.target.value; rebuildAndDraw(); }));
+  tbody.querySelectorAll('.e-to').forEach(el=>el.addEventListener('change',e=>{ LINKS[+e.target.dataset.i].to=e.target.value; rebuildAndDraw(); }));
+  tbody.querySelectorAll('.e-type').forEach(el=>el.addEventListener('change',e=>{ LINKS[+e.target.dataset.i].type=e.target.value; rebuildAndDraw(); }));
+  tbody.querySelectorAll('.e-label').forEach(el=>el.addEventListener('input',e=>{ LINKS[+e.target.dataset.i].label=e.target.value; rebuildAndDraw(); }));
+  tbody.querySelectorAll('.del-btn').forEach(el=>el.addEventListener('click',e=>{
+    if(!confirm('Удалить это отношение?')) return;
+    LINKS.splice(+e.target.dataset.i,1); rebuildAndDraw(); renderEditor();
+  }));
+}
+
+function rebuildAndDraw() { buildIndexes(); draw(); }
+
+document.getElementById('edit-btn').addEventListener('click',()=>{
+  renderEditor();
+  document.getElementById('editor').classList.add('open');
+});
+document.getElementById('editor-close').addEventListener('click',()=>{
+  document.getElementById('editor').classList.remove('open');
+});
+
+document.getElementById('add-row').addEventListener('click',()=>{
+  LINKS.push({ from: NODES[0].id, to: NODES[1].id, type: 'neu', label: '' });
+  rebuildAndDraw(); renderEditor();
+  document.getElementById('rel-tbody').lastElementChild?.scrollIntoView({behavior:'smooth'});
+});
+
+// ── save to github ──
+document.getElementById('save-gh-btn').addEventListener('click',()=>{
+  const stored=localStorage.getItem('gh_token')||'';
+  document.getElementById('token-input').value=stored;
+  document.getElementById('save-status').textContent='';
+  document.getElementById('save-modal').classList.add('open');
+});
+document.getElementById('save-cancel').addEventListener('click',()=>{ document.getElementById('save-modal').classList.remove('open'); });
+document.getElementById('save-confirm').addEventListener('click', saveToGitHub);
+
+async function saveToGitHub() {
+  const token=document.getElementById('token-input').value.trim();
+  const status=document.getElementById('save-status');
+  if(!token){ status.className='save-status err'; status.textContent='Введи токен'; return; }
+  localStorage.setItem('gh_token', token);
+
+  status.className=''; status.textContent='Загружаю текущий файл...';
+  const owner='malliol', repo='JAPERDAIS', path='docs/data.json';
+  const headers={ 'Authorization':'token '+token, 'Content-Type':'application/json' };
+
+  try {
+    const getRes=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{headers});
+    if(!getRes.ok) throw new Error(`GitHub API: ${getRes.status} ${getRes.statusText}`);
+    const getJson=await getRes.json();
+    const sha=getJson.sha;
+
+    const payload={ nodes:NODES, links:LINKS };
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+
+    status.textContent='Сохраняю...';
+    const putRes=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,{
+      method:'PUT', headers,
+      body:JSON.stringify({ message:'Update relationship data from diagram editor', content, sha })
+    });
+    if(!putRes.ok){ const e=await putRes.json(); throw new Error(e.message); }
+    status.className='ok'; status.textContent='✓ Сохранено! Страница обновится через ~30 сек.';
+  } catch(e) {
+    status.className='err'; status.textContent='Ошибка: '+e.message;
+  }
+}
+
+// ── init ──
+loadData();
 </script>
 </body>
 </html>
