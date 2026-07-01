@@ -1,0 +1,515 @@
+[
+  {
+    "id": "a0bd3a0a-1617-49ff-bfd6-ce79009cef2f",
+    "name": "Креон Партанен",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/2f5c2b24-a71c-40ea-a8a3-7164563618ed/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466WSTJCIG4%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215203Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIFF51csikFtnSTRCCqntbMprSxBA0ylYeFWFMwzX1gsaAiEAyhBqPSxBXa%2FEcq59qh3clk9gb0Ks%2FZlNpKspCzN%2FViMqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDJkSdYC2zSw2GqTVSSrcA8QTacQvaoDOZHNBQl622A7yhO%2BLCFp%2Bcpo2y22F%2FuaCSPaXiBQqlPRmxO0dKSy4RGmKrw1CtE5r2ppWFMKHwn34S5YiOfEbYENHzW8Ja152bmgzqReNH9R33H%2B7WUbkjVY6MDJt3d50qG%2FJDcxmPR53yRzWVbX%2F4N5mIiEw50cM9RgUu5th5EV3WtFGsokT%2BPC3ch%2BrZd%2FAmaicXEX7LKzy0gtFtmb%2FfE6EFygeu43cRhczw8kIt4EMuFvkvD5naTGDPlRf15mayKC5tJo3xE6eI7gg76igoq79JqloCm8im%2Fz1NpDOm9s8aPiDraKWXfizLj6Ss9mT%2FGJemZ8v8q%2B4U%2B5nbf7tltXB5qYFK%2B8CBOdxvbgawzHqxRcmchz%2BxzylrSN%2FAUCwng3QF7M%2F5WjJW20RNIHv4p691QJSsdGUtmRyiRAfk7wuj0vS6XletyouZl4zXqp08w0WmyAlmC7sZMRoqsaRYdGVFTRmPTb6QetbebtWXldIMmd1tffgGzy04qbnOg%2BXbTNaLK444Fg0B2a89ELPZGBSlWzAQK5QfoT4m7pPbOA%2BC7CaQSSD5tJ9dpkkvtsBKK8vDMeHFI5Pd6B7KemQYBrj%2BdEo%2Bf%2BMNxkzbpr5AnYZQuWTMKb%2FldIGOqUB9P18Dofs2NL8OKtiHmfn3QVqqiivLvGJ9ZO2Gurz5QrpPrFJXaSXoUmkkD6QVUXbjZn7ShPyx7qoBgBsO84Fc7GO4ylUT%2BXbxJpIdl5iDGpnr6rC%2B6QMcZ2RS3%2FG9N6pE0W%2BkbAHt3c1Gsb8Rci1vG6nngqj%2FFvVyhqP8uS7jgPd2FhZJa4ycTqSFTg3%2BVXvrcQmuiP%2FOuMUjL0%2FOKZWfAt5BwHT&X-Amz-Signature=de78f8b1b1121c743cabe5fc7e67336a22e6f48a6597bb6f973211c7e89ccb0d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Капитан",
+    "age": "52",
+    "height": "185",
+    "status": "Умрёт",
+    "voice": "Лютик",
+    "facts": "Срётся с Анной, курит только элитные сигары, страдает бессонницей, мечтал и сейчас был бы не против стать капитаном морского судна.",
+    "family": "Вдовец",
+    "fears": "айхмофобия, акустикофобия",
+    "habits": "Ухаживать за бородой, 🚬, 🥃",
+    "hobbies": "Шахматы",
+    "death": "Пожертвует собой ради Анны в бою с обитателями Бастет",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Патрик",
+        "Ева",
+        "Либер"
+      ],
+      "neutral": [
+        "Сильвия",
+        "Кларенс",
+        "Леон",
+        "Доминик",
+        "Флора",
+        "Маркус",
+        "Драко"
+      ],
+      "bad": [
+        "Анна"
+      ]
+    },
+    "artist": "TVpomexu",
+    "images": [
+      "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/492e18e0-0632-4ebf-8b82-fe1107c4eaab/Creon_aboba.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB46635H6RGTK%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215206Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIQChcWFF7BWlnTesbA4UU%2Fy4ZtYqdW48vvmEwiV9NcElowIgShCjGzxhwgUAzSgQIkeu8p%2BtcYACXkBZYghrZNEjx0gqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDFBeSAkCTDEwLGlnESrcA4ra9vQ2Ri5gOpo6piMDS7WrHBoZW%2BWPCifNqVveT9%2Fx%2FEnJf3sTbt1PNJPGv2PIOf6h2gBAJRMURjbQX359D5AI94fbjgvDYvp5gxmQGCcGhJNDy7dvq%2BymYLL7uILvwnGm0kXF7Bn3aWSkiwKoMEpm4wYLw0HBVNSDijaeS6GPp5lzmGcDWEwO4kiiLrEIKJtjidNZ2lqnua4ZLCRce3CH4qsflylALHnaEv3Xw2J%2B9M1Vanblgp6wK8YUW3xzCHEeDE7QAZ0urm%2BHgwLWrB4LUir54D4oZ3IJZxPIEse%2Fy7SFNd23Uc9rI%2FLOWPWiJvLDRApH%2Bxf9bf3%2FLBD5uHb54MYFUb7a9z0BQcv%2BL1Bzf2G5HkfoKXs5O3cuVuAmQTPIZx%2FLFflIgHorI%2BiRuTJme0dxytko1HvqE41AfnoOPY4CtczqIfeNiJ64bv0qqqi%2FFMjmfTDv53AB0kbwPkcoIEq01X72cv%2BwNpdJZ2wvkD88QLxOk6KNgjyYq2VEEmZYjuo6x0BmrdnM2WhxX8pTRa%2FEIXqD7IONitqx94RflIKzNYKShPTnago2kLYUMv2%2Bm1%2B%2FMC9Up%2FVFLc6vTSBYazHPv8WadvCOJU%2BuI9YlxUY2JyeRpasPkb0LMPT%2BldIGOqUBYQ1M9yv2X4DRGwL4mJXLnhN1MCOfqFD5W%2F627thSNCln6WwQ805WKspMFejAILIvET4uguusKDzgNuK7WBs7EpUDQ0hat70cv3%2BEUsCKpYch0fBNgeINi8Nxkjfh2giGa0lEUDmnnpu2Dxikg%2Bujl2a3j760CQk%2BLTirAHutpWGKkm73r%2FgMaio%2FAmjzUKMKsjdFlmmcVK7SIw51MWUMpObCiTQJ&X-Amz-Signature=e7ce7930631f0c6d78f5116ef4d7bc8c8454fec620a54c413b1af09d5b8b31a4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+    ],
+    "cover_local": "images/креон_партанен_cover.jpg",
+    "art_local": [
+      "images/креон_партанен_art_0.jpg"
+    ]
+  },
+  {
+    "id": "60203d5f-5b7f-4d2d-8541-8f807f7fe93f",
+    "name": "Сальма (Сишафа)",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/a0253461-7b80-4ec4-8896-c92e4cf7e580/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4662YIFLCD4%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215207Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIQDPPE%2BBmdvyEbPaQ9s4tyqrbAmZfITlTRjf2gJ%2BD%2BR5VgIgFt9XiGBtRkTRh9Pb2pGWiFvaG11Oa9QK4rVymHhZeLoqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDOZ2KS%2BkjM1f8JmOpyrcA2JOQWwtZd6fP9nj0rD3E5%2BPahE0gRE0Mj3reETEBdJUSI8s1koQ84Om7DclYhTg2i3a4xBHUkV%2FipL7v2ljU0nYVn1B0ntPEw0P2iiqCjJ8Lhj4Z%2FuAzX1b9J02RDpp4fVHWQabti8nDFHzsrPpG8dbQ%2BauE%2BjFEG3mWDgjzkJwanlLln%2FMvwIz%2FRx9FxrZdhcv4QH3MSHCcnK%2FIZekePbLmWsrop6WkQA6K6vcqhAvxoSJfwXcQkMJv41Vz30wCfqYh41Lq2eERREXzOoWEch2vQTRtE5oSGHU9rTB6ofXowtKTtXSXhEgj5sl66cu8JTnp5AOzVn2snUyBjKmZ9vdpBRhioPd2%2B1buwxzgl5KeiHhxhKA3VS1ixKqhxLAM5js735PpaHsMd2yYYJJXsrkdxw%2FhO3OJ7079y7Ukz7sVzX8cpbvrnnX8NDaOPvqllYln%2B4kCSpT0VR5y50NOmDsmZYmJLpgZXq6LvHjAeo3IctE%2BbNVG0X0L%2F3lpQGdI%2BJAMUhMpl2WKZ%2BTQxqF2Km%2FFEP%2Ft0t7b5XiHi5XcHR3rrK1rUA97WsDJKwCAJQ0L4JD0uJBracZWupVAU4XWBOTHsd%2FqymBiQm4kMSsyR9NnCVVudsF%2F45jwlhqMM%2F%2FldIGOqUBQ7ikceoqp1GcYmPFyM%2FGEWlBIWNuXdG90fudp00kvj5HnHAVAZR3rskGS1N3bL66jj5GzjEXIUSf3%2BnUmA%2F4Aw6veLqmM43gJmKl5qkerHOyvsS7lS4JnaOXDoclgJ4jlV%2BB5Hs%2FlWUJKLf19QVGOFlMwyhtpCl2Qk%2BeHW4cpG4Dc4EEksFqA5GI6PSto0VKD7m1lU8rz5eOloU67J%2FRCocvnmnn&X-Amz-Signature=e242e443022964cbb389d752d852ca5ec3d5d7fa70ff140a94b70094e879c8b7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Помощник капитана",
+    "age": "",
+    "height": "",
+    "status": "Выживет",
+    "voice": "",
+    "facts": "чернокожая :/, срётся с Креоном, в конце измениться и станет крутышкой (если доживёт)",
+    "family": "В разводе",
+    "fears": "танатофобия, герпетофобия",
+    "habits": "🚬",
+    "hobbies": "Шахматы, Йога",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [],
+      "neutral": [
+        "Ева",
+        "Доминик",
+        "Либер",
+        "Флора",
+        "Сильвия",
+        "Драко",
+        "Кларенс"
+      ],
+      "bad": [
+        "Патрик",
+        "Креон",
+        "Маркус",
+        "Леон"
+      ]
+    },
+    "artist": "TVpomexu",
+    "images": [],
+    "cover_local": "images/сальма__сишафа_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "e1677822-dc14-4b08-99b1-14f28f9c52e9",
+    "name": "Патрик ",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/a0253461-7b80-4ec4-8896-c92e4cf7e580/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466TKATGUPY%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215208Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJGMEQCIFczgmpQOB1Il1gV1IZmD7wqU%2Fniw5MSzaO56QEKqmBwAiB5GukFO8J0rY%2BmXzaT%2B3kKgysfqq4m9r7GSWxh9OmqyyqIBAjm%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDYzNzQyMzE4MzgwNSIMw1pIKfHRLRVbHLI1KtwDD%2B18r0pRmIxZ4AoqW29RdXr2YFk%2FL7DZBUsaYdPtZSEIjSJOXyhn2D34eOE3Tn1Xp%2FAd1a9EdKJn6yqYGOi4Wh4mWXJjfkdgkFWLUuf45AsP%2BQnxs2iDqdGf3d27Gn9AsLDLqXfphotNH6Sq2MuRHvp7Uvp6kFbvlelJiF2SxQUsu7KFH%2Bv94ogXaQT%2FtDMrPJswl9dqgp6iKf55QnnWuEsAX21F3U0s1ErQlC8mRyKUnP6zosUv%2FSUPRoioaBGcrI%2FyxyKzS2g4YpYMTo2u7g6xu4LM6KFv7vaNV6uo5ohkIgycNXDNg5mQi98rwy5f5HO7M%2Bj5ITc4LmGdNvuBAtjc8j7ypppyOkjILU0IfZVhMkBYsDnA8vloWsBUZqbKMSQQpZrnOIprN0b4GHj%2B6U3OXtOoHsXiWJ2saAcZHfVcShmdT5r1Sfmc2sQXkSE8zzrAyR5BJqCi27ImRKrAUlWwwP0OfI4OSOEB34ZyNwRTsNBWNiBt5PxO4iCzG3EiqrrDRwCUdwmXOy71YNWis8gpun8PMgjKKuKF%2B9U8UNSQXgdLNYNQ1wzEKu8NRaDnQRF8A5Esb70%2F1FzSW6UymS8QkYiI5xqvMvXzLhuX14zgohfwsUZ%2B4moIxVUwlf%2BV0gY6pgGaFhsOt5VKexNMUDTExW0Ic9bb6wYHNKjqqIasJclq5C3AKX%2BytRRP7HCpok8I%2FCE5PGfG0XbBVM5VsPUT6FZlUVxJAEkysw4mZ3jQ%2F8yUd2DPisvQXgHeUynhxG8vbljjZ27W0IeV6GQf8kujHCRZgBmQNd4y7FBAGz8eYxW5zLvcmdkLw3tO4Axvp7zNnaBVFf4ipE3cRcz27nyMkGcslpAPmSIV&X-Amz-Signature=15d30a7750680bf609bfab20191722189847227694b166a547bf5c11bc5e27b1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Начальник охраны",
+    "age": "",
+    "height": "",
+    "status": "Умрет",
+    "voice": "",
+    "facts": "Часто ест и при этом чавкает, храпит",
+    "family": "Женат",
+    "fears": "тинсектофобия, некрофобия",
+    "habits": "🚬, 🍺",
+    "hobbies": "Кулинария))",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Креон",
+        "Сильвия",
+        "Маркус",
+        "Кларенс",
+        "Ева",
+        "Флора",
+        "Либер",
+        "Доминик",
+        "Драко"
+      ],
+      "neutral": [
+        "Анна",
+        "Леон"
+      ],
+      "bad": []
+    },
+    "artist": "TVpomexu",
+    "images": [],
+    "cover_local": "images/патрик_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "09f98417-4129-49ae-b579-863ce000d1d4",
+    "name": "Карстен",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/8bb9102f-44b2-47d4-9720-59552c764186/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466ZRR7TSX4%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215210Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIDwHHCPBeMbcNVEYap87Zjc4XMCiemDU6jJm01CtbY%2FLAiEAyDKgAJjIGGeqrCuRWYEmTpDFlyZhTH7uKymMs7OjEVgqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDCtqWPRpFBh2qobLMCrcA94iMia%2FoB0HgyAiiX%2BZg%2FzjF7oLtDPneF0aFZtfI7FEaM4800SkEbZ9eRyJeN4mAMgEY4ZWIlBhNOZDJy40Mols3wT%2B19S%2BMl42Ye0N%2B5ulSjbtWNwMR8E1HBU91MopxnfWAZrsXGPFZ5fW40hpFc0UkaTFhvSOCNAvomx1RdnWiQrK6UrhzVxX82dc98PsAYF%2FApgrXPwnb%2BrujkuQVP5Snw7FYQkVaSmAFl7x89vXOXmnG255cxzkOo0R37M5IsK8i3FUB47FtTBjjKmqBB9dbweqxnlLVebcmf6DX1yKvSSZbQcmbbthE2OauaAe%2By2PbFTsgITgF1DFmUnGyV3uZizwTcPWHe4ylh9ORzI%2F4yu1%2FhWGp7fu9%2F2BxHOZwX4XbVtk4Gvs1NcrnoblaL5NtJxFAOHigZedqOTR5iNeM9utUuATA%2B3%2BdxR9KWTEoDQgcu615iGbKt6yBzX1MEMV7Cu3hZgaOEy2K%2BOZHcikpou8DkDqfHPWfmUYIgpWG0ufk64W%2FvMtwaF0HM3%2FSxh4s0l8KfJggNFHfL7QFG87z24fJYwAP%2B%2Bdlu5DsxV3Dca8OP5zkvsgQ5RIKO7YiWJxAmUEvhN4DzqblFq0imoJxDJSIJJQk8VmPWJCMMiBltIGOqUBWHppDlPwGXS1R%2B1DG3su99Y7Thh8fPafjl%2B8qAQr53g6XfjpRdBFd222vvpNPYRcYtUhf6%2FmjqSnmT8nTvuEAyBo5VptgCnQc1tEuk5W7VFAIbTiH0dC2fFStOGg3ZK%2FLDZFEp8dPWQzJDLaxJSMQdXaiwDSfVrdOobUvlnpGsPycFpo6Pj1cm%2BGFd1qzuUV8qajJE2sdvLBKQnmq5FvvqAz4aku&X-Amz-Signature=f47b029418c8f29a9a9095ae0aeb1ca97010391c319c9045261bbe896642f2f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "",
+    "age": "",
+    "height": "",
+    "status": "Выживет",
+    "voice": "",
+    "facts": "Переехал в свое рабочее место, занимается селфхармом, не произносит ни слова рядом с людьми, тщательно следит за своей внешностью.",
+    "family": "Будет влюблён в Еву",
+    "fears": "социофобия, что кто-то услышит его душевные разговоры, стать как его дедушка",
+    "habits": "Часто разговаривать с роботом по душам, опаздывать на собрания, 🚬, ☕",
+    "hobbies": "Танцы",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Ева"
+      ],
+      "neutral": [
+        "Сильвия",
+        "Доминик",
+        "Флора",
+        "Патрик",
+        "Либер",
+        "Креон"
+      ],
+      "bad": [
+        "Маркус",
+        "Драко",
+        "Леон"
+      ]
+    },
+    "artist": "Raydron",
+    "images": [],
+    "cover_local": "images/карстен_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "894af603-7f82-4bfb-9a4d-fcecffa72dfd",
+    "name": "Леон",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/a8e98874-21a6-4b3b-842b-346ee7aa64a7/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4665BROBYMB%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215212Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJIMEYCIQDwzdIauVfAJ3TTJ74lTFpMNK6ryGMEm5I6l5c3Wl1elwIhAP0aRVv3F%2FSmPP2utHCn9vUkQp2cPe7P8qoXsTCxTS%2B1KogECOb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1IgzVk7DBRjwzCHR6H0Uq3AN8gl%2FJxZ3xScXHQiFafFtUZbOWmiObYyXUzGmQ3VJ1h4zw9XU9Maa3mYmzlqEba3vQlN%2F9soT9LRPp3r6O1IjOC7mmZIMtS4PZTygC3icNh%2BYcHmuXhNOF%2FxyE3vVHdGJMnGj%2FSkyxn3GM7%2B0UBMkZstaki0vCPqjpNL%2BWAZnthfEkkFPdu9pYmLvfqK7hhcdIunxXlUCs4aZblnYzE7smfLXilhKqu81R8KKTaAjy%2B4Q7bHfqqT1cQ9P9XvyIRMDponMAn%2BQWosssPR3hyhGX%2BtyHr1OXQXebVgBhjQelrqBEA8MEGw0bGRn57BFv%2FvBIe5Sg1HqkRGTG2Eeaxg91R0%2FvM4oCRBPfhKPcn8Tm4K6HtcF2ZYFkpaCXHHti0We%2FGLe%2BMGcFcFvYdPMofkmtt0K1TCPAK7iGTXYDy14SalTTDtHvYeZ4VzDw4T2xR3kUvZC7eSEUCPZlMisR39ALV5CFRRL693Iwn5Rrw74vVIMQxKd%2Fa%2FH8HnBsyXzDh2%2BPrSKDDBz1WxiEb0beAKm%2FV487t4oZbaXn%2BsvyVG%2FInCchfqLKUrpmVdFlHADgsiJek0MhSx3bZTzYs8y3AmDlx88wsd3S5lPEnIbMWroqk0%2FcsVQeHcmYr8dsczCPg5bSBjqkAcROlDoBm%2BcHVQN7ep4mYr5RgcxiUTqkcNtFzBTuOyRmgOhpLtZRrUjXWYY3PUhk5O8zZ3AySEEgb8ubynEbcabHi7eb02k3tG1HiAGK8lVzSXeFnHSEPZc8Ha7z7uQIVYWckz5YoBB%2FlWxxnMvT0S%2Fz%2FOHifWS8Kk1w947ETRz8m44qcjRZLVuPh6NB0O%2BZQllETgvBA7BOUbCwii1XiRHQsMW3&X-Amz-Signature=2cf48ef806cb5a67ff21ea4617fb142aebdf03b435ea58d0c4c91689269490f6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Инженер (обслуживание ПО)",
+    "age": "",
+    "height": "",
+    "status": "Выживет",
+    "voice": "",
+    "facts": "Сидит на сайте для знакомств",
+    "family": "В активном поиске",
+    "fears": "боится остаться в открытом космосе",
+    "habits": "Очень много сидит за экраном, шантаж, вейпит, курит всякое :/, 🍺.",
+    "hobbies": "Компьютерные игры",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Маркус",
+        "Доминик"
+      ],
+      "neutral": [
+        "Креон",
+        "Патрик",
+        "Флора",
+        "Драко",
+        "Ева",
+        "Кларенс",
+        "Либер"
+      ],
+      "bad": [
+        "Анна"
+      ]
+    },
+    "artist": "TVpomexu",
+    "images": [],
+    "cover_local": "images/леон_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "200bfc92-c9cd-41db-bb9b-7a88579c52d7",
+    "name": "Юлия ",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/ae8f47b6-1b6a-4c75-a5c6-141c5bfc2fe1/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4666TI3Z56E%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215213Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIQDJi6cMckzrlsN4ard%2B13v3t%2Bmf%2BuyeeWoiI7Kb7O5P5wIgF2yFVz8Bi1t350NT8Oyy7rO62batPXCmJKqFCyXOshcqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDJSYpBWeZqivJtn5MyrcA3v%2FNBWBQ%2Bc1VrVT1IGLPmR6Z%2FccFwzmESLWSUP1KxYJovnCUHWmWh6FUI2YMJVMpMT6v3jwpqdQgIJp%2FZNdqyeYpRG88Gs4nl3gPiVoU7rBWw%2FMPrUaIgf6UZseDzbOri%2FO%2BOH1viw1Ae8MMVod5D%2Fm2eVYoi%2BFP%2Bfui0ueGI4R4kY7%2B8sGJqSBrtNdNByGDrUthSMciEYU9zmV4FJcS1QUhEsneTwGNPwOfp8jvhWNtLOPKMfIi%2BnqL2w3ToMbd5Z11GIMfDccqbAkv5Y%2F7lPOnprkeyS3AdzTFO6BzxuVyODXmxA9dq3Nn1hdHxQ42e9L%2F%2FG92yeIov6cGim8IGRG%2BjQiyZvIwnuq7gQpIjVxKB6%2Bl4BbCyo8vxMIv3KNgdTxn6BKzgIHnCh5TeFKztLdZZU%2B0UT4bqolvC5rRROXTveAK%2FiVlnO0FEaP9DqSfYGw53oQv9Nlz7bcyIix3Z0dJzMGBqtS7RUMZptiJyvvGEGuMncdfMItjJSBK1nXbmk82ACXZLivbMLWcRvUXU4NKRpd19znncsT%2Bi6V2hODv%2BtNprtq1W4XclPEigZ%2FmcEyLl4v2Sp5eTwq7PyUiVmNqALCqooAotniPzrj17W7L4Tj14sX5c1pcHSgMO7%2BldIGOqUBfgV6%2FQxjelAahx8KRrXtAfWiKfxdJzFiviDp07muy5K04vsDizsUccclQ%2BpKhXZPzCpSCR%2BADPO12zdoSHYz7ACrUfdjIM48kHUI80dy4tnlqU%2BeRVMT42CUZ%2FA3R8onMGgQsLKoCAlEFin9dRr1xt7qfpry3F%2BgBYb2Gsf3BJbyP1Q7%2BUn8dN32T89iErBINpEdr0SvhPmph5idjFA3BqOORa%2Bk&X-Amz-Signature=3162f4d48b8635e8547e6021389915e830c243ce82558069f3ed144fd7f6e6fa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Медик",
+    "age": "",
+    "height": "",
+    "status": "Умрёт",
+    "voice": "",
+    "facts": "Часто делает комплименты",
+    "family": "Влюблена в Кларенса",
+    "fears": "что за её спиной о ней говорят плохо, акрофобия",
+    "habits": "—",
+    "hobbies": "Рисование",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Кларенс",
+        "Патрик",
+        "Либер",
+        "Креон",
+        "Флора"
+      ],
+      "neutral": [
+        "Драко",
+        "Сильвия",
+        "Доминик",
+        "Маркус"
+      ],
+      "bad": [
+        "Анна"
+      ]
+    },
+    "artist": "TVpomexu",
+    "images": [],
+    "cover_local": "images/юлия_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "c7b0430d-161c-43a3-bd67-244b32d780eb",
+    "name": "Евгений Викторович Богомолов",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/d308f89e-848e-49cc-9eb2-43d2ce5b0dd5/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4667QHT3OXP%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215215Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJIMEYCIQDc1ZU%2B5qJl0iaFdVQc0e8371%2FwCYgFpuw3A3GSm2EaBwIhAMqpeudJcf6ZCKp3jJZk37RCDTAoOpN%2FXgvHI8leUIADKogECOb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1Igw2WoktKwlcrflw1b8q3AO8A1frxUNXSOEe6E8PprMR5NvkF1x2pLsa7uSE49pZ3kOfUNVR%2BsShQFL8sJTDMoOABRV0MjE0aFZ1MJjivDObkASfXb5hx3Zev5ZMKnosSEeXuJXPhWY38RCQ1b1nie1XDLo7spE9Du0cldCt5v6NOOMzhneC2JuFrtPdNExc8wn%2BQR8C4zx0qetjk0cZKnde%2B4V9%2BV02hw0OTCydjD%2F6OcjDavSlke%2FWcQc4dsP%2FKFjmuz5jnVG8%2BmVb4wfg8r4FaL6IJk9Nxna%2FKfmIVLKG%2Fp74gmIp4b%2BpbIh%2B7V3L6K4ITODQvk67q4RdRicVc4ZJvf4TzghDbuDqRaE3d59GWN8yk9cORmYtZpV5e15IrFg3gT6dqEn6x1fSig9l7yYj8PpJl%2BoS%2B52BZXNKLhvodwMmZoqZEx7NAXFzhC3cctW%2FrOL%2FTOsG9lIyVrCnoI%2FtUKuSjlePPnmc6irDlmxEYPbyDwXkqStnVRD8b7R3%2FB%2FyXdIyZE1iaUtQENS7bWi6X2kA0TtEwyDIVo8M9WSGpoC8nvxMkF9KlSAK7adbplC4BMwExexvE4L4tPtvjYDRBTLGZZerKcVaWDB2ye3kJ48%2F1RndFbS%2FFtcKGN3dU7pEmSRVSQaiyIFWwDCm%2F5XSBjqkAfFIfh6HKcekaiCpoCUf4KKwU%2Fq73cuL%2FZpdEY5Sk6TFfoqu0vurowtejy2zBrtbEegxBgcnkab54tUg3tOTFKZDe1lt6U%2Bp8JkYBqDAfSzjx5%2BPe1N2id0da3xgtF1eKk3haYUo9vKVysBsp36b4wBPpY6%2FIHM76Jz1Es0Jskqo9R7%2Bn0%2FVX20pcJ%2B6GSFSLoC7v2gs64GCIh3cOi9WtQEJPQmX&X-Amz-Signature=f190ebfcc5498c34a785b0399bd8efc35cce4e3fabdc536859cc33badd0a84b3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Геолог",
+    "age": "",
+    "height": "",
+    "status": "Умрёт",
+    "voice": "Piforg",
+    "facts": "Помогать любовными советами, мужичёк на побегушках, христианин",
+    "family": "Женат, есть дочь и сын",
+    "fears": "потерять близких, попасть в “тупик”",
+    "habits": "",
+    "hobbies": "Писательство",
+    "death": "Предаст Леон из-за чего и погибнет",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Креон",
+        "Либер",
+        "Флора",
+        "Патрик",
+        "Маркус",
+        "Ева",
+        "Сильвия",
+        "Драко",
+        "Леон"
+      ],
+      "neutral": [
+        "Кларенс",
+        "Анна"
+      ],
+      "bad": []
+    },
+    "artist": "TVpomexu, Raydron",
+    "images": [],
+    "cover_local": "images/евгений_викторович_богомолов_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "b9547d2a-637b-4e17-ae76-8770b907222e",
+    "name": "Эркюль",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/d308f89e-848e-49cc-9eb2-43d2ce5b0dd5/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466XBS5IHE6%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215217Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIGNLxKSQXY9gIwUSE%2FA%2FSP%2FjKYQss45UUr25QSP%2BgE1QAiEAja2Vc4TV89rF40jli5wUHHK4zk98M1liK9AIUU03udgqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDNK4WZnP5kfi8tNVmircAwG73ULBOtfPpVRF%2B21xhcb40Yk%2F8hEfoke31zz%2FO5oInVmFC5iOk%2BVV3km3wasKAX3Ks3eTdN8i7lZmudzR7vuRhaCdz1luKdpexUmuzBb7yXd6sWAwT0qrlxh0OBoYZFY0hUQfxk0brIM3U8zi6S6yN%2F3ck2vCHDJSaGMTWnWPDMJvgLFt8%2BfkoCGZ%2Bv1h3xItr4T5VhhpNP979LY4F3E%2FlJvq2hffiEVa1fNWQTsaaHjVPLwWrfm0TQWmYJkUlfgQMXOMc%2FSxZHCeewh39Pm1MTSwZYuGXy1qVUlVNl%2FdrjK%2BKK3v%2BMUvqwwfbBs6DuTa4taurX824jZ%2FXKWE1t94%2BPXmYrnNYqn2WvMjQuMjUBYMK2QS1kPorqUsp064hWLcemIS8xSt4r6siB42L9u2U1JtDuKKCoRq4INu6qXXr6bVNoHa1RMeOCu3jY%2Bo33Y53KvTrYz%2FQh5X2CkB0m3iMYHeXyR6Yr9sLVaFR06UhEcY%2Bkob2drYGBa4R%2Fo%2B31dwRdBNePmV%2Fv9LUhCigesgPqvQPP%2FOYU1pwlEB1BCOolU7V5N3kcyyktGMoYvO8oSiQjO9F2KUY8CboJ94moLudN%2Bgp1JPw1qPIIX3dUbqY55NFL6aWr8RNzXaMLWCltIGOqUBnVRxAqvz8akSxNPH%2FfrdBnWsHXWCCVhhhlXtLRFFodCcm4rhr3oP4MMX0gXXF3P08CFaAuFjt7uwuVNsEgCrgVUJiYsjeOD3V1TGMqjhNzZP2VS2x6Qtku9HGpySFlH8zel7CV57dZcTDjlN8pfm13fUCYHec8YmFVp2pZqOSfjm0FI7uXOpepti%2B216%2Bxo58PliRcdACjwJ%2BUS%2F%2BmSTm7MZTqGO&X-Amz-Signature=ce4dfa8907ab798bcb416a3707aed8769cfd67637621126de5630c17bd04059a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Химик",
+    "age": "",
+    "height": "",
+    "status": "Умрёт",
+    "voice": "",
+    "facts": "Не любит сладкое, принципиален в отношение работы,",
+    "family": "Не нужно",
+    "fears": "какоррафиофобия",
+    "habits": "ходить туда-сюда когда думает, читать книги из прошлого и искать там ответы на его вопросы.",
+    "hobbies": "коллекционирование старых книг.",
+    "death": "Опасная инфекция из-за насекомого Драко",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Ева",
+        "Креон",
+        "Доминик",
+        "Анна",
+        "Кларенс"
+      ],
+      "neutral": [
+        "Флора",
+        "Драко"
+      ],
+      "bad": [
+        "Маркус",
+        "Патрик",
+        "Леон",
+        "Сильвия"
+      ]
+    },
+    "artist": "Raydron",
+    "images": [],
+    "cover_local": "images/эркюль_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "ec2b5bd6-4404-4249-b672-b84e0e35ced0",
+    "name": "Унура",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/2815c0ea-202e-4c46-8601-bb99c509b04b/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4664FPEMCKY%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215218Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCID28olh8RGjFAsVvTrBhOC2ECdWQfZjJDat2hRpttRiAAiEArUpUnD0UhE5MfjUARYZ%2Bo1wWiKbBsjGymDct24Mb%2B9kqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDIrWjjzWbXFcqQsvWyrcA22%2BYCiEqvxOWjvFBo8wpUEIsre8AUp%2FE3XQRi17GBBgNaow%2FTYefCBt0oTYDfRtX9KHRf5a7axfvIJpqkp7LKrL2lck75TTy137XO0rj6tf81Z5KvZLnoHu91kfeQZ%2FfXSSRV0iQGQUP37JWN794wMWhaHUphWJF87aUX2dZQQ5lckifvaJNgIIg1CiqnwUle0xsTxSU%2FJdSHvOipIty39Pjbu8CURUv2QWVRMRUZGQpVHkPRRDZMXW77fEIfWDBDvoWh2X8tg%2Byc53uiYi1dolG7vWlXDxeftNL%2FmSrmdFI1VQDR59aI6ZQsr3x%2B%2FWVBZOFUc6Qd0xr4sGEtq6%2Bnexhrb3VFECOSuF5ji151sb8z7T6Zx%2B6wa8mn9FBzExwjiqllvURoj6Ggbz5Rsfjs%2FgLVRlG26oDCd1Ztds%2FvIQZRlAxECexfCH0P8nbnP0sURakMUsVwwpgucCPQGu1YHhMgU1%2F5j15dzXR%2F3TCfMucmH2JEZ1k5yc5XcltNiiN2WPgY9CI8wg0t8Il8%2BfqIQ35RnUtWQ3LcleY1N9yEmfJXIk5tj7MlhL9ECiKd64VsISS0C3HDCEPwFcnnWcike1cViXk27woH%2BDMGgUMdBAf84NWKaCB5m663WTMKODltIGOqUBpwLsaUY8jcHE5h4GhW6eijDw67FnhvybSe%2BrN6bDTzHpOBwRAvqayTWZRynIo19QW98LqVi1FpyfPNMeac1%2FxLKQYs3kB1VvJ%2FCNJQYIbxRRDYfnTkeJk1qFCKyEtF76D15wn87lr5shrq5PZE4aViJwfWhMg3Ig2XQzOamaubpy7YiGZ31aumBSqo1z0v5cyQKWpEIr%2F8vAnKZW1KyzoziPiplh&X-Amz-Signature=1b17f8e6deb11949f947d8687316b76a5a0eb120c10b73b454a77ffd5451c0bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Биолог",
+    "age": "",
+    "height": "",
+    "status": "Выживет",
+    "voice": "",
+    "facts": "она влюблена в Маркуса, но он её френдзонит, а она френдзонит Драко, гетерохромия, веган, верит в гороскоп, ценитель чая, буддист, карты тарро",
+    "family": "Влюблена",
+    "fears": "Арахнофобия (боязнь пауков)",
+    "habits": "разговаривать с растениями и давать им имена",
+    "hobbies": "Выращивание растений",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Ева",
+        "Маркус"
+      ],
+      "neutral": [
+        "Сильвия",
+        "Кларенс",
+        "Леон",
+        "Доминик",
+        "Драко",
+        "Анна"
+      ],
+      "bad": [
+        "Леон"
+      ]
+    },
+    "artist": "Raydron",
+    "images": [],
+    "cover_local": "images/унура_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "321c18c1-58c8-4c92-9575-1396efbc8b9a",
+    "name": "Сильвия Уолкер",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/a9d895ec-a9db-4c50-8a90-76f8da922e51/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4663H5AGACA%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215220Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIQDnzI6xpaCGzauJHDfRk0ySLQFD3VFDyQcpwNaeHXg7JwIgM7%2FRZzzR3WdHYDlyWxkCX21r6mIER8tp%2FlI4Hw68pFwqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDFvQYK7em2MebCsa1ircA3xhWVbLyG8q27z%2Bv5vyiaage%2FSqbb%2F7EeOx%2FuXsQh5ottvKyzA%2F3ts2ZDyXgvAgsP%2BCfC8ZrquS7Za5uBp4iD%2B64GlpDK8f2dbTeYgUYQ2H84FtTb%2F0jrBvI%2BGXzrFVZ66dSS%2F3CqDZJ7tVcP64dOtJMHBQtbUtarnoRiYNcLqZW2B3PqkcvNMqaMSaFMERTRwO4S9PlXSi2iFy4azeIB07ULlHXbHbrPByL3Lr5x26vDT8Vp1X6MAKBen64j%2B7MTrFLKW%2BWz%2FB4pLH%2BhxRNc0xBqGyQ7CvqvAu6Dhg70TefesSD44cJ08I2EHYJCn%2B3tGRxsK7NkrFioQ5T5weQa%2BXwBUr7eH%2Bwi1ihNUCeP1L8B%2BPdO3WIyBqQdadt%2F5BXF%2Bh1xXDwXJ2M0qV9DFlFiGEXmnyPQnMSzxK%2F81eSnkV6RDP%2BvvAuOLjTV323jYfby9gT2fB%2Fz%2BIs1RzYvcQJr2t30lBYdbgPPOaDJJF1gibHFAJe0iikN5osvO36G6i3fcyhHoLfLAfUAyn5y%2BpqW6ZD7JVjyqTjjT7Rb8p7DeJ1BKCQ40Dl%2Bvg6bpT1os12es%2B96go0eNB4%2BHiFRf8OmjmGqGPNr%2FMYPq3DgZzs38dwT0Qgfra%2BKMWE2U8MLCAltIGOqUBJC5W%2F%2BSfBV2dq3ak6LTs46tpeL0C23PhOUXzujEFZUCktLBOvCvQO%2Bmgf6fUDB7QF6has%2FCRRevKeqFNdpfGhOX%2BScJUWA%2BJNJC%2BDLY1H6It49Vj5bZKfOb3HRLEnZ67StOw0gGf320Ei6IkyMCaJfpZA5aEXDEqJYhrmL%2FDKXnf5j0VlwJn9EhGY3f%2B8nkB6RzC22Qpn3O60KeDxGGdfVoZt3ul&X-Amz-Signature=7899747d3d93503258aaecf1d4efe96fae6617cb44c9e33d8823e7d1f10a2936&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Связист-Механик",
+    "age": "",
+    "height": "",
+    "status": "",
+    "voice": "",
+    "facts": "Инвалид-колясочник, когда отлынивает от работы (то бишь всегда), то заменять себя роботом, как член команды она помимо связиста-механика является генератором идей, в гневе часто бьёт стол. Часто использует слово “оглобля”",
+    "family": "",
+    "fears": "номофобия",
+    "habits": "🚬, 🍷",
+    "hobbies": "быть почти не бесполезной",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [],
+      "neutral": [
+        "Креон",
+        "Либер",
+        "Флора",
+        "Патрик",
+        "Маркус",
+        "Ева",
+        "Сильвия",
+        "Драко",
+        "Леон",
+        "Кларенс",
+        "Анна"
+      ],
+      "bad": []
+    },
+    "artist": "TVpomexu",
+    "images": [],
+    "cover_local": "images/сильвия_уолкер_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "e04d05e2-ce0c-48d2-90a0-fdf87c19284e",
+    "name": "Маркус Беккер",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/c53a0c8e-3b9c-4f3b-ba4e-f6e383f0f2c3/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4665WB5GFWN%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215222Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIC26h%2FlDKnkus7djf8Xp9tzBVCiHC9jzV%2F6Oy8YWajjUAiEAyVwhNRwQ%2ByvqS4sWOs6rhVq2mYmXljLUlvJEDdDAKBEqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDPURZ2uWUH6dgbydWircA5yJSv724gKT3YqDORlt2nkhuvNo9eg5Sv2ry24O1zQAxe36IATLM3zYu8CFn4vEeFz6qEKrqaXmNzGZPvhCDZYwDAbUQRRjCiR4wAZ6nL8Rp5as7U0IXW%2BQrwQRhXIMpk%2FMxAnSnbRNvaS1nDVfJEWZjfzlpQycHLfPHJl6Mng0mvHHWg8eNCtAk%2BIgGe%2FTLin3vJhQC1rC%2BDzHWJwORDxi41TSHhnTmRNKJ8q%2BwVEMF4Rqg2eUCgPwJSd8Yk1qQuAZYzrS5ebojY%2FSpbJc1roQACeXdLq%2BkBdkJ9y%2FGqKJTX1mnUK1Ervguhroj%2FUtc7syM5On0VMW%2Bvl7%2BbpCoZyV53YsIHCXZqcDMWvbZBEDGosbOb%2BQQAEG1B61ZuYvVK6behsUC9Dn0RC%2FeMs1dvDWtHPciIqIKz6aUlZUpqdPt12Yii%2BcuEnjscbuQ0wdwwPDz%2F71KhnKlteyH%2FxQM7KxWDs4f8JnEbQanwsuNE34zzhqE9G8epkjoRIc2AGWKYpB8Z7OKF16thrQaahy4%2ByUrinKPzB7xkqn%2BHRghcBsWZiupYPC%2BG%2FqSSLY8kgd%2FmiHrF7b2LtvXz2cZKykCOG2FvfeRUOKHP4O30VKTSCqV%2B%2F2jVhc1zj4U8lVMM3%2BldIGOqUBrab3TaWh811D9vCSZg1lI4UzA8IAtrIGxRml1PJGhvTFngqYh37fTKn6T%2FwG6dSW1%2FQBuICrWYdINa97oEbZDtJGOPZSoHyFwtBguct6H92MXQCuj2EFqK86ecpVsHnKpfjbtmmZpWa5hddq6eJ86Bvrh30NRcy%2F9Du5VU5B3uzb5mtRVfKjSeQ8hUu2BXRGCBvleR25DBdfupjhI%2F%2FEcU86uXLm&X-Amz-Signature=82ebf385b9410489bbc323003b8fd3c2fba8dd0ebb809a58d78aa3c1cd1e007c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Исследователь",
+    "age": "",
+    "height": "",
+    "status": "Выживет",
+    "voice": "",
+    "facts": "Лучший друг - Драко, френдзонит Флору, главный заказчик у Сильвии, левша, любит острое, у него в руках все ломается.",
+    "family": "Не женат (и не надо)",
+    "fears": "сколецифобия",
+    "habits": "Вставлять английские слова в предложения, рунглиш крч",
+    "hobbies": "Блогер",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Драко",
+        "Флора",
+        "Патрик",
+        "Доминик",
+        "Ева",
+        "Сильвия"
+      ],
+      "neutral": [
+        "Кларенс",
+        "Креон",
+        "Либер"
+      ],
+      "bad": [
+        "Анна",
+        "Леон"
+      ]
+    },
+    "artist": "",
+    "images": [],
+    "cover_local": "images/маркус_беккер_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "a3265dd1-ebcd-451f-ad37-3069521198f2",
+    "name": "Кан Со",
+    "cover_url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/adf13e66-3f18-41e6-b48b-eacb75e709d4/c53a0c8e-3b9c-4f3b-ba4e-f6e383f0f2c3/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466VCZJLAV7%2F20260701%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260701T215224Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEB0aCXVzLXdlc3QtMiJHMEUCIQDExxbFCOqT%2BH0%2BVRt2BS1neCgzlNA4pPHKQeH6tpnmTwIgCg459UEAUFaK9PIPQddzEfosOrfiDuxPrZUQ3gNRgLgqiAQI5v%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgw2Mzc0MjMxODM4MDUiDHgOcBKnzN24wf2CGyrcA5gW43pVT1LtmRWvbkGvGUEtUD3UWZU5J1yVIlx8H5QGplvBF7jEyXqScKo5MZ7%2FbWtVNxKkqLcWXg65phN0Dr1CCMbRxtwy11pVHCHD8tdvqVKlZBHoMMGawlSp9e0s8EedDDXIvot6HRVUZ4RMSuZVOPHS9f6xlXMdDL89715dVHq8hqvTrU%2FxamNx9JPRlv2dOgpl%2BwnJURponShbr7uycjG8fjOU9EZUhZPHimBb1SdemRWbZvuos1p6vYLa%2FizaKTrayWBMkAEL3cyTxZYHkx4bLMqUxZQxfmKIjAL9FK3osuUNoWMkKo%2BOPSx0iQyRciNzLgQTYRJM8Xm8xMFRKoXMBnIYrThH0notK3Yw3qlL2lz6%2BwUC2rKxvOnEdpKGmyxouYx8QfSOons6I18xlDJhHDRjVMY9AMu2Q1sEh5%2BPLefEP0qLGWfi%2FzZZCCiRk1pZsJd8r%2B%2BSdQOlv9yZlR4gP5RkLPBfwNPHwzSUO%2BT1uYMLGn7WEdu1YJnzcLRvnJMPEm5eRmlO3Kv8u%2Bz46VBLRzHhAhFxUJ35Uw6%2BZAHEk3U%2FkReM7YysOeIQDBpiHn9ntg5XxALsIcdPBhlxXZsGPn6QGtW4P2Cd57o7zMlQwVtfzYTpl%2FpbMKWBltIGOqUBRCGaaB4kE1pPWisWr1t8mLKnDyKyx6xx38TZ8X3CdGFuFRy%2FwJwT1auHvxakBu0GRKoO4e%2FufHpA2%2FB6TTsJdygEcobxXBXOVTm%2FsCkHCE2Jrrch4mOGxdgnG8A5JSgB7PSIlBXamJKsAo9Gvld3oASc8vzZnwdAT0on3zH4jVBpuFN2nZ3ThObS6v23nm8nQBs1VlhGTA5lI9tzJ8RNAtjVbSc%2B&X-Amz-Signature=5ecd384d55f8281f52eeda1520fb0d5bf9a25a4a8a4170bc05592660441fbe77&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+    "role": "Исследователь",
+    "age": "",
+    "height": "",
+    "status": "Выживет",
+    "voice": "",
+    "facts": "Интроверт, пассив по жизни, лучший друг Маркуса, тайно влюблён во Флору, почти умрёт из-за червя",
+    "family": "Влюблен в Флора",
+    "fears": "кремнофобия, тафофобия",
+    "habits": "Сравнивать себя с другими",
+    "hobbies": "Металлоискатель",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [
+        "Маркус",
+        "Флора",
+        "Патрик",
+        "Доминик",
+        "Ева"
+      ],
+      "neutral": [
+        "Анна",
+        "Кларенс",
+        "Креон",
+        "Либер",
+        "Сильвия"
+      ],
+      "bad": [
+        "Леон"
+      ]
+    },
+    "artist": "TVpomexu",
+    "images": [],
+    "cover_local": "images/кан_со_cover.jpg",
+    "art_local": []
+  },
+  {
+    "id": "0ee14988-8e24-4caf-b07d-66254be1513b",
+    "name": "Ами (Bsoh",
+    "cover_url": "",
+    "role": "",
+    "age": "",
+    "height": "",
+    "status": "",
+    "voice": "",
+    "facts": "",
+    "family": "",
+    "fears": "",
+    "habits": "",
+    "hobbies": "",
+    "death": "",
+    "appearance": "",
+    "quotes": [],
+    "relations": {
+      "good": [],
+      "neutral": [],
+      "bad": []
+    },
+    "artist": "",
+    "images": [],
+    "cover_local": "",
+    "art_local": []
+  }
+]

@@ -317,6 +317,14 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
   /* stats table horizontal scroll on mobile */
   #stats-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
   #stats-table { min-width:480px; }
+
+  /* profiles mobile */
+  .profiles-grid { grid-template-columns: 1fr 1fr !important; gap:10px !important; padding:48px 10px 20px !important; }
+  .char-profile-body { padding:16px !important; }
+  .char-profile-cover { height:200px !important; }
+  #char-modal-inner { padding:0 !important; flex-direction:column !important; }
+  .char-modal-cover { width:100% !important; height:220px !important; flex-shrink:0; }
+  .char-modal-body { padding:20px 16px !important; }
 }
 
 @media (max-width:480px){
@@ -324,7 +332,92 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
   .view-tab { padding:10px 4px; font-size:7px; letter-spacing:1px; }
   #legend { flex-direction:column; max-height:60px; }
   .leg { font-size:7px; }
+  .profiles-grid { grid-template-columns: 1fr !important; }
 }
+
+/* ── profiles view ── */
+#profiles-view {
+  position:fixed; inset:0; background:var(--bg); z-index:30;
+  display:none; flex-direction:column; overflow:hidden;
+}
+#profiles-view.open { display:flex; }
+.profiles-grid {
+  flex:1; overflow-y:auto; display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap:16px; padding:56px 24px 32px; align-content:start;
+}
+.char-card {
+  border:1px solid var(--dim); cursor:pointer;
+  transition:border-color .15s, transform .15s, box-shadow .15s;
+  background:var(--bg); overflow:hidden;
+}
+.char-card:hover { border-color:var(--fg); transform:translateY(-2px); box-shadow:0 6px 24px rgba(0,0,0,0.1); }
+.char-card-cover {
+  width:100%; height:180px; object-fit:cover; display:block;
+  background:var(--dim);
+}
+.char-card-cover-placeholder {
+  width:100%; height:180px; background:var(--dim);
+  display:flex; align-items:center; justify-content:center;
+  font-size:32px; color:var(--muted);
+}
+.char-card-body { padding:14px; }
+.char-card-name { font-size:13px; font-weight:bold; color:var(--fg); margin-bottom:3px; }
+.char-card-role { font-size:8px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:8px; }
+.char-card-status {
+  display:inline-block; font-size:7px; letter-spacing:2px; padding:2px 7px;
+  text-transform:uppercase; font-weight:bold;
+}
+.status-alive { background:#e8f5e9; color:#1a9950; }
+.status-dead  { background:#ffeef0; color:#cc1133; }
+[data-theme="dark"] .status-alive { background:#0d2e16; color:#4caf72; }
+[data-theme="dark"] .status-dead  { background:#2e0d12; color:#e05070; }
+
+/* ── character modal ── */
+#char-modal {
+  position:fixed; inset:0; z-index:400; background:rgba(0,0,0,0.6);
+  display:none; align-items:center; justify-content:center; padding:20px;
+}
+#char-modal.open { display:flex; }
+#char-modal-inner {
+  background:var(--bg); border:2px solid var(--bd);
+  width:100%; max-width:880px; max-height:90vh;
+  display:flex; overflow:hidden; position:relative;
+}
+#char-modal-close {
+  position:absolute; top:14px; right:16px; z-index:10;
+  background:var(--bg); border:1px solid var(--dim); color:var(--fg);
+  font-size:18px; width:32px; height:32px; cursor:pointer; line-height:30px; text-align:center;
+}
+.char-modal-cover {
+  width:320px; flex-shrink:0; object-fit:cover; display:block;
+  background:var(--dim);
+}
+.char-modal-cover-placeholder {
+  width:320px; flex-shrink:0; background:var(--dim);
+  display:flex; align-items:center; justify-content:center; font-size:60px;
+}
+.char-modal-body { flex:1; overflow-y:auto; padding:32px 28px; }
+.char-modal-name { font-size:26px; font-weight:bold; color:var(--fg); margin-bottom:4px; }
+.char-modal-role { font-size:9px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:16px; }
+.char-modal-status-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.char-modal-tag {
+  font-size:8px; letter-spacing:1px; padding:3px 8px;
+  border:1px solid var(--dim); color:var(--sub); text-transform:uppercase;
+}
+.char-modal-section { margin-bottom:20px; }
+.char-modal-section-title {
+  font-size:8px; letter-spacing:3px; color:var(--muted); text-transform:uppercase;
+  margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--dim);
+}
+.char-modal-text { font-size:12px; color:var(--sub); line-height:1.7; }
+.char-modal-rel-row { display:flex; gap:6px; align-items:baseline; margin-bottom:6px; }
+.char-modal-rel-label { font-size:8px; letter-spacing:1px; min-width:70px; color:var(--muted); text-transform:uppercase; }
+.char-modal-rel-names { font-size:11px; color:var(--fg); }
+.rel-good  { color:#1a9950; }
+.rel-bad   { color:#cc1133; }
+.rel-neu   { color:var(--sub); }
+.char-art-img { width:100%; margin-top:12px; display:block; border:1px solid var(--dim); }
 </style>
 </head>
 <body>
@@ -412,6 +505,7 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
 <div id="view-tabs">
   <button class="view-tab active" id="tab-graph">ОТНОШЕНИЯ</button>
   <button class="view-tab" id="tab-stats">СТАТИСТИКА</button>
+  <button class="view-tab" id="tab-profiles">ПЕРСОНАЖИ</button>
 </div>
 
 <div id="hdr"><h1>JAPERDAIS · ДИАГРАММА ОТНОШЕНИЙ</h1></div>
@@ -433,6 +527,20 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
       </thead>
       <tbody id="stats-tbody"></tbody>
     </table>
+  </div>
+</div>
+
+<!-- profiles view -->
+<div id="profiles-view">
+  <div class="profiles-grid" id="profiles-grid"></div>
+</div>
+
+<!-- character modal -->
+<div id="char-modal">
+  <div id="char-modal-inner">
+    <button id="char-modal-close">×</button>
+    <div id="char-modal-img-wrap"></div>
+    <div class="char-modal-body" id="char-modal-body"></div>
   </div>
 </div>
 
@@ -1306,30 +1414,139 @@ document.querySelectorAll('#stats-table th').forEach(th=>th.addEventListener('cl
   renderStatsTable();
 }));
 
+// ── profiles ──
+let CHARS = [];
+async function loadCharacters(){
+  try{
+    const r = await fetch('characters.json?v='+Date.now());
+    CHARS = await r.json();
+    renderProfilesGrid();
+  }catch(e){ console.warn('characters.json not found', e); }
+}
+
+function statusLabel(s){
+  if(!s) return '';
+  const dead = /умр/i.test(s);
+  const cls = dead ? 'status-dead' : 'status-alive';
+  const txt = dead ? '✕ УМРЁТ' : '◎ ВЫЖИВЕТ';
+  return `<span class="char-card-status ${cls}">${txt}</span>`;
+}
+
+function renderProfilesGrid(){
+  const grid = document.getElementById('profiles-grid');
+  grid.innerHTML = '';
+  CHARS.forEach((ch, idx) => {
+    const card = document.createElement('div');
+    card.className = 'char-card';
+    const imgHtml = ch.cover_local
+      ? `<img class="char-card-cover" src="${ch.cover_local}" loading="lazy" alt="${ch.name}">`
+      : `<div class="char-card-cover-placeholder">◉</div>`;
+    card.innerHTML = `
+      ${imgHtml}
+      <div class="char-card-body">
+        <div class="char-card-name">${ch.name}</div>
+        <div class="char-card-role">${ch.role || '—'}</div>
+        ${statusLabel(ch.status)}
+      </div>`;
+    card.addEventListener('click', () => openCharModal(ch));
+    grid.appendChild(card);
+  });
+}
+
+function openCharModal(ch){
+  const imgWrap = document.getElementById('char-modal-img-wrap');
+  imgWrap.innerHTML = ch.cover_local
+    ? `<img class="char-modal-cover" src="${ch.cover_local}" alt="${ch.name}">`
+    : `<div class="char-modal-cover-placeholder">◉</div>`;
+
+  const dead = /умр/i.test(ch.status||'');
+  const statusCls = dead ? 'status-dead' : 'status-alive';
+  const statusTxt = ch.status || '—';
+
+  let tags = '';
+  if(ch.age) tags += `<div class="char-modal-tag">👤 ${ch.age} лет</div>`;
+  if(ch.height) tags += `<div class="char-modal-tag">↕ ${ch.height} см</div>`;
+  if(ch.voice) tags += `<div class="char-modal-tag">🎙 ${ch.voice}</div>`;
+  if(ch.artist) tags += `<div class="char-modal-tag">🎨 ${ch.artist}</div>`;
+
+  const relHtml = (ch.relations?.good?.length || ch.relations?.neutral?.length || ch.relations?.bad?.length) ? `
+    <div class="char-modal-section">
+      <div class="char-modal-section-title">Отношения</div>
+      ${ch.relations.good?.length ? `<div class="char-modal-rel-row"><span class="char-modal-rel-label rel-good">Хорошо</span><span class="char-modal-rel-names">${ch.relations.good.join(', ')}</span></div>` : ''}
+      ${ch.relations.neutral?.length ? `<div class="char-modal-rel-row"><span class="char-modal-rel-label rel-neu">Нейтрально</span><span class="char-modal-rel-names">${ch.relations.neutral.join(', ')}</span></div>` : ''}
+      ${ch.relations.bad?.length ? `<div class="char-modal-rel-row"><span class="char-modal-rel-label rel-bad">Плохо</span><span class="char-modal-rel-names">${ch.relations.bad.join(', ')}</span></div>` : ''}
+    </div>` : '';
+
+  const artHtml = ch.art_local?.map(p => `<img class="char-art-img" src="${p}" loading="lazy">`).join('') || '';
+
+  document.getElementById('char-modal-body').innerHTML = `
+    <div class="char-modal-name">${ch.name}</div>
+    <div class="char-modal-role">${ch.role || '—'}</div>
+    <div class="char-modal-status-row">
+      <span class="char-card-status ${statusCls}">${statusTxt}</span>
+      ${tags}
+    </div>
+    ${ch.facts ? `<div class="char-modal-section"><div class="char-modal-section-title">Факты</div><div class="char-modal-text">${ch.facts}</div></div>` : ''}
+    ${ch.fears ? `<div class="char-modal-section"><div class="char-modal-section-title">Страхи</div><div class="char-modal-text">${ch.fears}</div></div>` : ''}
+    ${ch.habits ? `<div class="char-modal-section"><div class="char-modal-section-title">Привычки</div><div class="char-modal-text">${ch.habits}</div></div>` : ''}
+    ${ch.hobbies ? `<div class="char-modal-section"><div class="char-modal-section-title">Хобби</div><div class="char-modal-text">${ch.hobbies}</div></div>` : ''}
+    ${ch.family ? `<div class="char-modal-section"><div class="char-modal-section-title">Семейное положение</div><div class="char-modal-text">${ch.family}</div></div>` : ''}
+    ${ch.death ? `<div class="char-modal-section"><div class="char-modal-section-title">Как умрёт</div><div class="char-modal-text">${ch.death}</div></div>` : ''}
+    ${relHtml}
+    ${artHtml}
+  `;
+
+  document.getElementById('char-modal').classList.add('open');
+}
+
+document.getElementById('char-modal-close').addEventListener('click', () => {
+  document.getElementById('char-modal').classList.remove('open');
+});
+document.getElementById('char-modal').addEventListener('click', e => {
+  if(e.target === document.getElementById('char-modal'))
+    document.getElementById('char-modal').classList.remove('open');
+});
+
 // ── view switching ──
 let currentView='graph';
-document.getElementById('tab-graph').addEventListener('click',()=>{
-  if(currentView==='graph')return;
-  currentView='graph';
-  document.getElementById('tab-graph').classList.add('active');
-  document.getElementById('tab-stats').classList.remove('active');
-  document.getElementById('stats-view').classList.remove('open');
-  document.getElementById('hdr').style.display='';
-  document.getElementById('legend').style.display='';
-  document.getElementById('mode-toggle').style.display='';
-  startAnim();
-});
 document.getElementById('tab-stats').addEventListener('click',()=>{
   if(currentView==='stats')return;
   currentView='stats';
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-stats').classList.add('active');
-  document.getElementById('tab-graph').classList.remove('active');
   document.getElementById('stats-view').classList.add('open');
+  document.getElementById('profiles-view').classList.remove('open');
   document.getElementById('hdr').style.display='none';
   document.getElementById('legend').style.display='none';
   document.getElementById('mode-toggle').style.display='none';
   if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
   renderStatsTable();
+});
+
+document.getElementById('tab-profiles').addEventListener('click',()=>{
+  if(currentView==='profiles')return;
+  currentView='profiles';
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-profiles').classList.add('active');
+  document.getElementById('profiles-view').classList.add('open');
+  document.getElementById('stats-view').classList.remove('open');
+  document.getElementById('hdr').style.display='none';
+  document.getElementById('legend').style.display='none';
+  document.getElementById('mode-toggle').style.display='none';
+  if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
+});
+
+document.getElementById('tab-graph').addEventListener('click',()=>{
+  if(currentView==='graph')return;
+  currentView='graph';
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-graph').classList.add('active');
+  document.getElementById('stats-view').classList.remove('open');
+  document.getElementById('profiles-view').classList.remove('open');
+  document.getElementById('hdr').style.display='';
+  document.getElementById('legend').style.display='';
+  document.getElementById('mode-toggle').style.display='';
+  startAnim();
 });
 
 // ── settings ──
@@ -1374,6 +1591,7 @@ document.getElementById('anim-toggle').addEventListener('change',e=>applyAnim(e.
 })();
 
 loadData();
+loadCharacters();
 </script>
 </body>
 </html>
