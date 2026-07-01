@@ -1,62 +1,462 @@
 {
   "nodes": [
-    { "id": "kreono",   "name": "Креоно",      "role": "Капитан",             "spectrum": "Ответственность — Гиперконтроль", "stats": {"Сила": 55, "Здоровье": 65, "Скорость": 40, "Стамина": 60} },
-    { "id": "saida",    "name": "Саида",       "role": "Офицер безопасности", "spectrum": "Выдержка — Ярость",               "stats": {"Сила": 80, "Здоровье": 75, "Скорость": 85, "Стамина": 80} },
-    { "id": "erkul",    "name": "Эркюль",      "role": "Аналитик",            "spectrum": "Баланс — Одержимость",            "stats": {"Сила": 25, "Здоровье": 45, "Скорость": 35, "Стамина": 40} },
-    { "id": "evgeny",   "name": "Евгений",     "role": "Геолог",              "spectrum": "Вера — Разочарование",            "stats": {"Сила": 65, "Здоровье": 70, "Скорость": 55, "Стамина": 70} },
-    { "id": "unura",    "name": "Унурцэцэг",   "role": "Биолог",              "spectrum": "Самообладание — Истерика",        "stats": {"Сила": 30, "Здоровье": 65, "Скорость": 50, "Стамина": 55} },
-    { "id": "katerina", "name": "Катерина",    "role": "Медик",               "spectrum": "Восстановление — Разрушение",     "stats": {"Сила": 35, "Здоровье": 90, "Скорость": 60, "Стамина": 65} },
-    { "id": "jurgen",   "name": "Юрген",       "role": "Инженер",             "spectrum": "Надежда — Отчаяние",              "stats": {"Сила": 75, "Здоровье": 70, "Скорость": 45, "Стамина": 75} },
-    { "id": "logan",    "name": "Логан",       "role": "Сисадмин",            "spectrum": "Принятие — Отрицание",            "stats": {"Сила": 40, "Здоровье": 55, "Скорость": 60, "Стамина": 50} },
-    { "id": "silvia",   "name": "Сильвия",     "role": "Навигатор",           "spectrum": "Стратегия — Случайность",         "stats": {"Сила": 35, "Здоровье": 60, "Скорость": 70, "Стамина": 60} },
-    { "id": "patricio", "name": "Патрицио",    "role": "Оценщик",             "spectrum": "Целостность — Растворение",       "stats": {"Сила": 75, "Здоровье": 70, "Скорость": 55, "Стамина": 70} },
-    { "id": "markus",   "name": "Маркус",      "role": "Разведчик",           "spectrum": "Отвага — Паранойя",               "stats": {"Сила": 70, "Здоровье": 65, "Скорость": 85, "Стамина": 70} },
-    { "id": "kan_so",   "name": "Кан Со",      "role": "Разведчик",           "spectrum": "Пассивность — Холод",             "stats": {"Сила": 60, "Здоровье": 60, "Скорость": 80, "Стамина": 65} }
+    {
+      "id": "kreono",
+      "name": "Креоно",
+      "role": "Капитан",
+      "spectrum": "Ответственность — Гиперконтроль",
+      "stats": {
+        "Сила": 55,
+        "Здоровье": 65,
+        "Скорость": 40,
+        "Стамина": 60
+      },
+      "bx": 853.5,
+      "by": 139.2,
+      "x": 854.9922447446373,
+      "y": 140.5634656438177
+    },
+    {
+      "id": "saida",
+      "name": "Саида",
+      "role": "Офицер безопасности",
+      "spectrum": "Выдержка — Ярость",
+      "stats": {
+        "Сила": 80,
+        "Здоровье": 75,
+        "Скорость": 85,
+        "Стамина": 80
+      },
+      "bx": 1001.4,
+      "by": 178.829685560563,
+      "x": 1001.3910527056817,
+      "y": 180.74208267515613
+    },
+    {
+      "id": "erkul",
+      "name": "Эркюль",
+      "role": "Аналитик",
+      "spectrum": "Баланс — Одержимость",
+      "stats": {
+        "Сила": 25,
+        "Здоровье": 45,
+        "Скорость": 35,
+        "Стамина": 40
+      },
+      "bx": 1109.6703144394369,
+      "by": 287.1,
+      "x": 1108.1625725264498,
+      "y": 289.0489033229057
+    },
+    {
+      "id": "evgeny",
+      "name": "Евгений",
+      "role": "Геолог",
+      "spectrum": "Вера — Разочарование",
+      "stats": {
+        "Сила": 65,
+        "Здоровье": 70,
+        "Скорость": 55,
+        "Стамина": 70
+      },
+      "bx": 1149.3,
+      "by": 435,
+      "x": 1146.6974616963237,
+      "y": 436.46320245971935
+    },
+    {
+      "id": "unura",
+      "name": "Унурцэцэг",
+      "role": "Биолог",
+      "spectrum": "Самообладание — Истерика",
+      "stats": {
+        "Сила": 30,
+        "Здоровье": 65,
+        "Скорость": 50,
+        "Стамина": 55
+      },
+      "bx": 1109.6703144394369,
+      "by": 582.9,
+      "x": 1106.6703277818124,
+      "y": 583.4854376790879
+    },
+    {
+      "id": "katerina",
+      "name": "Катерина",
+      "role": "Медик",
+      "spectrum": "Восстановление — Разрушение",
+      "stats": {
+        "Сила": 35,
+        "Здоровье": 90,
+        "Скорость": 60,
+        "Стамина": 65
+      },
+      "bx": 1001.4,
+      "by": 691.170314439437,
+      "x": 998.806408990642,
+      "y": 690.7211197845633
+    },
+    {
+      "id": "jurgen",
+      "name": "Юрген",
+      "role": "Инженер",
+      "spectrum": "Надежда — Отчаяние",
+      "stats": {
+        "Сила": 75,
+        "Здоровье": 70,
+        "Скорость": 45,
+        "Стамина": 75
+      },
+      "bx": 853.5,
+      "by": 730.8,
+      "x": 852.0077552553627,
+      "y": 729.4365343561823
+    },
+    {
+      "id": "logan",
+      "name": "Логан",
+      "role": "Сисадмин",
+      "spectrum": "Принятие — Отрицание",
+      "stats": {
+        "Сила": 40,
+        "Здоровье": 55,
+        "Скорость": 60,
+        "Стамина": 50
+      },
+      "bx": 705.5999999999999,
+      "by": 691.1703144394369,
+      "x": 705.6089472943182,
+      "y": 689.2579173248438
+    },
+    {
+      "id": "silvia",
+      "name": "Сильвия",
+      "role": "Навигатор",
+      "spectrum": "Стратегия — Случайность",
+      "stats": {
+        "Сила": 35,
+        "Здоровье": 60,
+        "Скорость": 70,
+        "Стамина": 60
+      },
+      "bx": 597.3296855605631,
+      "by": 582.9000000000001,
+      "x": 598.8374274735502,
+      "y": 580.9510966770944
+    },
+    {
+      "id": "patricio",
+      "name": "Патрицио",
+      "role": "Оценщик",
+      "spectrum": "Целостность — Растворение",
+      "stats": {
+        "Сила": 75,
+        "Здоровье": 70,
+        "Скорость": 55,
+        "Стамина": 70
+      },
+      "bx": 557.7,
+      "by": 435.00000000000006,
+      "x": 560.3025383036763,
+      "y": 433.5367975402807
+    },
+    {
+      "id": "markus",
+      "name": "Маркус",
+      "role": "Разведчик",
+      "spectrum": "Отвага — Паранойя",
+      "stats": {
+        "Сила": 70,
+        "Здоровье": 65,
+        "Скорость": 85,
+        "Стамина": 70
+      },
+      "bx": 597.3296855605631,
+      "by": 287.09999999999997,
+      "x": 600.3296722181875,
+      "y": 286.514562320912
+    },
+    {
+      "id": "kan_so",
+      "name": "Кан Со",
+      "role": "Разведчик",
+      "spectrum": "Пассивность — Холод",
+      "stats": {
+        "Сила": 60,
+        "Здоровье": 60,
+        "Скорость": 80,
+        "Стамина": 65
+      },
+      "bx": 705.5999999999999,
+      "by": 178.82968556056312,
+      "x": 708.1935910093579,
+      "y": 179.27888021543689
+    }
   ],
   "links": [
-    { "from": "saida",   "to": "kreono",   "type": "neg",  "label": "плохой капитан" },
-    { "from": "saida",   "to": "erkul",    "type": "neg",  "label": "слабак" },
-    { "from": "saida",   "to": "evgeny",   "type": "neu",  "label": "безвольный" },
-    { "from": "saida",   "to": "unura",    "type": "neg",  "label": "истеричка" },
-    { "from": "saida",   "to": "katerina", "type": "neu",  "label": "нестабильная" },
-    { "from": "saida",   "to": "jurgen",   "type": "neu",  "label": "тюфяк" },
-    { "from": "saida",   "to": "logan",    "type": "neg",  "label": "безответственный" },
-    { "from": "saida",   "to": "silvia",   "type": "pos",  "label": "сильный стратег" },
-    { "from": "saida",   "to": "markus",   "type": "neg",  "label": "трус" },
-    { "from": "saida",   "to": "kan_so",   "type": "neu",  "label": "что-то скрывает" },
-    { "from": "saida",   "to": "patricio", "type": "neu",  "label": "что-то не так" },
-    { "from": "erkul",   "to": "kreono",   "type": "neu",  "label": "нейтрально" },
-    { "from": "erkul",   "to": "saida",    "type": "neu",  "label": "уважаю, но резка" },
-    { "from": "erkul",   "to": "evgeny",   "type": "pos",  "label": "добрый, приятный" },
-    { "from": "erkul",   "to": "unura",    "type": "neg",  "label": "верит в лженауку" },
-    { "from": "erkul",   "to": "katerina", "type": "neu",  "label": "непредсказуемая" },
-    { "from": "erkul",   "to": "jurgen",   "type": "neu",  "label": "спокойный" },
-    { "from": "erkul",   "to": "logan",    "type": "neg",  "label": "нигилист" },
-    { "from": "erkul",   "to": "silvia",   "type": "neu",  "label": "конфликт стратегий" },
-    { "from": "erkul",   "to": "patricio", "type": "neu",  "label": "сложно воспринимать" },
-    { "from": "erkul",   "to": "markus",   "type": "neu",  "label": "сложно воспринимать" },
-    { "from": "erkul",   "to": "kan_so",   "type": "pos",  "label": "уважаю спокойствие" },
-    { "from": "evgeny",  "to": "kreono",   "type": "pos",  "label": "хороший собутыльник" },
-    { "from": "evgeny",  "to": "saida",    "type": "neu",  "label": "надеюсь откроется" },
-    { "from": "evgeny",  "to": "erkul",    "type": "pos",  "label": "гений во плоти!" },
-    { "from": "evgeny",  "to": "unura",    "type": "pos",  "label": "обаятельная!" },
-    { "from": "evgeny",  "to": "katerina", "type": "pos",  "label": "спасительница наша" },
-    { "from": "evgeny",  "to": "jurgen",   "type": "pos",  "label": "котёночек" },
-    { "from": "evgeny",  "to": "logan",    "type": "neu",  "label": "тяжело, но пытаюсь" },
-    { "from": "evgeny",  "to": "silvia",   "type": "pos",  "label": "умна и красива" },
-    { "from": "evgeny",  "to": "patricio", "type": "neu",  "label": "не понимаю" },
-    { "from": "evgeny",  "to": "markus",   "type": "pos",  "label": "куражный!" },
-    { "from": "evgeny",  "to": "kan_so",   "type": "neu",  "label": "побаиваюсь" },
-    { "from": "kreono",  "to": "saida",    "type": "envy", "label": "завидует авторитету" },
-    { "from": "kreono",  "to": "erkul",    "type": "envy", "label": "завидует продуктивности" },
-    { "from": "kreono",  "to": "evgeny",   "type": "pos",  "label": "хороший малый" },
-    { "from": "kreono",  "to": "unura",    "type": "neg",  "label": "пустышка" },
-    { "from": "kreono",  "to": "katerina", "type": "neu",  "label": "двоякое" },
-    { "from": "kreono",  "to": "jurgen",   "type": "neg",  "label": "жуткий тип" },
-    { "from": "kreono",  "to": "logan",    "type": "neg",  "label": "распиздяй" },
-    { "from": "kreono",  "to": "silvia",   "type": "envy", "label": "завидует идеям" },
-    { "from": "kreono",  "to": "patricio", "type": "neu",  "label": "странный, не опасен" },
-    { "from": "kreono",  "to": "markus",   "type": "envy", "label": "завидует харизме" },
-    { "from": "kreono",  "to": "kan_so",   "type": "envy", "label": "завидует спокойствию" }
+    {
+      "from": "saida",
+      "to": "kreono",
+      "type": "neg",
+      "label": "плохой капитан"
+    },
+    {
+      "from": "saida",
+      "to": "erkul",
+      "type": "neg",
+      "label": "слабак"
+    },
+    {
+      "from": "saida",
+      "to": "evgeny",
+      "type": "neu",
+      "label": "безвольный"
+    },
+    {
+      "from": "saida",
+      "to": "unura",
+      "type": "neg",
+      "label": "истеричка"
+    },
+    {
+      "from": "saida",
+      "to": "katerina",
+      "type": "neu",
+      "label": "нестабильная"
+    },
+    {
+      "from": "saida",
+      "to": "jurgen",
+      "type": "neu",
+      "label": "тюфяк"
+    },
+    {
+      "from": "saida",
+      "to": "logan",
+      "type": "neg",
+      "label": "безответственный"
+    },
+    {
+      "from": "saida",
+      "to": "silvia",
+      "type": "pos",
+      "label": "сильный стратег"
+    },
+    {
+      "from": "saida",
+      "to": "markus",
+      "type": "neg",
+      "label": "трус"
+    },
+    {
+      "from": "saida",
+      "to": "kan_so",
+      "type": "neu",
+      "label": "что-то скрывает"
+    },
+    {
+      "from": "saida",
+      "to": "patricio",
+      "type": "neu",
+      "label": "что-то не так"
+    },
+    {
+      "from": "erkul",
+      "to": "kreono",
+      "type": "neu",
+      "label": "нейтрально"
+    },
+    {
+      "from": "erkul",
+      "to": "saida",
+      "type": "neu",
+      "label": "уважаю, но резка"
+    },
+    {
+      "from": "erkul",
+      "to": "evgeny",
+      "type": "pos",
+      "label": "добрый, приятный"
+    },
+    {
+      "from": "erkul",
+      "to": "unura",
+      "type": "neg",
+      "label": "верит в лженауку"
+    },
+    {
+      "from": "erkul",
+      "to": "katerina",
+      "type": "neu",
+      "label": "непредсказуемая"
+    },
+    {
+      "from": "erkul",
+      "to": "jurgen",
+      "type": "neu",
+      "label": "спокойный"
+    },
+    {
+      "from": "erkul",
+      "to": "logan",
+      "type": "neg",
+      "label": "нигилист"
+    },
+    {
+      "from": "erkul",
+      "to": "silvia",
+      "type": "neu",
+      "label": "конфликт стратегий"
+    },
+    {
+      "from": "erkul",
+      "to": "patricio",
+      "type": "neu",
+      "label": "сложно воспринимать"
+    },
+    {
+      "from": "erkul",
+      "to": "markus",
+      "type": "neu",
+      "label": "сложно воспринимать"
+    },
+    {
+      "from": "erkul",
+      "to": "kan_so",
+      "type": "pos",
+      "label": "уважаю спокойствие"
+    },
+    {
+      "from": "evgeny",
+      "to": "kreono",
+      "type": "pos",
+      "label": "хороший собутыльник"
+    },
+    {
+      "from": "evgeny",
+      "to": "saida",
+      "type": "neu",
+      "label": "надеюсь откроется"
+    },
+    {
+      "from": "evgeny",
+      "to": "erkul",
+      "type": "pos",
+      "label": "гений во плоти!"
+    },
+    {
+      "from": "evgeny",
+      "to": "unura",
+      "type": "pos",
+      "label": "обаятельная!"
+    },
+    {
+      "from": "evgeny",
+      "to": "katerina",
+      "type": "pos",
+      "label": "спасительница наша"
+    },
+    {
+      "from": "evgeny",
+      "to": "jurgen",
+      "type": "pos",
+      "label": "котёночек"
+    },
+    {
+      "from": "evgeny",
+      "to": "logan",
+      "type": "neu",
+      "label": "тяжело, но пытаюсь"
+    },
+    {
+      "from": "evgeny",
+      "to": "silvia",
+      "type": "pos",
+      "label": "умна и красива"
+    },
+    {
+      "from": "evgeny",
+      "to": "patricio",
+      "type": "neu",
+      "label": "не понимаю"
+    },
+    {
+      "from": "evgeny",
+      "to": "markus",
+      "type": "pos",
+      "label": "куражный!"
+    },
+    {
+      "from": "evgeny",
+      "to": "kan_so",
+      "type": "neu",
+      "label": "побаиваюсь"
+    },
+    {
+      "from": "kreono",
+      "to": "saida",
+      "type": "envy",
+      "label": "завидует авторитету"
+    },
+    {
+      "from": "kreono",
+      "to": "erkul",
+      "type": "envy",
+      "label": "завидует продуктивности"
+    },
+    {
+      "from": "kreono",
+      "to": "evgeny",
+      "type": "pos",
+      "label": "хороший малый"
+    },
+    {
+      "from": "kreono",
+      "to": "unura",
+      "type": "neg",
+      "label": "пустышка"
+    },
+    {
+      "from": "kreono",
+      "to": "katerina",
+      "type": "neu",
+      "label": "двоякое"
+    },
+    {
+      "from": "kreono",
+      "to": "jurgen",
+      "type": "neg",
+      "label": "жуткий тип"
+    },
+    {
+      "from": "kreono",
+      "to": "logan",
+      "type": "neg",
+      "label": "распиздяй"
+    },
+    {
+      "from": "kreono",
+      "to": "silvia",
+      "type": "envy",
+      "label": "завидует идеям"
+    },
+    {
+      "from": "kreono",
+      "to": "patricio",
+      "type": "neu",
+      "label": "странный, не опасен"
+    },
+    {
+      "from": "kreono",
+      "to": "markus",
+      "type": "envy",
+      "label": "завидует харизме"
+    },
+    {
+      "from": "kreono",
+      "to": "kan_so",
+      "type": "envy",
+      "label": "завидует спокойствию"
+    }
   ]
 }
