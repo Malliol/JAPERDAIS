@@ -118,10 +118,10 @@ body {
 .leg:hover { color: #333; }
 .leg.off { opacity: .2; }
 .leg-line { width: 24px; height: 1.5px; }
-.leg-line.pos  { background: #00aa55; }
-.leg-line.neg  { background: #dd2244; }
-.leg-line.neu  { background: #aaa; }
-.leg-line.envy { background: #cc9900; border-top: 1px dashed #cc9900; height:0; }
+.leg-line.pos  { background: #1a9950; }
+.leg-line.neg  { background: #cc1133; }
+.leg-line.neu  { background: none; border-top: 2px dashed #888; height:0; }
+.leg-line.envy { background: none; border-top: 2px dashed #c48a00; height:0; }
 
 /* ── tooltip ── */
 #tip {
@@ -244,10 +244,10 @@ const LINKS = [
 ];
 
 const COLORS = {
-  pos:  '#00aa55',
-  neg:  '#dd2244',
-  neu:  '#bbb',
-  envy: '#cc9900',
+  pos:  '#1a9950',
+  neg:  '#cc1133',
+  neu:  '#888',
+  envy: '#c48a00',
 };
 
 // index nodes
@@ -283,7 +283,7 @@ function edgeAlpha(link) {
   if (focusedId) {
     if (link.from !== focusedId && link.to !== focusedId) return 0.04;
   }
-  return link.type === 'neu' ? 0.45 : 0.95;
+  return link.type === 'neu' ? 0.7 : 1.0;
 }
 
 function nodeAlpha(node) {
@@ -324,11 +324,13 @@ function drawArrow(x1, y1, x2, y2, color, alpha, dashed, link) {
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.strokeStyle = color;
-  ctx.lineWidth = link && link.type === 'neu' ? 1.2 : 2;
+  const ltype = link ? link.type : '';
+  ctx.lineWidth = ltype === 'neu' ? 1.3 : 2;
   ctx.shadowColor = 'transparent';
   ctx.shadowBlur = 0;
-  if (dashed) ctx.setLineDash([5, 4]);
-  else ctx.setLineDash([]);
+  if (ltype === 'neu')       ctx.setLineDash([4, 4]);
+  else if (ltype === 'envy') ctx.setLineDash([6, 4]);
+  else                       ctx.setLineDash([]);
 
   ctx.beginPath();
   ctx.moveTo(sx, sy);
@@ -359,10 +361,10 @@ function draw() {
   positionNodes();
   ctx.clearRect(0, 0, W, H);
 
-  // background gradient
-  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W,H)*0.7);
-  bg.addColorStop(0, '#f5f4ee');
-  bg.addColorStop(1, '#e8e6de');
+  // background
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W,H)*0.75);
+  bg.addColorStop(0, '#faf9f4');
+  bg.addColorStop(1, '#e4e0d4');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
@@ -383,21 +385,21 @@ function draw() {
     ctx.save();
     ctx.globalAlpha = a;
 
-    // outer glow ring
-    if (focused || hovered) {
-      ctx.shadowColor = focused ? '#00000033' : '#00000022';
-      ctx.shadowBlur = focused ? 20 : 12;
-    }
+    // drop shadow always
+    ctx.shadowColor = 'rgba(0,0,0,0.13)';
+    ctx.shadowBlur = focused ? 18 : 8;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = focused ? 4 : 2;
 
     // circle bg
     ctx.beginPath();
     ctx.arc(n.x, n.y, 32, 0, Math.PI * 2);
-    ctx.fillStyle = focused ? '#fff' : '#fafaf7';
+    ctx.fillStyle = focused ? '#fff' : (hovered ? '#fff' : '#f8f7f2');
     ctx.fill();
-    ctx.strokeStyle = focused ? '#333' : (hovered ? '#666' : '#ccc');
+    ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    ctx.strokeStyle = focused ? '#222' : (hovered ? '#555' : '#c8c4b8');
     ctx.lineWidth = focused ? 2 : 1.5;
     ctx.stroke();
-    ctx.shadowBlur = 0;
 
     // name
     ctx.fillStyle = a > 0.5 ? '#111' : '#ccc';
