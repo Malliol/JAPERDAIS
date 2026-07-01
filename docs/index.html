@@ -244,10 +244,10 @@ const LINKS = [
 ];
 
 const COLORS = {
-  pos:  '#7fff7f',
-  neg:  '#ff6b6b',
-  neu:  '#3a3a3a',
-  envy: '#ffd700',
+  pos:  '#00ff88',
+  neg:  '#ff3355',
+  neu:  '#4a4a5a',
+  envy: '#ffcc00',
 };
 
 // index nodes
@@ -283,7 +283,7 @@ function edgeAlpha(link) {
   if (focusedId) {
     if (link.from !== focusedId && link.to !== focusedId) return 0.04;
   }
-  return link.type === 'neu' ? 0.35 : 0.75;
+  return link.type === 'neu' ? 0.45 : 0.95;
 }
 
 function nodeAlpha(node) {
@@ -293,7 +293,7 @@ function nodeAlpha(node) {
   return connected ? 0.9 : 0.15;
 }
 
-function drawArrow(x1, y1, x2, y2, color, alpha, dashed) {
+function drawArrow(x1, y1, x2, y2, color, alpha, dashed, link) {
   const dx = x2 - x1, dy = y2 - y1;
   const dist = Math.sqrt(dx*dx + dy*dy);
   if (dist < 1) return;
@@ -311,7 +311,9 @@ function drawArrow(x1, y1, x2, y2, color, alpha, dashed) {
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.strokeStyle = color;
-  ctx.lineWidth = 1.2;
+  ctx.lineWidth = link && link.type === 'neu' ? 1.2 : 2;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = link && link.type !== 'neu' ? 6 : 0;
   if (dashed) ctx.setLineDash([5, 4]);
   else ctx.setLineDash([]);
 
@@ -336,6 +338,7 @@ function drawArrow(x1, y1, x2, y2, color, alpha, dashed) {
   ctx.closePath();
   ctx.fillStyle = color;
   ctx.fill();
+  ctx.shadowBlur = 0;
   ctx.restore();
 }
 
@@ -343,12 +346,19 @@ function draw() {
   positionNodes();
   ctx.clearRect(0, 0, W, H);
 
+  // background gradient
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W,H)*0.7);
+  bg.addColorStop(0, '#0d0d18');
+  bg.addColorStop(1, '#050508');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
   // edges
   LINKS.forEach(link => {
     const a = edgeAlpha(link);
     if (a <= 0) return;
     const from = nodeMap[link.from], to = nodeMap[link.to];
-    drawArrow(from.x, from.y, to.x, to.y, COLORS[link.type], a, link.type === 'envy');
+    drawArrow(from.x, from.y, to.x, to.y, COLORS[link.type], a, link.type === 'envy', link);
   });
 
   // nodes
@@ -360,31 +370,31 @@ function draw() {
     ctx.save();
     ctx.globalAlpha = a;
 
-    // glow for focused
+    // outer glow ring
     if (focused || hovered) {
-      ctx.shadowColor = '#fff';
-      ctx.shadowBlur = 18;
+      ctx.shadowColor = focused ? '#ffffff' : '#aaaaaa';
+      ctx.shadowBlur = focused ? 30 : 20;
     }
 
-    // circle
+    // circle bg
     ctx.beginPath();
-    ctx.arc(n.x, n.y, 30, 0, Math.PI * 2);
-    ctx.fillStyle = focused ? '#181818' : '#101010';
+    ctx.arc(n.x, n.y, 32, 0, Math.PI * 2);
+    ctx.fillStyle = focused ? '#1e1e2a' : '#141420';
     ctx.fill();
-    ctx.strokeStyle = focused ? '#555' : (hovered ? '#444' : '#222');
-    ctx.lineWidth = focused ? 1.5 : 1;
+    ctx.strokeStyle = focused ? '#aaaacc' : (hovered ? '#667788' : '#334455');
+    ctx.lineWidth = focused ? 2 : 1.5;
     ctx.stroke();
     ctx.shadowBlur = 0;
 
     // name
-    ctx.fillStyle = a > 0.5 ? '#fff' : '#333';
-    ctx.font = `${focused ? 'bold ' : ''}11px "Courier New"`;
+    ctx.fillStyle = a > 0.5 ? '#ffffff' : '#444';
+    ctx.font = `${focused ? 'bold ' : ''}12px "Courier New"`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(n.name, n.x, n.y - 5);
+    ctx.fillText(n.name, n.x, n.y - 6);
 
     // role
-    ctx.fillStyle = a > 0.5 ? '#3a3a3a' : '#1a1a1a';
+    ctx.fillStyle = a > 0.5 ? '#556677' : '#222';
     ctx.font = '8px "Courier New"';
     ctx.fillText(n.role, n.x, n.y + 9);
 
