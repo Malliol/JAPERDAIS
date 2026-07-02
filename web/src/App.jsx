@@ -48,6 +48,7 @@ export default function App() {
 
       <GraphView
         active={view === 'graph'}
+        suspend={drawerOpen || newLinkOpen || typesOpen || saveOpen}
         nodes={graph.nodes} links={graph.links}
         typesApi={typesApi}
         onUpdateLink={graph.updateLink}

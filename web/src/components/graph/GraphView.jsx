@@ -5,7 +5,7 @@ import NodeSidebar from './NodeSidebar.jsx';
 import LinkPopup from './LinkPopup.jsx';
 import { useSettings } from '../../context/SettingsContext.jsx';
 
-export default function GraphView({ active, nodes, links, typesApi, onUpdateLink, onDeleteLink, onAddLink }) {
+export default function GraphView({ active, suspend, nodes, links, typesApi, onUpdateLink, onDeleteLink, onAddLink }) {
   const canvasRef = useRef(null);
   const tipRef = useRef(null);
   const { animEnabled, theme } = useSettings();
@@ -37,6 +37,11 @@ export default function GraphView({ active, nodes, links, typesApi, onUpdateLink
   useEffect(() => {
     engine.current.selectedLink = popupLink ? popupLink.link : null;
   }, [popupLink]);
+
+  // закрываем сайдбар/попап стрелки при открытии дровера или любой модалки поверх
+  useEffect(() => {
+    if (suspend) { setFocusedId(null); setPopupLink(null); }
+  }, [suspend]);
 
   // rebuild working NODES array (with runtime x/y/z fields) when logical nodes change
   useEffect(() => {
