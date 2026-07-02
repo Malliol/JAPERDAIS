@@ -306,6 +306,8 @@ body { background:var(--bg); font-family:var(--font-ui); font-weight:600; overfl
 
   #link-popup { width:calc(100vw - 24px); left:12px !important; }
 
+  #sb-top { padding-top:64px; }
+  #sb-close { top:58px; }
   #sb-name { font-size:21px; font-weight:800; }
   #sb-role { font-size:10px; font-weight:700; }
   #sb-body { padding:14px 16px 24px; }
