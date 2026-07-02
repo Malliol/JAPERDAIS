@@ -1,0 +1,17 @@
+# собранный билд (Vite output) — не учитывать в статистике языков GitHub
+docs/assets/* linguist-generated=true
+docs/*.json linguist-generated=true
+docs/index.html linguist-generated=true
+
+# необработанные экспорты из Notion — не исходный код
+docs/raw/* linguist-vendored=true
+web/public/raw/* linguist-vendored=true
+
+# изображения — не код
+docs/portraits/* linguist-vendored=true
+docs/world/*.jpg linguist-vendored=true
+web/public/portraits/* linguist-vendored=true
+web/public/world/*.jpg linguist-vendored=true
+
+# lock-файл — не считается как язык
+web/package-lock.json linguist-generated=true
