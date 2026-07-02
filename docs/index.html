@@ -441,6 +441,47 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
 .char-gallery { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .char-gallery-img { width:100%; border:1px solid var(--dim); display:block; cursor:pointer; transition:transform .15s; }
 .char-gallery-img:hover { transform:scale(1.02); }
+
+/* paths (3 пути персонажа) */
+.char-paths { display:flex; flex-direction:column; gap:6px; }
+.char-path-item {
+  font-size:10px; letter-spacing:1px; padding:6px 10px;
+  border-left:2px solid var(--fg); color:var(--sub); text-transform:uppercase;
+}
+
+/* quotes */
+.quote-block { padding:12px 14px; border-left:2px solid var(--dim); margin-bottom:10px; }
+.quote-peer { font-size:9px; letter-spacing:2px; color:var(--fg); font-weight:bold; text-transform:uppercase; margin-bottom:2px; }
+.quote-tone { font-size:8px; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:6px; }
+.quote-text { font-size:11px; color:var(--sub); line-height:1.7; font-style:italic; white-space:pre-line; }
+.quote-toggle { font-size:9px; letter-spacing:1px; color:var(--muted); cursor:pointer; text-decoration:underline; margin-top:4px; display:inline-block; }
+.quotes-collapsed .quote-block:nth-child(n+3) { display:none; }
+
+/* ── world view ── */
+#world-view {
+  position:fixed; inset:0; background:var(--bg); z-index:30;
+  display:none; flex-direction:column; overflow-y:auto;
+}
+#world-view.open { display:flex; }
+#world-wrap { max-width:820px; margin:0 auto; padding:70px 24px 60px; width:100%; }
+.world-title { font-size:28px; font-weight:bold; color:var(--fg); margin-bottom:6px; }
+.world-subtitle { font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:32px; }
+.world-section { margin-bottom:36px; }
+.world-section-title {
+  font-size:9px; letter-spacing:3px; color:var(--muted); text-transform:uppercase;
+  padding-bottom:8px; border-bottom:1px solid var(--dim); margin-bottom:16px;
+}
+.world-p { font-size:13px; line-height:1.9; color:var(--sub); margin-bottom:14px; }
+.world-gallery { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px; }
+.world-gallery img { width:100%; border:1px solid var(--dim); display:block; cursor:pointer; }
+.world-fact-row { font-size:12px; color:var(--fg); padding:8px 0; border-bottom:1px solid var(--dim); }
+.world-fact-row:last-child { border-bottom:none; }
+
+@media (max-width:768px){
+  #world-wrap { padding:56px 16px 40px; }
+  .world-title { font-size:20px; }
+  .world-gallery { grid-template-columns:repeat(2,1fr); }
+}
 </style>
 </head>
 <body>
@@ -529,6 +570,7 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
   <button class="view-tab active" id="tab-graph">ОТНОШЕНИЯ</button>
   <button class="view-tab" id="tab-stats">СТАТИСТИКА</button>
   <button class="view-tab" id="tab-profiles">ПЕРСОНАЖИ</button>
+  <button class="view-tab" id="tab-world">МИР</button>
 </div>
 
 <div id="hdr"><h1>JAPERDAIS · ДИАГРАММА ОТНОШЕНИЙ</h1></div>
@@ -565,6 +607,11 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
     <div id="char-modal-img-wrap"></div>
     <div class="char-modal-body" id="char-modal-body"></div>
   </div>
+</div>
+
+<!-- world view -->
+<div id="world-view">
+  <div id="world-wrap"></div>
 </div>
 
 <div id="mode-toggle">
@@ -1508,9 +1555,13 @@ function openCharModal(ch){
         <span class="cm-stat-v">${ch.stats[k]}%</span></div>` : '').join('')}
     </div>` : '';
 
-  const bioHtml = (ch.bio && ch.bio.length) ? `
+  const bioHtml = ch.bio_short ? `
     <div class="char-modal-section"><div class="char-modal-section-title">Биография</div>
-    ${ch.bio.map(b => `<div class="char-modal-text" style="margin-bottom:10px">${esc(b)}</div>`).join('')}</div>` : '';
+    <div class="char-modal-text">${esc(ch.bio_short)}</div></div>` : '';
+
+  const pathsHtml = (ch.paths && ch.paths.length) ? `
+    <div class="char-modal-section"><div class="char-modal-section-title">Пути персонажа</div>
+    <div class="char-paths">${ch.paths.map(p => `<div class="char-path-item">${esc(p)}</div>`).join('')}</div></div>` : '';
 
   const factsHtml = (ch.facts && ch.facts.length) ? `
     <div class="char-modal-section"><div class="char-modal-section-title">Факты</div>
@@ -1520,10 +1571,28 @@ function openCharModal(ch){
     <div class="char-modal-section"><div class="char-modal-section-title">Значение имени</div>
     <div class="char-modal-text">${esc(ch.name_meaning)}</div></div>` : '';
 
+  const quotesAboutHtml = (ch.quotes_about_others && ch.quotes_about_others.length) ? `
+    <div class="char-modal-section">
+      <div class="char-modal-section-title">Что ${ch.name} думает о других</div>
+      <div class="quotes-collapsed" id="qa-${ch.id}">
+        ${ch.quotes_about_others.map(q => `<div class="quote-block"><div class="quote-peer">${esc(q.to)}</div><div class="quote-tone">${esc(q.tone)}</div><div class="quote-text">«${esc(q.text)}»</div></div>`).join('')}
+      </div>
+      ${ch.quotes_about_others.length > 2 ? `<span class="quote-toggle" onclick="document.getElementById('qa-${ch.id}').classList.toggle('quotes-collapsed'); this.textContent=this.textContent.includes('Показать')?'Свернуть':'Показать все ${ch.quotes_about_others.length}'">Показать все ${ch.quotes_about_others.length}</span>` : ''}
+    </div>` : '';
+
+  const quotesFromHtml = (ch.quotes_from_others && ch.quotes_from_others.length) ? `
+    <div class="char-modal-section">
+      <div class="char-modal-section-title">Что другие думают о ${ch.name}</div>
+      <div class="quotes-collapsed" id="qf-${ch.id}">
+        ${ch.quotes_from_others.map(q => `<div class="quote-block"><div class="quote-peer">${esc(q.from)}</div><div class="quote-tone">${esc(q.tone)}</div><div class="quote-text">«${esc(q.text)}»</div></div>`).join('')}
+      </div>
+      ${ch.quotes_from_others.length > 2 ? `<span class="quote-toggle" onclick="document.getElementById('qf-${ch.id}').classList.toggle('quotes-collapsed'); this.textContent=this.textContent.includes('Показать')?'Свернуть':'Показать все ${ch.quotes_from_others.length}'">Показать все ${ch.quotes_from_others.length}</span>` : ''}
+    </div>` : '';
+
   // галерея (фото кроме обложки)
   const gallery = (ch.images && ch.images.length > 1) ? `
-    <div class="char-modal-section"><div class="char-modal-section-title">Галерея</div>
-    <div class="char-gallery">${ch.images.slice(1).map(p => `<img class="char-gallery-img" src="${p}" loading="lazy">`).join('')}</div></div>` : '';
+    <div class="char-modal-section"><div class="char-modal-section-title">Внешность</div>
+    <div class="char-gallery">${ch.images.slice(1).map(p => `<img class="char-gallery-img" src="${p}" loading="lazy" onclick="window.open('${p}','_blank')">`).join('')}</div></div>` : '';
 
   document.getElementById('char-modal-body').innerHTML = `
     <div class="char-modal-name">${ch.name}</div>
@@ -1532,9 +1601,12 @@ function openCharModal(ch){
     <div class="char-modal-status-row">${tags}</div>
     ${dossier ? `<div class="char-modal-section"><div class="char-modal-section-title">Досье</div><div class="dossier">${dossier}</div></div>` : ''}
     ${statHtml}
+    ${pathsHtml}
     ${nameMeaning}
     ${bioHtml}
     ${factsHtml}
+    ${quotesAboutHtml}
+    ${quotesFromHtml}
     ${gallery}
   `;
 
@@ -1549,15 +1621,56 @@ document.getElementById('char-modal').addEventListener('click', e => {
     document.getElementById('char-modal').classList.remove('open');
 });
 
+// ── world ──
+let WORLD = null;
+async function loadWorld(){
+  try{
+    const r = await fetch('world.json?v='+Date.now());
+    WORLD = await r.json();
+    renderWorld();
+  }catch(e){ console.warn('world.json not found', e); }
+}
+function renderWorld(){
+  if(!WORLD) return;
+  const wrap = document.getElementById('world-wrap');
+  const desc = (WORLD.description||[]).map(p => `<div class="world-p">${esc(p)}</div>`).join('');
+  const device = (WORLD.world_device||[]).map(p => `<div class="world-p">${esc(p)}</div>`).join('');
+  const gallery = (WORLD.world_device_images_local||[]).map(p => `<img src="${p}" loading="lazy" onclick="window.open('${p}','_blank')">`).join('');
+  const facts = (WORLD.gameplay_facts||[]).map(f => `<div class="world-fact-row">${esc(f)}</div>`).join('');
+
+  wrap.innerHTML = `
+    <div class="world-title">${esc(WORLD.title||'JAPERDAIS')}</div>
+    <div class="world-subtitle">Кооперативный психологический триллер</div>
+    <div class="world-section">
+      <div class="world-section-title">О мире</div>
+      ${desc}
+    </div>
+    ${device ? `<div class="world-section">
+      <div class="world-section-title">Устройство мира</div>
+      ${device}
+      ${gallery ? `<div class="world-gallery">${gallery}</div>` : ''}
+    </div>` : ''}
+    ${facts ? `<div class="world-section">
+      <div class="world-section-title">Рекорды экспедиции</div>
+      ${facts}
+    </div>` : ''}
+  `;
+}
+
 // ── view switching ──
 let currentView='graph';
+function closeAllViews(){
+  document.getElementById('stats-view').classList.remove('open');
+  document.getElementById('profiles-view').classList.remove('open');
+  document.getElementById('world-view').classList.remove('open');
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+}
 document.getElementById('tab-stats').addEventListener('click',()=>{
   if(currentView==='stats')return;
   currentView='stats';
-  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  closeAllViews();
   document.getElementById('tab-stats').classList.add('active');
   document.getElementById('stats-view').classList.add('open');
-  document.getElementById('profiles-view').classList.remove('open');
   document.getElementById('hdr').style.display='none';
   document.getElementById('legend').style.display='none';
   document.getElementById('mode-toggle').style.display='none';
@@ -1568,10 +1681,21 @@ document.getElementById('tab-stats').addEventListener('click',()=>{
 document.getElementById('tab-profiles').addEventListener('click',()=>{
   if(currentView==='profiles')return;
   currentView='profiles';
-  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  closeAllViews();
   document.getElementById('tab-profiles').classList.add('active');
   document.getElementById('profiles-view').classList.add('open');
-  document.getElementById('stats-view').classList.remove('open');
+  document.getElementById('hdr').style.display='none';
+  document.getElementById('legend').style.display='none';
+  document.getElementById('mode-toggle').style.display='none';
+  if(rafId){ cancelAnimationFrame(rafId); rafId=null; }
+});
+
+document.getElementById('tab-world').addEventListener('click',()=>{
+  if(currentView==='world')return;
+  currentView='world';
+  closeAllViews();
+  document.getElementById('tab-world').classList.add('active');
+  document.getElementById('world-view').classList.add('open');
   document.getElementById('hdr').style.display='none';
   document.getElementById('legend').style.display='none';
   document.getElementById('mode-toggle').style.display='none';
@@ -1581,10 +1705,8 @@ document.getElementById('tab-profiles').addEventListener('click',()=>{
 document.getElementById('tab-graph').addEventListener('click',()=>{
   if(currentView==='graph')return;
   currentView='graph';
-  document.querySelectorAll('.view-tab').forEach(t=>t.classList.remove('active'));
+  closeAllViews();
   document.getElementById('tab-graph').classList.add('active');
-  document.getElementById('stats-view').classList.remove('open');
-  document.getElementById('profiles-view').classList.remove('open');
   document.getElementById('hdr').style.display='';
   document.getElementById('legend').style.display='';
   document.getElementById('mode-toggle').style.display='';
@@ -1634,6 +1756,7 @@ document.getElementById('anim-toggle').addEventListener('change',e=>applyAnim(e.
 
 loadData();
 loadCharacters();
+loadWorld();
 </script>
 </body>
 </html>
