@@ -335,6 +335,62 @@ body { background:var(--bg); font-family:'Courier New',monospace; overflow:hidde
   .profiles-grid { grid-template-columns: 1fr !important; }
 }
 
+/* ── tablet (769px–1024px) ── */
+@media (min-width:769px) and (max-width:1024px){
+  #drawer { width:320px; }
+  #sidebar { width:360px; }
+
+  .view-tab { padding:13px 18px; font-size:8px; }
+
+  #legend { gap:8px; }
+  .leg { font-size:9px; }
+
+  .profiles-grid { grid-template-columns: repeat(3, 1fr) !important; gap:14px !important; padding:52px 20px 28px !important; }
+
+  #char-modal-inner { max-width:720px; }
+  .char-modal-cover, .char-modal-cover-placeholder { width:260px; }
+  .char-modal-body { padding:26px 22px; }
+
+  #world-wrap { max-width:680px; padding:60px 20px 48px; }
+  .world-gallery { grid-template-columns:repeat(3,1fr); }
+
+  #stats-table-wrap { padding:52px 20px 24px; }
+}
+
+/* ── large desktop (≥1600px) ── */
+@media (min-width:1600px){
+  #world-wrap { max-width:960px; }
+  .profiles-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding:64px 40px 40px; }
+  #stats-table-wrap { padding:60px 60px 40px; }
+  #hdr h1 { font-size:12px; }
+}
+
+/* ── mobile: world / char-modal / dossier / quotes fine-tuning ── */
+@media (max-width:768px){
+  #world-wrap { padding:52px 14px 36px; }
+  .world-title { font-size:19px; }
+  .world-p { font-size:12px; line-height:1.75; }
+  .world-gallery { grid-template-columns:repeat(2,1fr); gap:8px; }
+
+  .char-modal-name { font-size:20px; }
+  .dossier-row { flex-direction:column; gap:2px; }
+  .dossier-k { min-width:0; }
+  .cm-stat-k { min-width:64px; font-size:8px; }
+  .char-gallery { grid-template-columns:1fr 1fr; gap:6px; }
+  .quote-block { padding:10px 12px; }
+  .quote-text { font-size:10px; }
+
+  .char-card-cover, .char-card-cover-placeholder { height:150px; }
+  .char-modal-cover-placeholder { font-size:40px; }
+}
+
+@media (max-width:400px){
+  #view-tabs { overflow-x:auto; justify-content:flex-start; -webkit-overflow-scrolling:touch; }
+  .view-tab { flex:none; padding:10px 12px; }
+  .profiles-grid { grid-template-columns:1fr 1fr !important; gap:8px !important; }
+  .char-gallery, .world-gallery { grid-template-columns:1fr !important; }
+}
+
 /* ── profiles view ── */
 #profiles-view {
   position:fixed; inset:0; background:var(--bg); z-index:30;
